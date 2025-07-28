@@ -60,7 +60,6 @@ export default function HomePage() {
   const [selectedPresentation, setSelectedPresentation] = useState<Presentation | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [pagination, setPagination] = useState<PaginationData | null>(null)
-  const [currentPage, setCurrentPage] = useState(1)
   const [searchParams, setSearchParams] = useState<{
     q?: string
     companyCode?: string
@@ -131,13 +130,11 @@ export default function HomePage() {
     type?: 'sii' | 'otc' | 'rotc'
   }) => {
     setSearchParams(params)
-    setCurrentPage(1)
     setHasSearched(true)
     await fetchPresentations(1, params)
   }
 
   const handlePageChange = async (page: number) => {
-    setCurrentPage(page)
     await fetchPresentations(page, searchParams)
     
     // 滾動到頂部
@@ -146,7 +143,6 @@ export default function HomePage() {
 
   const resetToAllPresentations = async () => {
     setSearchParams({})
-    setCurrentPage(1)
     setHasSearched(false)
     await fetchPresentations(1, {})
   }
@@ -214,7 +210,7 @@ export default function HomePage() {
                   台塑(1301)法說會簡報等上市、上櫃、興櫃公司的投資人說明會資料。
                 </p>
                 <p>
-                  所有法說會簡報均提供PDF下載功能，支援公司代碼搜尋，如搜尋「2330」即可找到台積電法說會簡報，
+                  所有法說會簡報均提供 PDF 下載連結，支援公司代碼搜尋，如搜尋「2330」即可找到台積電法說會簡報，
                   搜尋「2317」可查看鴻海法說會簡報。涵蓋財報說明會、年度投資人說明會、季度法人說明會等各類簡報資料。
                 </p>
                 <p>

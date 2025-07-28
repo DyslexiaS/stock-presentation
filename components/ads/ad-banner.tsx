@@ -2,9 +2,13 @@
 
 import { useEffect } from 'react'
 
+interface AdsByGoogleItem {
+  [key: string]: unknown
+}
+
 declare global {
   interface Window {
-    adsbygoogle: any[]
+    adsbygoogle: AdsByGoogleItem[]
   }
 }
 

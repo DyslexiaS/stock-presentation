@@ -339,6 +339,17 @@ bun run type-check
 
 MIT License - 詳見 [LICENSE](LICENSE) 檔案
 
+## 最近優化 (Latest Improvements)
+
+### 程式碼清理與優化 ✨
+- **修復 TypeScript 錯誤**: 移除不必要的 `any` 型別轉換，使用正確的型別定義
+- **移除重複程式碼**: 清理重複的 DOMMatrix polyfill 和 PDF.js 設定
+- **集中化管理**: PDF 設定統一管理在 `lib/pdf-setup.ts`
+- **改善型別安全**: 所有 Mongoose 查詢結果都有正確的型別定義
+- **程式碼品質提升**: 通過所有 ESLint 檢查，零警告零錯誤
+
+這些優化讓程式碼更簡潔、更易維護，同時保持了所有功能的完整性。
+
 ## 聯絡方式
 
 如有問題或建議，請開啟 Issue 或聯絡專案維護者。

@@ -2,6 +2,20 @@ import { NextRequest, NextResponse } from 'next/server'
 import dbConnect from '@/lib/mongodb'
 import Presentation from '@/lib/models/Presentation'
 
+interface MongoSearchFilter {
+  $or?: Array<{
+    companyCode?: { $regex: string; $options: string }
+    companyName?: { $regex: string; $options: string }
+  }>
+  companyCode?: { $regex: string; $options: string }
+  companyName?: { $regex: string; $options: string }
+  eventDate?: {
+    $gte?: Date
+    $lte?: Date
+  }
+  typek?: string
+}
+
 export async function GET(request: NextRequest) {
   try {
     await dbConnect()
@@ -17,7 +31,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '20')
 
     // Build search query
-    const query: any = {}
+    const query: MongoSearchFilter = {}
 
     // Text search
     if (q) {

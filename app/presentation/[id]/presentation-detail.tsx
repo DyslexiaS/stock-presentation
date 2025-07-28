@@ -12,8 +12,7 @@ import {
   Calendar, 
   Building2, 
   FileText, 
-  ExternalLink,
-  Download
+  ExternalLink
 } from 'lucide-react'
 import { Presentation } from '@/types'
 

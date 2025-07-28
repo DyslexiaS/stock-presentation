@@ -9,7 +9,7 @@ import { Presentation } from '@/types'
 
 interface SearchResultsProps {
   results: Presentation[]
-  onPreview: (presentation: Presentation) => void
+  onPreview?: (presentation: Presentation) => void
   pagination?: {
     page: number
     limit: number
@@ -27,7 +27,7 @@ const typeLabels: Record<string, { label: string; color: string }> = {
   rotc: { label: '興櫃', color: 'bg-purple-100 text-purple-800' },
 }
 
-export function SearchResults({ results, onPreview, pagination, onPageChange }: SearchResultsProps) {
+export function SearchResults({ results, pagination, onPageChange }: SearchResultsProps) {
   if (results.length === 0) {
     return (
       <div className="text-center py-12">

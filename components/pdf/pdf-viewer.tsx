@@ -17,6 +17,7 @@ import {
   AlertCircle
 } from 'lucide-react'
 import { Presentation } from '@/types'
+import { setupPDFJS } from '@/lib/pdf-setup'
 
 // Dynamically import react-pdf components to avoid SSR issues
 const Document = dynamic(
@@ -28,30 +29,6 @@ const Page = dynamic(
   () => import('react-pdf').then((mod) => mod.Page),
   { ssr: false }
 )
-
-// Set up PDF.js with polyfills and reliable worker
-if (typeof window !== 'undefined') {
-  // Polyfill DOMMatrix if not available
-  if (typeof DOMMatrix === 'undefined') {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (globalThis as any).DOMMatrix = class DOMMatrix {
-      constructor() {}
-      static fromMatrix() { return new DOMMatrix() }
-      translate() { return this }
-      scale() { return this }
-      rotate() { return this }
-    }
-  }
-  
-  // Set up PDF.js worker with fallback
-  import('react-pdf').then((pdfjs) => {
-    const workerVersion = pdfjs.pdfjs.version
-    pdfjs.pdfjs.GlobalWorkerOptions.workerSrc = 
-      `//unpkg.com/pdfjs-dist@${workerVersion}/build/pdf.worker.min.js`
-  }).catch(() => {
-    console.warn('PDF.js setup failed')
-  })
-}
 
 interface PDFViewerProps {
   presentation: Presentation
@@ -69,6 +46,12 @@ export function PDFViewer({ presentation, onClose }: PDFViewerProps) {
 
   useEffect(() => {
     setMounted(true)
+    
+    // Initialize PDF.js setup
+    setupPDFJS().catch(() => {
+      console.warn('PDF.js setup failed')
+    })
+    
     // Auto-adjust scale based on screen size
     const updateScale = () => {
       const width = window.innerWidth

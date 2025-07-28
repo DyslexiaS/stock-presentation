@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import dbConnect from '@/lib/mongodb'
 import Presentation from '@/lib/models/Presentation'
 
+interface MongoFilter {
+  typek?: string
+}
+
 export async function GET(request: NextRequest) {
   try {
     await dbConnect()
@@ -10,7 +14,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '10')
     const type = searchParams.get('type')
 
-    const query: any = {}
+    const query: MongoFilter = {}
     
     // Filter by type if specified
     if (type && ['sii', 'otc', 'rotc'].includes(type)) {

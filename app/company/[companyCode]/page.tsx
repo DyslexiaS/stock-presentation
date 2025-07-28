@@ -252,7 +252,7 @@ export default async function CompanyPage({ params }: Props) {
               <CardContent className="space-y-4 text-muted-foreground">
                                  <p>
                    {companyName}(股票代碼：{companyCode})是{typeLabel}公司，本頁面提供{companyName}歷年完整的法說會簡報資料，
-                   包含{totalPresentations}場投資人說明會的PDF下載功能。
+                   包含{totalPresentations}場投資人說明會的 PDF。
                  </p>
                 <p>
                   您可以在此查看{companyName}各季度財報說明會、年度法人說明會等重要投資人簡報資料。

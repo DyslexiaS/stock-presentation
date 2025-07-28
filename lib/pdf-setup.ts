@@ -6,12 +6,13 @@ export const setupPDFJS = async () => {
 
   // Polyfill DOMMatrix if not available
   if (typeof DOMMatrix === 'undefined') {
-    (globalThis as any).DOMMatrix = class DOMMatrix {
+    // Simple polyfill without complex type assertions
+    const DOMMatrixPolyfill = class {
       constructor() {
         // Minimal polyfill for DOMMatrix
       }
       static fromMatrix() {
-        return new DOMMatrix()
+        return new DOMMatrixPolyfill()
       }
       translate() {
         return this
@@ -23,6 +24,9 @@ export const setupPDFJS = async () => {
         return this
       }
     }
+    
+    // Assign the polyfill to global
+    ;(globalThis as Record<string, unknown>).DOMMatrix = DOMMatrixPolyfill
   }
 
   const pdfjs = await import('react-pdf')
