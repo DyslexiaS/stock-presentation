@@ -13,7 +13,7 @@ export function generateSEODescription(presentation: Presentation): string {
     rotc: '興櫃'
   }[presentation.typek]
   
-  return `${presentation.companyName}(${presentation.companyCode})${date}法說會簡報PDF下載和線上預覽。${typeLabel}公司最新財報說明會、投資人簡報資料，包含中英文版本法人說明會內容。`
+  return `${presentation.companyName}(${presentation.companyCode})${date}法說會簡報PDF下載。${typeLabel}公司最新財報說明會、投資人簡報資料，包含中英文版本法人說明會內容。`
 }
 
 export function generateCompanyPageTitle(companyCode: string, companyName: string): string {
@@ -21,7 +21,7 @@ export function generateCompanyPageTitle(companyCode: string, companyName: strin
 }
 
 export function generateCompanyPageDescription(companyCode: string, companyName: string, totalPresentations: number): string {
-  return `${companyName}(${companyCode})歷年法說會簡報總覽，共${totalPresentations}場投資人說明會。提供${companyCode}最新財報法說會PDF下載、線上預覽，包含中英文版法人說明會資料。`
+  return `${companyName}(${companyCode})歷年法說會簡報總覽，共${totalPresentations}場投資人說明會。提供${companyCode}最新財報法說會PDF下載，包含中英文版法人說明會資料。`
 }
 
 // 生成超強力SEO關鍵字 - 涵蓋所有可能的搜尋模式

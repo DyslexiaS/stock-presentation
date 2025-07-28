@@ -31,8 +31,8 @@ const features = [
   },
   {
     icon: FileText,
-    title: 'PDF 預覽',
-    description: '線上預覽，無需下載'
+    title: 'PDF 下載',
+    description: '快速下載，支援中英文版'
   },
   {
     icon: Globe,
@@ -182,18 +182,6 @@ export default function HomePage() {
         {/* Search Section */}
         <section className="mb-8">
           <SearchBar onSearch={handleSearch} isLoading={isLoading} />
-          
-          {/* Reset to all button */}
-          {hasSearched && (
-            <div className="flex justify-center mt-4">
-              <button
-                onClick={resetToAllPresentations}
-                className="text-sm text-muted-foreground hover:text-foreground underline"
-              >
-                顯示所有法說會
-              </button>
-            </div>
-          )}
         </section>
 
         {/* Features Section */}
@@ -226,7 +214,7 @@ export default function HomePage() {
                   台塑(1301)法說會簡報等上市、上櫃、興櫃公司的投資人說明會資料。
                 </p>
                 <p>
-                  所有法說會簡報均提供PDF下載和線上預覽功能，支援公司代碼搜尋，如搜尋「2330」即可找到台積電法說會簡報，
+                  所有法說會簡報均提供PDF下載功能，支援公司代碼搜尋，如搜尋「2330」即可找到台積電法說會簡報，
                   搜尋「2317」可查看鴻海法說會簡報。涵蓋財報說明會、年度投資人說明會、季度法人說明會等各類簡報資料。
                 </p>
                 <p>
@@ -243,14 +231,21 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             <div className="lg:col-span-3">
               <div className="mb-4">
-                <h2 className="text-xl font-semibold text-foreground">
-                  {hasSearched ? '搜尋結果' : '最新台股法說會簡報'}
-                </h2>
-                {!hasSearched && (
-                  <p className="text-sm text-muted-foreground mt-1">
-                    包含台積電、鴻海、台塑等知名公司法說會簡報
-                  </p>
-                )}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-xl font-semibold text-foreground">
+                      {hasSearched ? '搜尋結果' : '最新台股法說會簡報'}
+                    </h2>
+                  </div>
+                  {hasSearched && (
+                    <button
+                      onClick={resetToAllPresentations}
+                      className="text-sm text-muted-foreground hover:text-foreground underline whitespace-nowrap"
+                    >
+                      顯示所有法說會
+                    </button>
+                  )}
+                </div>
               </div>
               <SearchResults
                 results={presentations}
