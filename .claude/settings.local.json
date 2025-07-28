@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun init:*)",
+      "Bash(bun add:*)",
+      "Bash(bunx:*)",
+      "Bash(mkdir:*)",
+      "Bash(rm:*)",
+      "Bash(bun run:*)",
+      "Bash(node:*)"
+    ],
+    "deny": []
+  }
+}
