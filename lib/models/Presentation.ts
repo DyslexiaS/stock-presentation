@@ -30,7 +30,6 @@ const PresentationSchema = new mongoose.Schema<IPresentation>(
     eventDate: {
       type: Date,
       required: true,
-      index: true,
     },
     presentationTWUrl: {
       type: String,
@@ -44,11 +43,9 @@ const PresentationSchema = new mongoose.Schema<IPresentation>(
       type: String,
       enum: ['sii', 'otc', 'rotc'],
       required: true,
-      index: true,
     },
     slug: {
       type: String,
-      index: true,
     },
     keywords: [{
       type: String,
@@ -61,11 +58,6 @@ const PresentationSchema = new mongoose.Schema<IPresentation>(
     timestamps: true,
   }
 )
-
-// Create compound indexes for better search performance
-PresentationSchema.index({ companyCode: 1, eventDate: -1 })
-PresentationSchema.index({ companyName: 'text', companyCode: 'text' })
-PresentationSchema.index({ eventDate: -1, typek: 1 })
 
 // Generate slug before saving
 PresentationSchema.pre('save', function(next) {
