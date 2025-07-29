@@ -67,7 +67,7 @@ export function AdBanner({
       <ins
         className="adsbygoogle"
         style={{ display: 'block', ...style }}
-        data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID}
+        data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID || 'ca-pub-9797466100759078'}
         data-ad-slot={slot}
         data-ad-format={format}
         data-full-width-responsive={responsive.toString()}

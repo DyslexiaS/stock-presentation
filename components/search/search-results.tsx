@@ -49,6 +49,25 @@ export function SearchResults({ results, pagination, onPageChange }: SearchResul
       <div className="grid gap-4">
         {results.map((presentation) => (
           <Card key={presentation._id} className="hover:shadow-md transition-shadow">
+            {/* Hidden SEO Keywords */}
+            <div className="sr-only">
+              {presentation.companyName} 法說會簡報 {presentation.companyCode} 法說會簡報 
+              {presentation.companyName}法說會 {presentation.companyCode}法說會 
+              {presentation.companyName}投資人說明會 {presentation.companyCode}投資人說明會
+              {presentation.companyName}財報說明會 {presentation.companyCode}財報說明會
+              {presentation.companyName}簡報PDF {presentation.companyCode}簡報PDF
+              {presentation.companyName}法說會下載 {presentation.companyCode}法說會下載
+              法說會{presentation.companyCode} 法說會{presentation.companyName}
+              {presentation.companyName}最新法說會 {presentation.companyCode}最新法說會
+              {presentation.companyName}業績發表會 {presentation.companyCode}業績發表會
+              {presentation.companyName}營運報告 {presentation.companyCode}營運報告
+              股票代碼{presentation.companyCode} {presentation.companyCode}股票
+              {presentation.companyName}股價分析 {presentation.companyCode}股價分析
+              {new Date(presentation.eventDate).getFullYear()}年{presentation.companyName}法說會
+              {new Date(presentation.eventDate).getFullYear()}年{presentation.companyCode}法說會
+              Q{Math.ceil((new Date(presentation.eventDate).getMonth() + 1) / 3)}{presentation.companyName}法說會
+              Q{Math.ceil((new Date(presentation.eventDate).getMonth() + 1) / 3)}{presentation.companyCode}法說會
+            </div>
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between">
                 <div className="space-y-1">
