@@ -6,7 +6,7 @@ import { SearchResults } from '@/components/search/search-results'
 import { SimplePDFViewer } from '@/components/pdf/simple-pdf-viewer'
 import { AdBanner } from '@/components/ads/ad-banner'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { TrendingUp, FileText, Search, Globe } from 'lucide-react'
+import { TrendingUp, FileText, Search, Globe, Bell } from 'lucide-react'
 import { Presentation } from '@/types'
 
 // Mock data for development - replace with actual API calls
@@ -35,9 +35,9 @@ const features = [
     description: '快速下載，支援中英文版'
   },
   {
-    icon: Globe,
-    title: '中英對照',
-    description: '提供中英文版本切換'
+    icon: Bell,
+    title: 'Telegram 通知',
+    description: '每晚8點推送最新法說會資訊'
   },
   {
     icon: TrendingUp,
@@ -151,14 +151,61 @@ export default function HomePage() {
     <div className="min-h-screen bg-white text-gray-900">
       {/* Header */}
       <header className="bg-card border-b border-gray-200 shadow-sm">
-        <div className="container mx-auto px-4 py-6">
-          <div className="text-center space-y-2">
-            <h1 className="text-3xl font-bold text-foreground">
-              台股法說會搜尋
-            </h1>
-            <p className="text-muted-foreground text-lg">
-              最完整的台灣上市櫃公司法說會資料庫
-            </p>
+        <div className="container mx-auto px-4 py-16">
+          <div className="text-center space-y-8">
+            {/* Main Title with Gradient */}
+            <div className="relative">
+              <div className="mb-6">
+                {/* Decorative elements */}
+                <div className="flex items-center justify-center mb-8">
+                  <div className="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent w-32"></div>
+                  <div className="mx-4 w-2 h-2 bg-slate-400 rounded-full"></div>
+                  <div className="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent w-32"></div>
+                </div>
+                
+                {/* Main title with enhanced typography */}
+                <h1 className="text-5xl md:text-7xl font-black tracking-tight">
+                  <span className="block text-slate-800 mb-2">台股法說會資料庫</span>
+                </h1>
+                
+                {/* Subtle accent line */}
+                <div className="mx-auto mt-8 w-16 h-px bg-slate-400"></div>
+              </div>
+            </div>
+            
+            {/* Subtitle with enhanced styling */}
+            <div className="relative max-w-4xl mx-auto">
+              <p className="text-xl md:text-2xl text-slate-600 font-light leading-relaxed tracking-wide">
+                <span className="font-medium text-slate-700">最完整的</span>
+                <span className="mx-2 text-slate-500">·</span>
+                <span className="font-medium text-slate-700">台灣上市櫃公司</span>
+                <span className="mx-2 text-slate-500">·</span>
+                <span className="inline-block relative">
+                  <span className="font-semibold text-slate-800">法說會資料庫</span>
+                  <div className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-blue-500 to-slate-500 opacity-60"></div>
+                </span>
+              </p>
+              
+              {/* Feature badges with minimal design */}
+              <div className="flex flex-wrap justify-center gap-4 mt-10">
+                <span className="inline-flex items-center px-4 py-2 border border-slate-200 text-slate-600 text-sm font-medium rounded-full hover:bg-slate-50 transition-colors">
+                  <FileText className="w-4 h-4 mr-2 text-slate-500" />
+                  PDF 下載
+                </span>
+                <span className="inline-flex items-center px-4 py-2 border border-slate-200 text-slate-600 text-sm font-medium rounded-full hover:bg-slate-50 transition-colors">
+                  <Search className="w-4 h-4 mr-2 text-slate-500" />
+                  智能搜尋
+                </span>
+                <span className="inline-flex items-center px-4 py-2 border border-slate-200 text-slate-600 text-sm font-medium rounded-full hover:bg-slate-50 transition-colors">
+                  <Bell className="w-4 h-4 mr-2 text-slate-500" />
+                  即時通知
+                </span>
+                <span className="inline-flex items-center px-4 py-2 border border-slate-200 text-slate-600 text-sm font-medium rounded-full hover:bg-slate-50 transition-colors">
+                  <TrendingUp className="w-4 h-4 mr-2 text-slate-500" />
+                  即時更新
+                </span>
+              </div>
+            </div>
           </div>
         </div>
         
@@ -194,6 +241,32 @@ export default function HomePage() {
                 </Card>
               ))}
             </div>
+
+            {/* FinmoAI Memo Generator Promotion */}
+            <div className="mt-6 text-center">
+              <Card className="bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-center mb-4">
+                    <FileText className="h-8 w-8 text-emerald-600 mr-3" />
+                    <h3 className="text-xl font-semibold text-foreground">🤖 FinmoAI 智能備忘錄生成器</h3>
+                    <span className="ml-2 px-2 py-1 text-xs font-medium bg-emerald-100 text-emerald-800 rounded-full">BETA</span>
+                  </div>
+                  <p className="text-muted-foreground mb-4">
+                    運用 AI 人工智慧技術，自動分析法說會簡報內容，生成重點摘要和投資備忘錄，
+                    讓您快速掌握關鍵投資要點！
+                  </p>
+                  <a
+                    href="https://finmoai.diveinvest.net/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-6 py-3 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 transition-colors"
+                  >
+                    <FileText className="h-5 w-5 mr-2" />
+                    體驗 AI 備忘錄生成器
+                  </a>
+                </CardContent>
+              </Card>
+            </div>
           </section>
         )}
 
@@ -206,7 +279,7 @@ export default function HomePage() {
               </CardHeader>
               <CardContent className="space-y-4 text-muted-foreground">
                 <p>
-                  本平台提供台灣股市最完整的法說會簡報資料，包含台積電(2330)法說會簡報、鴻海(2317)法說會簡報、
+                  本平台提供台灣股市完整的法說會簡報資料，包含台積電(2330)法說會簡報、鴻海(2317)法說會簡報、
                   台塑(1301)法說會簡報等上市、上櫃、興櫃公司的投資人說明會資料。
                 </p>
                 <p>
@@ -216,6 +289,20 @@ export default function HomePage() {
                 <p>
                   適合投資人、分析師、研究人員使用，提供台股投資決策參考。所有法說會簡報資料均來自公開資訊觀測站，
                   確保資料的準確性和即時性。
+                </p>
+                <p className="border-l-4 border-blue-500 pl-4 bg-blue-50 p-3 rounded-r">
+                  <strong>📱 即時通知服務</strong>：加入我們的 Telegram 機器人 
+                  <a href="https://t.me/diveinvest_bot" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-medium mx-1">
+                    @diveinvest_bot
+                  </a>
+                  ，每晚 8 點自動推送最新法說會簡報，讓您隨時掌握重要投資訊息，不錯過任何關鍵的法人說明會資料。
+                </p>
+                <p className="border-l-4 border-emerald-500 pl-4 bg-emerald-50 p-3 rounded-r">
+                  <strong>🤖 AI 智能分析</strong>：體驗我們的 
+                  <a href="https://finmoai.diveinvest.net/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-800 font-medium mx-1">
+                    FinmoAI 備忘錄生成器
+                  </a>
+                  ，運用人工智慧技術自動分析法說會簡報內容，生成重點摘要和投資要點，協助投資人快速理解複雜的財務資訊和公司策略。
                 </p>
               </CardContent>
             </Card>
