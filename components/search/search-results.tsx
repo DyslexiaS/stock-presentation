@@ -1,10 +1,11 @@
 'use client'
 
+import Link from 'next/link'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Pagination } from '@/components/ui/pagination'
-import { ExternalLink, FileText, Calendar, Building2 } from 'lucide-react'
+import { ExternalLink, FileText, Calendar, Building2, Eye } from 'lucide-react'
 import { Presentation } from '@/types'
 
 interface SearchResultsProps {
@@ -102,6 +103,19 @@ export function SearchResults({ results, pagination, onPageChange }: SearchResul
 
             <CardContent className="pt-0">
               <div className="flex gap-2 flex-wrap">
+                <Button
+                  variant="default"
+                  size="sm"
+                  asChild
+                >
+                  <Link
+                    href={`/presentation/${presentation._id}`}
+                    className="flex items-center gap-1"
+                  >
+                    <Eye className="h-4 w-4" />
+                    查看詳情
+                  </Link>
+                </Button>
                 {presentation.presentationTWUrl && (
                   <Button
                     variant="outline"

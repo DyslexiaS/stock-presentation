@@ -1,17 +1,13 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { PDFViewer } from '@/components/pdf/pdf-viewer'
-import { SimplePDFViewer } from '@/components/pdf/simple-pdf-viewer'
 import { 
   ArrowLeft, 
   Calendar, 
   Building2, 
-  FileText, 
   ExternalLink
 } from 'lucide-react'
 import { Presentation } from '@/types'
@@ -27,8 +23,6 @@ const typeLabels: Record<string, { label: string; color: string }> = {
 }
 
 export default function PresentationDetailPage({ presentation }: Props) {
-  const [showPDFViewer, setShowPDFViewer] = useState(false)
-  const [viewerType, setViewerType] = useState<'advanced' | 'simple'>('simple')
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -108,14 +102,17 @@ export default function PresentationDetailPage({ presentation }: Props) {
               <Button
                 variant="outline"
                 size="lg"
-                onClick={() => {
-                  setViewerType('advanced')
-                  setShowPDFViewer(true)
-                }}
-                className="flex items-center gap-2"
+                asChild
               >
-                <FileText className="h-4 w-4" />
-                進階預覽模式
+                <a
+                  href={presentation.presentationTWUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  中文版 PDF
+                </a>
               </Button>
 
               {presentation.presentationEnUrl && (
@@ -164,40 +161,10 @@ export default function PresentationDetailPage({ presentation }: Props) {
               </div>
             </div>
 
-            {/* Related Actions */}
-            <div className="border-t pt-6">
-              <h3 className="font-semibold mb-3">相關連結</h3>
-              <div className="flex gap-2 flex-wrap">
-                <Button variant="outline" size="sm" asChild>
-                  <Link href={`/company/${presentation.companyCode}`}>
-                    查看更多 {presentation.companyName} 法說會
-                  </Link>
-                </Button>
-                <Button variant="outline" size="sm" asChild>
-                  <Link href={`/search?type=${presentation.typek}`}>
-                    瀏覽{typeLabels[presentation.typek]?.label}公司法說會
-                  </Link>
-                </Button>
-              </div>
-            </div>
           </CardContent>
         </Card>
       </main>
 
-      {/* PDF Viewer Modal */}
-      {showPDFViewer && viewerType === 'simple' && (
-        <SimplePDFViewer
-          presentation={presentation}
-          onClose={() => setShowPDFViewer(false)}
-        />
-      )}
-      
-      {showPDFViewer && viewerType === 'advanced' && (
-        <PDFViewer
-          presentation={presentation}
-          onClose={() => setShowPDFViewer(false)}
-        />
-      )}
     </div>
   )
 }
