@@ -1,7 +1,10 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { AdSenseScript } from '@/components/ads/adsense-script'
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import './globals.css'
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -34,6 +37,8 @@ export default function RootLayout({
     <html lang="zh-TW" className="antialiased">
       <head>
         <AdSenseScript />
+        <Analytics />
+        <SpeedInsights />
       </head>
       <body className={`${inter.className} min-h-screen bg-neutral-50`}>
         {children}
