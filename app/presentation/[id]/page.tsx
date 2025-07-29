@@ -26,6 +26,7 @@ async function getPresentation(id: string): Promise<Presentation | null> {
       eventDate: Date
       presentationTWUrl: string
       presentationEnUrl: string
+      audioLinkUrl?: string
       typek: 'sii' | 'otc' | 'rotc'
       createdAt: Date
       updatedAt?: Date
@@ -42,6 +43,7 @@ async function getPresentation(id: string): Promise<Presentation | null> {
       eventDate: doc.eventDate.toISOString(),
       presentationTWUrl: doc.presentationTWUrl,
       presentationEnUrl: doc.presentationEnUrl,
+      audioLinkUrl: doc.audioLinkUrl,
       typek: doc.typek,
       createdAt: doc.createdAt.toISOString(),
       updatedAt: doc.updatedAt?.toISOString(),

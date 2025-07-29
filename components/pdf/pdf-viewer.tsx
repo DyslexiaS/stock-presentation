@@ -200,6 +200,8 @@ export function PDFViewer({ presentation, onClose }: PDFViewerProps) {
               <Button variant="outline" size="sm" asChild>
                 <a
                   href={presentation.presentationTWUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   download
                   className="flex items-center gap-1"
                 >

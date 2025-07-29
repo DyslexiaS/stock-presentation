@@ -136,6 +136,8 @@ export function SimplePDFViewer({ presentation, onClose }: SimplePDFViewerProps)
             <Button asChild>
               <a
                 href={presentation.presentationTWUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 download
                 className="flex items-center gap-2"
               >

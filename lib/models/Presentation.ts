@@ -7,6 +7,7 @@ export interface IPresentation extends mongoose.Document {
   eventDate: Date
   presentationTWUrl: string
   presentationEnUrl: string
+  audioLinkUrl?: string
   typek: 'sii' | 'otc' | 'rotc'
   createdAt: Date
   updatedAt?: Date
@@ -36,6 +37,10 @@ const PresentationSchema = new mongoose.Schema<IPresentation>(
       required: true,
     },
     presentationEnUrl: {
+      type: String,
+      required: false,
+    },
+    audioLinkUrl: {
       type: String,
       required: false,
     },
@@ -81,7 +86,8 @@ PresentationSchema.pre('save', function(next) {
   // Generate description for SEO
   if (!this.description) {
     const date = new Date(this.eventDate).toLocaleDateString('zh-TW')
-    this.description = `${this.companyName}(${this.companyCode})於${date}舉辦的法人說明會資料，提供中英文PDF下載和線上預覽。`
+    const audioText = this.audioLinkUrl ? '，提供中英文PDF下載、線上預覽及音訊錄音。' : '，提供中英文PDF下載和線上預覽。'
+    this.description = `${this.companyName}(${this.companyCode})於${date}舉辦的法人說明會資料${audioText}`
   }
   
   next()

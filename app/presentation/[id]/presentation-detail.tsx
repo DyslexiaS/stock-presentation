@@ -8,7 +8,8 @@ import {
   ArrowLeft, 
   Calendar, 
   Building2, 
-  ExternalLink
+  ExternalLink,
+  Volume2
 } from 'lucide-react'
 import { Presentation } from '@/types'
 
@@ -129,6 +130,24 @@ export default function PresentationDetailPage({ presentation }: Props) {
                   >
                     <ExternalLink className="h-4 w-4" />
                     英文版 PDF
+                  </a>
+                </Button>
+              )}
+
+              {presentation.audioLinkUrl && (
+                <Button
+                  variant="outline"
+                  size="lg"
+                  asChild
+                >
+                  <a
+                    href={presentation.audioLinkUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2"
+                  >
+                    <Volume2 className="h-4 w-4" />
+                    音訊錄音
                   </a>
                 </Button>
               )}

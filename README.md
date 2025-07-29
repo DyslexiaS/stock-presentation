@@ -6,6 +6,7 @@
 
 - 🔍 **智能搜尋**: 支援公司代碼、名稱、日期多維度搜尋
 - 📄 **PDF下載**: 快速下載中英文版法說會資料
+- 🎵 **音訊錄音**: 提供法說會音訊錄音連結 (若有提供)
 - 📱 **響應式設計**: 手機、平板、桌面完美適配
 - 🚀 **SEO優化**: 針對搜尋引擎優化，獲取自然流量
 - ⚡ **高效能**: 快速載入和搜尋回應
@@ -40,6 +41,7 @@
   eventDate: "2025-05-19T00:00:00.000Z", // 法說會日期
   presentationTWUrl: "https://...",      // 中文PDF連結
   presentationEnUrl: "https://...",      // 英文PDF連結
+  audioLinkUrl: "https://...",           // 音訊錄音連結 (可選)
   typek: "sii",                          // sii(上市) | otc(上櫃) | rotc(興櫃)
   createdAt: "2025-07-19T12:02:57.055Z"
 }
@@ -181,6 +183,7 @@ export default nextConfig
       "eventDate": "2025-05-19T00:00:00.000Z",
       "presentationTWUrl": "https://...",
       "presentationEnUrl": "https://...",
+      "audioLinkUrl": "https://...",
       "typek": "sii"
     }
   ],

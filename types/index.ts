@@ -5,6 +5,7 @@ export interface Presentation {
   eventDate: string
   presentationTWUrl: string
   presentationEnUrl: string
+  audioLinkUrl?: string
   typek: 'sii' | 'otc' | 'rotc'
   createdAt: string
   updatedAt?: string

@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Pagination } from '@/components/ui/pagination'
-import { ExternalLink, FileText, Calendar, Building2, Eye } from 'lucide-react'
+import { ExternalLink, FileText, Calendar, Building2, Eye, Volume2 } from 'lucide-react'
 import { Presentation } from '@/types'
 
 interface SearchResultsProps {
@@ -147,6 +147,23 @@ export function SearchResults({ results, pagination, onPageChange }: SearchResul
                     >
                       <ExternalLink className="h-4 w-4" />
                       英文版 PDF
+                    </a>
+                  </Button>
+                )}
+                {presentation.audioLinkUrl && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    asChild
+                  >
+                    <a
+                      href={presentation.audioLinkUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1"
+                    >
+                      <Volume2 className="h-4 w-4" />
+                      音訊錄音
                     </a>
                   </Button>
                 )}
