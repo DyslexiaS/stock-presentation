@@ -180,7 +180,7 @@ export default async function CompanyPage({ params }: Props) {
           {/* 頁首橫幅廣告 */}
           <div className="container mx-auto px-4 pb-4">
             <AdBanner
-              slot="1234567888"
+              slot={process.env.NEXT_PUBLIC_ADSENSE_HEADER_SLOT || "1234567888"}
               format="horizontal"
               className="w-full max-w-4xl mx-auto"
               style={{ minHeight: '90px' }}
@@ -302,7 +302,7 @@ export default async function CompanyPage({ params }: Props) {
               <div className="lg:col-span-1">
                 <div className="sticky top-4 space-y-6">
                   <AdBanner
-                    slot="1234567889"
+                    slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT || "1234567889"}
                     format="rectangle"
                     className="w-full"
                     style={{ minHeight: '250px' }}
@@ -327,7 +327,7 @@ export default async function CompanyPage({ params }: Props) {
           {/* 內容中間廣告 */}
           <div className="mt-8">
             <AdBanner
-              slot="1234567890"
+              slot={process.env.NEXT_PUBLIC_ADSENSE_CONTENT_SLOT || "1234567890"}
               format="horizontal"
               className="w-full max-w-4xl mx-auto"
               style={{ minHeight: '90px' }}

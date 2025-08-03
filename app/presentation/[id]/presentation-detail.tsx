@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { AdBanner } from '@/components/ads/ad-banner'
 import { 
   ArrowLeft, 
   Calendar, 
@@ -54,9 +55,24 @@ export default function PresentationDetailPage({ presentation }: Props) {
         </div>
       </header>
 
+      {/* Banner Ad - Ad Slot 1 */}
+      <div className="bg-white border-b">
+        <div className="container mx-auto px-4 py-4">
+          <AdBanner
+            slot={process.env.NEXT_PUBLIC_ADSENSE_HEADER_SLOT || "1234567892"}
+            format="horizontal"
+            className="w-full max-w-4xl mx-auto"
+            style={{ minHeight: '90px' }}
+          />
+        </div>
+      </div>
+
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        <Card className="max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          {/* Main Content Area */}
+          <div className="lg:col-span-3">
+            <Card>
           <CardHeader>
             <div className="space-y-4">
               <div className="flex items-start justify-between">
@@ -181,7 +197,21 @@ export default function PresentationDetailPage({ presentation }: Props) {
             </div>
 
           </CardContent>
-        </Card>
+            </Card>
+          </div>
+          
+          {/* Sidebar with Ad - Ad Slot 2 */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-4">
+              <AdBanner
+                slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT || "1234567893"}
+                format="rectangle"
+                className="w-full"
+                style={{ minHeight: '250px' }}
+              />
+            </div>
+          </div>
+        </div>
       </main>
 
     </div>

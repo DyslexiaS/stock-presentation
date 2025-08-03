@@ -86,6 +86,41 @@ NEXTAUTH_SECRET=your-secret-key
 
 # Google AdSense (可選)
 NEXT_PUBLIC_ADSENSE_ID=ca-pub-xxxxxxxxxx
+
+# Replace these with your actual AdSense ad unit IDs from your AdSense dashboard
+# Header Banner Ad Unit ID
+NEXT_PUBLIC_ADSENSE_HEADER_SLOT=xxx
+
+# Sidebar Ad Unit ID  
+NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT=xxx
+
+# Content Banner Ad Unit ID
+NEXT_PUBLIC_ADSENSE_CONTENT_SLOT=xxx
+```
+
+### AdSense 廣告位說明
+
+本平台使用 3 種主要廣告位類型，可透過環境變數靈活配置：
+
+- **NEXT_PUBLIC_ADSENSE_HEADER_SLOT**: 頁首橫幅廣告
+  - 位置：所有頁面的頁首區域
+  - 格式：horizontal (728x90 建議)
+  - 使用頁面：首頁、公司頁面、法說會詳細頁
+
+- **NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT**: 側邊廣告
+  - 位置：頁面右側邊欄
+  - 格式：rectangle (300x250 建議)
+  - 使用頁面：首頁、公司頁面、法說會詳細頁
+
+- **NEXT_PUBLIC_ADSENSE_CONTENT_SLOT**: 內容區廣告
+  - 位置：內容區域中間及底部
+  - 格式：horizontal (728x90 建議)
+  - 使用頁面：首頁、公司頁面
+
+**總計廣告位數量：**
+- 首頁：6 個廣告位
+- 公司頁面：3 個廣告位  
+- 法說會詳細頁：2 個廣告位
 ```
 
 4. **啟動開發伺服器**

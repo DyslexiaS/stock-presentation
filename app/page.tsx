@@ -212,7 +212,7 @@ export default function HomePage() {
         {/* 頁首橫幅廣告 */}
         <div className="container mx-auto px-4 pb-4">
           <AdBanner
-            slot="1234567888"
+            slot={process.env.NEXT_PUBLIC_ADSENSE_HEADER_SLOT || "1234567888"}
             format="horizontal"
             className="w-full max-w-4xl mx-auto"
             style={{ minHeight: '90px' }}
@@ -267,6 +267,16 @@ export default function HomePage() {
                 </CardContent>
               </Card>
             </div>
+
+            {/* Ad after Features Section */}
+            <div className="mt-8">
+              <AdBanner
+                slot={process.env.NEXT_PUBLIC_ADSENSE_CONTENT_SLOT || "1234567894"}
+                format="horizontal"
+                className="w-full max-w-4xl mx-auto"
+                style={{ minHeight: '90px' }}
+              />
+            </div>
           </section>
         )}
 
@@ -306,6 +316,16 @@ export default function HomePage() {
                 </p>
               </CardContent>
             </Card>
+
+            {/* Ad after SEO Content Section */}
+            <div className="mt-8">
+              <AdBanner
+                slot={process.env.NEXT_PUBLIC_ADSENSE_CONTENT_SLOT || "1234567895"}
+                format="horizontal"
+                className="w-full max-w-4xl mx-auto"
+                style={{ minHeight: '90px' }}
+              />
+            </div>
           </section>
         )}
 
@@ -342,7 +362,7 @@ export default function HomePage() {
             <div className="lg:col-span-1">
               <div className="sticky top-4">
                 <AdBanner
-                  slot="1234567889"
+                  slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT || "1234567889"}
                   format="rectangle"
                   className="w-full"
                   style={{ minHeight: '250px' }}
@@ -354,7 +374,7 @@ export default function HomePage() {
           {/* 內容中間廣告 */}
           <div className="mt-8">
             <AdBanner
-              slot="1234567890"
+              slot={process.env.NEXT_PUBLIC_ADSENSE_CONTENT_SLOT || "1234567890"}
               format="horizontal"
               className="w-full max-w-4xl mx-auto"
               style={{ minHeight: '90px' }}
@@ -366,6 +386,16 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="bg-card border-t border-gray-200 mt-16">
         <div className="container mx-auto px-4 py-8">
+          {/* Footer Ad */}
+          <div className="mb-8">
+            <AdBanner
+              slot={process.env.NEXT_PUBLIC_ADSENSE_CONTENT_SLOT || "1234567896"}
+              format="horizontal"
+              className="w-full max-w-4xl mx-auto"
+              style={{ minHeight: '90px' }}
+            />
+          </div>
+          
           <div className="text-center text-muted-foreground">
             <p>© 2025 台股法說會搜尋平台 - 提供最完整的法人說明會資料</p>
           </div>

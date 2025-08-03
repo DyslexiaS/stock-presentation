@@ -1,278 +1,530 @@
+import type { Metadata } from 'next'
 import { Presentation } from '@/types'
 
-export function generateSEOTitle(presentation: Presentation): string {
-  const date = new Date(presentation.eventDate).toLocaleDateString('zh-TW')
-  return `${presentation.companyName}(${presentation.companyCode}) 法說會簡報 - ${date} | 台股投資人說明會`
+// 搜尋意圖分類
+enum SearchIntent {
+  INFORMATIONAL = 'informational',
+  NAVIGATIONAL = 'navigational', 
+  TRANSACTIONAL = 'transactional',
+  COMMERCIAL = 'commercial'
 }
 
+// 關鍵字重要性權重
+enum KeywordPriority {
+  PRIMARY = 'primary',    // 最高優先級 - 核心關鍵字
+  SECONDARY = 'secondary', // 次要優先級 - 支援關鍵字
+  LONG_TAIL = 'long_tail'  // 長尾關鍵字 - 精準流量
+}
+
+interface SEOKeyword {
+  keyword: string
+  priority: KeywordPriority
+  intent: SearchIntent
+  volume?: 'high' | 'medium' | 'low' // 估計搜尋量
+}
+
+interface SEOConfig {
+  baseUrl: string
+  siteName: string
+  defaultTitle: string
+  defaultDescription: string
+}
+
+// SEO 配置 - 可從環境變數或配置文件讀取
+const seoConfig: SEOConfig = {
+  baseUrl: process.env.NEXTAUTH_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://stock.diveinvest.net',
+  siteName: '台股法說會資料庫',
+  defaultTitle: '台股法說會資料庫 | 台灣上市櫃公司投資人說明會簡報下載',
+  defaultDescription: '提供台股上市櫃公司最新法說會簡報PDF下載，包含財報分析、投資亮點、未來展望等完整投資人說明會資料。'
+}
+
+// 增強版SEO標題生成 - 更符合搜尋習慣
+export function generateSEOTitle(presentation: Presentation): string {
+  const date = new Date(presentation.eventDate)
+  const year = date.getFullYear()
+  const quarter = Math.ceil((date.getMonth() + 1) / 3)
+  const yearQuarter = `${year}Q${quarter}`
+  const monthDay = date.toLocaleDateString('zh-TW', { month: '2-digit', day: '2-digit' })
+  
+  // 優化標題結構：主要關鍵字前置，重要信息突出
+  return `${presentation.companyName}(${presentation.companyCode}) ${yearQuarter}法說會簡報PDF下載 | ${monthDay}投資人說明會`
+}
+
+// 增強版描述 - 包含更多語義關鍵字和CTA
 export function generateSEODescription(presentation: Presentation): string {
-  const date = new Date(presentation.eventDate).toLocaleDateString('zh-TW')
+  const date = new Date(presentation.eventDate)
+  const year = date.getFullYear()
+  const quarter = Math.ceil((date.getMonth() + 1) / 3)
+  const yearQuarter = `${year}Q${quarter}`
+  const dateStr = date.toLocaleDateString('zh-TW')
   const typeLabel = {
     sii: '上市',
     otc: '上櫃', 
     rotc: '興櫃'
   }[presentation.typek]
   
-  return `${presentation.companyName}(${presentation.companyCode})${date}法說會簡報PDF下載。${typeLabel}公司最新財報說明會、投資人簡報資料，包含中英文版本法人說明會內容。`
+  // 結構化描述：公司信息 + 時間 + 內容描述 + CTA
+  return `【${typeLabel}】${presentation.companyName}(${presentation.companyCode}) ${yearQuarter}財報法說會完整簡報。${dateStr}最新投資人說明會PDF免費下載，包含營收獲利分析、未來展望、中英文版法人說明會資料。立即查看${presentation.companyName}股價投資亮點！`
 }
 
+// 智能關鍵字生成系統 - 基於搜尋意圖和優先級
+export function generateSmartKeywords(presentation: Presentation): SEOKeyword[] {
+  const { companyName, companyCode, typek } = presentation
+  const date = new Date(presentation.eventDate)
+  const year = date.getFullYear()
+  const quarter = Math.ceil((date.getMonth() + 1) / 3)
+  const yearQuarter = `${year}Q${quarter}`
+  
+  const typeLabel = {
+    sii: '上市',
+    otc: '上櫃', 
+    rotc: '興櫃'
+  }[typek]
+
+  const keywords: SEOKeyword[] = [
+    // PRIMARY 關鍵字 - 最重要的核心詞
+    { keyword: `${companyName}法說會`, priority: KeywordPriority.PRIMARY, intent: SearchIntent.NAVIGATIONAL, volume: 'high' },
+    { keyword: `${companyCode}法說會`, priority: KeywordPriority.PRIMARY, intent: SearchIntent.NAVIGATIONAL, volume: 'high' },
+    { keyword: `${companyName}${yearQuarter}法說會`, priority: KeywordPriority.PRIMARY, intent: SearchIntent.INFORMATIONAL, volume: 'medium' },
+    { keyword: `${companyCode}${yearQuarter}法說會`, priority: KeywordPriority.PRIMARY, intent: SearchIntent.INFORMATIONAL, volume: 'medium' },
+    
+    // SECONDARY 關鍵字 - 支援性關鍵字
+    { keyword: `${companyName}投資人說明會`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.INFORMATIONAL, volume: 'medium' },
+    { keyword: `${companyCode}投資人說明會`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.INFORMATIONAL, volume: 'medium' },
+    { keyword: `${companyName}財報說明會`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.INFORMATIONAL, volume: 'medium' },
+    { keyword: `${companyCode}財報說明會`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.INFORMATIONAL, volume: 'medium' },
+    { keyword: `${companyName}法說會簡報`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.TRANSACTIONAL, volume: 'medium' },
+    { keyword: `${companyCode}法說會簡報`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.TRANSACTIONAL, volume: 'medium' },
+    
+    // 時間相關關鍵字
+    { keyword: `${year}年法說會`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.INFORMATIONAL, volume: 'low' },
+    { keyword: `Q${quarter}法說會`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.INFORMATIONAL, volume: 'low' },
+    { keyword: `${yearQuarter}法說會簡報`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.TRANSACTIONAL, volume: 'medium' },
+    
+    // PDF和下載相關 - 高轉化意圖
+    { keyword: `${companyName}法說會PDF`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.TRANSACTIONAL, volume: 'medium' },
+    { keyword: `${companyCode}法說會PDF`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.TRANSACTIONAL, volume: 'medium' },
+    { keyword: `${companyName}法說會下載`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.TRANSACTIONAL, volume: 'medium' },
+    { keyword: `${companyCode}法說會下載`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.TRANSACTIONAL, volume: 'medium' },
+    
+    // LONG_TAIL 關鍵字 - 精準流量，高轉化
+    { keyword: `${companyName} ${yearQuarter} 法說會 PDF 下載`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.TRANSACTIONAL, volume: 'low' },
+    { keyword: `${companyCode} ${yearQuarter} 投資人說明會 簡報`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.TRANSACTIONAL, volume: 'low' },
+    { keyword: `${companyName} 最新 財報 法說會 ${year}`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.INFORMATIONAL, volume: 'low' },
+    { keyword: `${companyCode} ${typeLabel} 公司 法說會 資料`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.INFORMATIONAL, volume: 'low' },
+    { keyword: `${companyName} 股價 投資 亮點 法說會`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.COMMERCIAL, volume: 'low' },
+    { keyword: `${companyCode} 營收 獲利 分析 簡報`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.COMMERCIAL, volume: 'low' },
+    { keyword: `${companyName} 未來 展望 投資人 說明會`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.INFORMATIONAL, volume: 'low' },
+    
+    // 競爭優勢關鍵字
+    { keyword: `${companyName} vs 同業 法說會 比較`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.COMMERCIAL, volume: 'low' },
+    { keyword: `${companyCode} 投資 價值 分析 報告`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.COMMERCIAL, volume: 'low' },
+    
+    // 即時性關鍵字
+    { keyword: `${companyName} 最新 法說會 ${year}`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.INFORMATIONAL, volume: 'medium' },
+    { keyword: `${companyCode} 近期 法說會 簡報`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.INFORMATIONAL, volume: 'medium' },
+    
+    // 問題導向關鍵字 - 符合語音搜尋趨勢
+    { keyword: `${companyName} 法說會 什麼時候`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.INFORMATIONAL, volume: 'low' },
+    { keyword: `${companyCode} 法說會 在哪裡看`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.NAVIGATIONAL, volume: 'low' },
+    { keyword: `${companyName} 法說會 重點 摘要`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.INFORMATIONAL, volume: 'low' },
+  ]
+
+  // 根據公司類型添加特定關鍵字
+  if (typeLabel) {
+    keywords.push(
+      { keyword: `${typeLabel} ${companyName} 法說會`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.INFORMATIONAL, volume: 'medium' },
+      { keyword: `${typeLabel} 公司 ${companyCode} 投資 簡報`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.COMMERCIAL, volume: 'low' }
+    )
+  }
+
+  return keywords
+}
+
+// 根據優先級生成關鍵字字串 - 用於meta keywords
+export function generatePrioritizedKeywords(keywords: SEOKeyword[], maxCount: number = 50): string {
+  // 按優先級排序，然後按搜尋量排序
+  const priorityOrder = [KeywordPriority.PRIMARY, KeywordPriority.SECONDARY, KeywordPriority.LONG_TAIL]
+  const volumeOrder = ['high', 'medium', 'low']
+  
+  const sortedKeywords = keywords.sort((a, b) => {
+    const priorityDiff = priorityOrder.indexOf(a.priority) - priorityOrder.indexOf(b.priority)
+    if (priorityDiff !== 0) return priorityDiff
+    
+    const volumeA = volumeOrder.indexOf(a.volume || 'low')
+    const volumeB = volumeOrder.indexOf(b.volume || 'low')
+    return volumeA - volumeB
+  })
+  
+  return sortedKeywords
+    .slice(0, maxCount)
+    .map(k => k.keyword)
+    .join(', ')
+}
+
+// Next.js 13+ App Router Metadata 生成
+export function generatePresentationMetadata(presentation: Presentation): Metadata {
+  const title = generateSEOTitle(presentation)
+  const description = generateSEODescription(presentation)
+  const keywords = generateSmartKeywords(presentation)
+  const keywordString = generatePrioritizedKeywords(keywords, 30)
+  const url = `${seoConfig.baseUrl}/presentation/${presentation._id}`
+  const imageUrl = `${seoConfig.baseUrl}/api/og/presentation/${presentation._id}` // OG image API
+  
+  return {
+    title,
+    description,
+    keywords: keywordString,
+    authors: [{ name: presentation.companyName }],
+    publisher: seoConfig.siteName,
+    alternates: {
+      canonical: url,
+      languages: {
+        'zh-TW': url,
+        'x-default': url,
+      },
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: seoConfig.siteName,
+      type: 'article',
+      locale: 'zh_TW',
+      publishedTime: new Date(presentation.eventDate).toISOString(),
+      modifiedTime: new Date(presentation.updatedAt || presentation.eventDate).toISOString(),
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    other: {
+      'article:published_time': new Date(presentation.eventDate).toISOString(),
+      'article:modified_time': new Date(presentation.updatedAt || presentation.eventDate).toISOString(),
+      'article:author': presentation.companyName,
+    },
+  }
+}
+
+// 公司頁面 Metadata 生成
+export function generateCompanyMetadata(
+  companyCode: string, 
+  companyName: string, 
+  totalPresentations: number,
+  typek: string
+): Metadata {
+  const title = `${companyName}(${companyCode}) 法說會簡報 | ${companyCode}投資人說明會 | ${seoConfig.siteName}`
+  const description = `${companyName}(${companyCode})歷年法說會簡報總覽，共${totalPresentations}場投資人說明會。提供${companyCode}最新財報法說會PDF下載，包含中英文版法人說明會資料。`
+  const url = `${seoConfig.baseUrl}/company/${companyCode}`
+  const imageUrl = `${seoConfig.baseUrl}/api/og/company/${companyCode}`
+  
+  const typeLabel = {
+    sii: '上市',
+    otc: '上櫃', 
+    rotc: '興櫃'
+  }[typek] || ''
+
+  const keywords = [
+    `${companyName}法說會`,
+    `${companyCode}法說會`,
+    `${companyName}投資人說明會`,
+    `${companyCode}投資人說明會`,
+    `${companyName}歷年法說會`,
+    `${companyCode}歷年法說會`,
+    `${typeLabel}${companyName}`,
+    `${typeLabel}${companyCode}`,
+    '台股法說會',
+    '投資人簡報'
+  ].join(', ')
+
+  return {
+    title,
+    description,
+    keywords,
+    alternates: {
+      canonical: url,
+      languages: {
+        'zh-TW': url,
+        'x-default': url,
+      },
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: seoConfig.siteName,
+      type: 'website',
+      locale: 'zh_TW',
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [imageUrl],
+    },
+  }
+}
+
+// 首頁 Metadata 生成
+export function generateHomeMetadata(): Metadata {
+  const title = seoConfig.defaultTitle
+  const description = seoConfig.defaultDescription
+  const url = seoConfig.baseUrl
+  const imageUrl = `${seoConfig.baseUrl}/api/og/home`
+  
+  // 2025年熱門搜尋關鍵字
+  const trendingKeywords = [
+    '台股法說會', '投資人說明會', '財報簡報', '法說會搜尋', '台灣股市', '上市公司簡報', '法人說明會',
+    '2025法說會', 'Q1法說會', '台積電2330法說會', '鴻海2317法說會', '聯發科2454法說會', 
+    '台塑1301法說會', '中華電2412法說會', '富邦金2881法說會', '國泰金2882法說會',
+    'AI概念股法說會', '半導體法說會', '電動車法說會', '5G法說會', 'ESG法說會',
+    '法說會PDF下載', '免費法說會簡報', '股票投資分析', '財報解讀', '投資研究報告'
+  ].join(', ')
+
+  return {
+    title,
+    description,
+    keywords: trendingKeywords,
+    alternates: {
+      canonical: url,
+      languages: {
+        'zh-TW': url,
+        'x-default': url,
+      },
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: seoConfig.siteName,
+      type: 'website',
+      locale: 'zh_TW',
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [imageUrl],
+    },
+  }
+}
+
+// 生成結構化數據 JSON-LD
+export function generatePresentationJsonLd(presentation: Presentation) {
+  const eventDate = new Date(presentation.eventDate)
+  const year = eventDate.getFullYear()
+  const quarter = Math.ceil((eventDate.getMonth() + 1) / 3)
+  
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Event',
+        '@id': `${seoConfig.baseUrl}/presentation/${presentation._id}#event`,
+        name: `${presentation.companyName}(${presentation.companyCode}) ${year}Q${quarter}法說會`,
+        description: generateSEODescription(presentation),
+        startDate: eventDate.toISOString(),
+        endDate: new Date(eventDate.getTime() + 2 * 60 * 60 * 1000).toISOString(),
+        eventStatus: 'https://schema.org/EventScheduled',
+        eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
+        isAccessibleForFree: true,
+        inLanguage: ['zh-TW', 'en-US'],
+        organizer: {
+          '@id': `${seoConfig.baseUrl}/company/${presentation.companyCode}#organization`
+        },
+        about: {
+          '@id': `${seoConfig.baseUrl}/company/${presentation.companyCode}#organization`
+        },
+        url: `${seoConfig.baseUrl}/presentation/${presentation._id}`,
+        workFeatured: [
+          {
+            '@type': 'DigitalDocument',
+            '@id': `${seoConfig.baseUrl}/presentation/${presentation._id}#document-tw`,
+            name: `${presentation.companyName} ${year}Q${quarter}法說會簡報 (中文版)`,
+            url: presentation.presentationTWUrl,
+            encodingFormat: 'application/pdf',
+            inLanguage: 'zh-TW',
+            datePublished: eventDate.toISOString(),
+            publisher: {
+              '@id': `${seoConfig.baseUrl}/company/${presentation.companyCode}#organization`
+            }
+          },
+          ...(presentation.presentationEnUrl ? [{
+            '@type': 'DigitalDocument',
+            '@id': `${seoConfig.baseUrl}/presentation/${presentation._id}#document-en`,
+            name: `${presentation.companyName} ${year}Q${quarter} Investor Presentation (English)`,
+            url: presentation.presentationEnUrl,
+            encodingFormat: 'application/pdf',
+            inLanguage: 'en-US',
+            datePublished: eventDate.toISOString(),
+            publisher: {
+              '@id': `${seoConfig.baseUrl}/company/${presentation.companyCode}#organization`
+            }
+          }] : [])
+        ]
+      },
+      {
+        '@type': 'Organization',
+        '@id': `${seoConfig.baseUrl}/company/${presentation.companyCode}#organization`,
+        name: presentation.companyName,
+        identifier: presentation.companyCode,
+        url: `${seoConfig.baseUrl}/company/${presentation.companyCode}`,
+        sameAs: [
+          `https://www.twse.com.tw/zh/listed/company/${presentation.companyCode}`,
+          `https://mops.twse.com.tw/mops/web/t57sb01_q1?TYPEK=${presentation.typek}&step=show&co_id=${presentation.companyCode}`
+        ]
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${seoConfig.baseUrl}/presentation/${presentation._id}#breadcrumb`,
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: seoConfig.siteName,
+            item: seoConfig.baseUrl
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: `${presentation.companyName}(${presentation.companyCode})`,
+            item: `${seoConfig.baseUrl}/company/${presentation.companyCode}`
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: `${year}Q${quarter} 法說會簡報`,
+            item: `${seoConfig.baseUrl}/presentation/${presentation._id}`
+          }
+        ]
+      }
+    ]
+  }
+}
+
+// 生成公司頁面結構化數據
+export function generateCompanyJsonLd(
+  companyCode: string, 
+  companyName: string, 
+  presentations: Presentation[]
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: companyName,
+    identifier: companyCode,
+    url: `${seoConfig.baseUrl}/company/${companyCode}`,
+    sameAs: [
+      `https://www.twse.com.tw/zh/listed/company/${companyCode}`,
+      `https://mops.twse.com.tw/mops/web/t57sb01_q1?TYPEK=sii&step=show&co_id=${companyCode}`
+    ],
+    event: presentations.slice(0, 5).map(p => ({
+      '@type': 'Event',
+      name: `${companyName} 法說會`,
+      startDate: new Date(p.eventDate).toISOString(),
+      url: `${seoConfig.baseUrl}/presentation/${p._id}`
+    }))
+  }
+}
+
+// 向後相容性函數
+export function generateKeywords(presentation: Presentation): string[] {
+  const smartKeywords = generateSmartKeywords(presentation)
+  return smartKeywords.map(k => k.keyword)
+}
+
+// 舊函數保持向後相容
 export function generateCompanyPageTitle(companyCode: string, companyName: string): string {
-  return `${companyName}(${companyCode}) 法說會簡報 | ${companyCode}投資人說明會 | 台股法說會搜尋`
+  return `${companyName}(${companyCode}) 法說會簡報 | ${companyCode}投資人說明會 | ${seoConfig.siteName}`
 }
 
 export function generateCompanyPageDescription(companyCode: string, companyName: string, totalPresentations: number): string {
   return `${companyName}(${companyCode})歷年法說會簡報總覽，共${totalPresentations}場投資人說明會。提供${companyCode}最新財報法說會PDF下載，包含中英文版法人說明會資料。`
 }
 
-// 生成超強力SEO關鍵字 - 涵蓋所有可能的搜尋模式
-export function generateKeywords(presentation: Presentation): string[] {
-  const { companyName, companyCode, typek } = presentation
-  const date = new Date(presentation.eventDate)
-  const year = date.getFullYear()
-  const quarter = Math.ceil((date.getMonth() + 1) / 3)
-  
-  const typeLabels = {
-    sii: ['上市', '台股上市', '證交所上市'],
-    otc: ['上櫃', '台股上櫃', '櫃買中心'], 
-    rotc: ['興櫃', '台股興櫃', '興櫃市場']
-  }[typek] || []
-
-  const baseKeywords = [
-    // 核心關鍵字
-    '台股法說會',
-    '法人說明會',
-    '財報說明會',
-    '投資人說明會',
-    '法說會簡報',
-    '投資人簡報',
-    
-    // 公司相關
-    companyName,
-    companyCode,
-    `${companyName}法說會`,
-    `${companyCode}法說會`,
-    `${companyName}法說會簡報`,
-    `${companyCode}法說會簡報`,
-    `${companyName}投資人說明會`,
-    `${companyCode}投資人說明會`,
-    `${companyName}財報說明會`,
-    `${companyCode}財報說明會`,
-    `${companyName}簡報`,
-    `${companyCode}簡報`,
-    
-    // 時間相關
-    `${year}年法說會`,
-    `${year}法說會`,
-    `Q${quarter}法說會`,
-    `${companyName}${year}法說會`,
-    `${companyCode}${year}法說會`,
-    `${companyName}${year}年法說會`,
-    `${companyCode}${year}年法說會`,
-    `${companyName}法說會${year}`,
-    `${companyCode}法說會${year}`,
-    `${year}${companyName}法說會`,
-    `${year}${companyCode}法說會`,
-    
-    // PDF相關
-    `${companyName}法說會PDF`,
-    `${companyCode}法說會PDF`,
-    `${companyName}簡報PDF`,
-    `${companyCode}簡報PDF`,
-    `${companyName}投資人簡報PDF`,
-    `${companyCode}投資人簡報PDF`,
-    
-    // 下載相關
-    `${companyName}法說會下載`,
-    `${companyCode}法說會下載`,
-    `${companyName}簡報下載`,
-    `${companyCode}簡報下載`,
-    
-    // 組合關鍵字
-    `${companyName}股票代碼${companyCode}`,
-    `股票代碼${companyCode}${companyName}`,
-    `${companyCode}股價法說會`,
-    `${companyName}股價法說會`,
-    
-    // 新增長尾關鍵字
-    `${companyName}最新法說會`,
-    `${companyCode}最新法說會`,
-    `${companyName}近期法說會`,
-    `${companyCode}近期法說會`,
-    `${companyName}業績發表會`,
-    `${companyCode}業績發表會`,
-    `${companyName}營運報告`,
-    `${companyCode}營運報告`,
-    `${companyName}股東會`,
-    `${companyCode}股東會`,
-    `${companyName}財務報告`,
-    `${companyCode}財務報告`,
-    `${companyName}經營績效`,
-    `${companyCode}經營績效`,
-    `${companyName}投資策略`,
-    `${companyCode}投資策略`,
-    `${companyName}公司簡介`,
-    `${companyCode}公司簡介`,
-    `${companyName}股價分析`,
-    `${companyCode}股價分析`,
-    `${companyName}投資亮點`,
-    `${companyCode}投資亮點`,
-    `${companyCode}股票`,
-    `${companyName}股票`,
-    `${companyCode}投資`,
-    `${companyName}投資`,
-    
-    // 產業通用詞
-    '台灣股市法說會',
-    '台股投資人說明會',
-    '上市公司法說會',
-    '股市法說會',
-    '證券法說會'
-  ]
-
-  // 類型相關關鍵字
-  const typeSpecificKeywords = typeLabels.flatMap(label => [
-    `${label}公司法說會`,
-    `${label}公司簡報`,
-    `${companyName}${label}`,
-    `${companyCode}${label}`,
-    `${label}${companyName}法說會`,
-    `${label}${companyCode}法說會`
-  ])
-
-  return [...baseKeywords, ...typeSpecificKeywords]
-}
-
-// 為公司頁面生成專用關鍵字
 export function generateCompanyKeywords(companyCode: string, companyName: string, typek: string): string[] {
-  const typeLabels = {
-    sii: ['上市', '台股上市', '證交所上市'],
-    otc: ['上櫃', '台股上櫃', '櫃買中心'], 
-    rotc: ['興櫃', '台股興櫃', '興櫃市場']
-  }[typek] || []
+  const typeLabel = {
+    sii: '上市',
+    otc: '上櫃', 
+    rotc: '興櫃'
+  }[typek] || ''
 
-  const keywords = [
-    // 公司核心關鍵字
+  return [
     `${companyName}法說會`,
     `${companyCode}法說會`,
-    `${companyName}法說會簡報`,
-    `${companyCode}法說會簡報`,
     `${companyName}投資人說明會`,
     `${companyCode}投資人說明會`,
-    `${companyName}財報說明會`,
-    `${companyCode}財報說明會`,
-    
-    // 歷年相關
     `${companyName}歷年法說會`,
     `${companyCode}歷年法說會`,
-    `${companyName}法說會記錄`,
-    `${companyCode}法說會記錄`,
-    `${companyName}法說會總覽`,
-    `${companyCode}法說會總覽`,
-    
-    // 最新相關
-    `${companyName}最新法說會`,
-    `${companyCode}最新法說會`,
-    `${companyName}近期法說會`,
-    `${companyCode}近期法說會`,
-    
-    // PDF和下載
-    `${companyName}法說會PDF`,
-    `${companyCode}法說會PDF`,
-    `${companyName}簡報下載`,
-    `${companyCode}簡報下載`,
-    
-    // 股票相關
-    `${companyName}股票法說會`,
-    `${companyCode}股票法說會`,
-    `股票代碼${companyCode}法說會`,
-    `${companyCode}股價簡報`,
-    
-    // 通用詞
-    companyName,
-    companyCode,
+    `${typeLabel}${companyName}`,
+    `${typeLabel}${companyCode}`,
     '台股法說會',
-    '法人說明會',
     '投資人簡報'
   ]
-
-  // 添加類型相關關鍵字
-  const typeSpecificKeywords = typeLabels.flatMap(label => [
-    `${label}${companyName}`,
-    `${label}${companyCode}`,
-    `${companyName}${label}法說會`,
-    `${companyCode}${label}法說會`
-  ])
-
-  return [...keywords, ...typeSpecificKeywords]
 }
 
-export function generateStructuredData(presentation: Presentation) {
-  const eventDate = new Date(presentation.eventDate)
-  
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Event',
-    name: `${presentation.companyName}(${presentation.companyCode}) 法說會簡報`,
-    description: generateSEODescription(presentation),
-    startDate: eventDate.toISOString(),
-    eventStatus: 'https://schema.org/EventScheduled',
-    eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
-    organizer: {
-      '@type': 'Organization',
-      name: presentation.companyName,
-      identifier: presentation.companyCode,
-      url: `${process.env.NEXTAUTH_URL}/company/${presentation.companyCode}`
-    },
-    about: {
-      '@type': 'Organization',
-      name: presentation.companyName,
-      identifier: presentation.companyCode,
-      sameAs: [
-        `https://www.twse.com.tw/zh/listed/company/${presentation.companyCode}`,
-        `${process.env.NEXTAUTH_URL}/company/${presentation.companyCode}`
-      ]
-    },
-    url: `${process.env.NEXTAUTH_URL}/presentation/${presentation._id}`,
-    workFeatured: [
-      {
-        '@type': 'CreativeWork',
-        name: `${presentation.companyName}法說會簡報 (中文版)`,
-        url: presentation.presentationTWUrl,
-        encodingFormat: 'application/pdf',
-        description: `${presentation.companyName}(${presentation.companyCode})中文版法說會簡報PDF`
-      },
-      ...(presentation.presentationEnUrl ? [{
-        '@type': 'CreativeWork',
-        name: `${presentation.companyName}法說會簡報 (英文版)`,
-        url: presentation.presentationEnUrl,
-        encodingFormat: 'application/pdf',
-        description: `${presentation.companyName}(${presentation.companyCode})英文版法說會簡報PDF`
-      }] : [])
-    ]
-  }
-}
+// 別名導出以保持向後相容
+export const generateStructuredData = generatePresentationJsonLd
+export const generateCompanyStructuredData = generateCompanyJsonLd
 
-// 為公司頁面生成結構化數據
-export function generateCompanyStructuredData(companyCode: string, companyName: string, presentations: Presentation[]) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: companyName,
-    identifier: companyCode,
-    url: `${process.env.NEXTAUTH_URL}/company/${companyCode}`,
-    sameAs: [
-      `https://www.twse.com.tw/zh/listed/company/${companyCode}`
-    ],
-    event: presentations.map(p => ({
-      '@type': 'Event',
-      name: `${companyName} 法說會`,
-      startDate: new Date(p.eventDate).toISOString(),
-      url: `${process.env.NEXTAUTH_URL}/presentation/${p._id}`
-    }))
-  }
-}
-
+// 麵包屑數據
 export function generateBreadcrumbData(presentation: Presentation) {
+  const year = new Date(presentation.eventDate).getFullYear()
+  const quarter = Math.ceil((new Date(presentation.eventDate).getMonth() + 1) / 3)
+  
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -280,26 +532,25 @@ export function generateBreadcrumbData(presentation: Presentation) {
       {
         '@type': 'ListItem',
         position: 1,
-        name: '台股法說會搜尋',
-        item: process.env.NEXTAUTH_URL
+        name: seoConfig.siteName,
+        item: seoConfig.baseUrl
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: `${presentation.companyName}(${presentation.companyCode})`,
-        item: `${process.env.NEXTAUTH_URL}/company/${presentation.companyCode}`
+        item: `${seoConfig.baseUrl}/company/${presentation.companyCode}`
       },
       {
         '@type': 'ListItem',
         position: 3,
-        name: `${new Date(presentation.eventDate).toLocaleDateString('zh-TW')} 法說會簡報`,
-        item: `${process.env.NEXTAUTH_URL}/presentation/${presentation._id}`
+        name: `${year}Q${quarter} 法說會簡報`,
+        item: `${seoConfig.baseUrl}/presentation/${presentation._id}`
       }
     ]
   }
 }
 
-// 為公司頁面生成麵包屑
 export function generateCompanyBreadcrumbData(companyCode: string, companyName: string) {
   return {
     '@context': 'https://schema.org',
@@ -308,14 +559,14 @@ export function generateCompanyBreadcrumbData(companyCode: string, companyName: 
       {
         '@type': 'ListItem',
         position: 1,
-        name: '台股法說會搜尋',
-        item: process.env.NEXTAUTH_URL
+        name: seoConfig.siteName,
+        item: seoConfig.baseUrl
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: `${companyName}(${companyCode}) 法說會簡報`,
-        item: `${process.env.NEXTAUTH_URL}/company/${companyCode}`
+        item: `${seoConfig.baseUrl}/company/${companyCode}`
       }
     ]
   }
