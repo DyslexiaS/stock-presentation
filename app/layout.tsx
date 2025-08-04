@@ -123,8 +123,14 @@ export default function RootLayout({
               "mainEntity": {
                 "@type": "Dataset",
                 "name": "台股法說會簡報資料集",
-                "description": "完整的台灣上市櫃公司法說會簡報PDF資料庫",
-                "keywords": "台股,法說會,投資人說明會,財報,簡報,PDF"
+                "description": "提供台積電(2330)、鴻海(2317)等台灣上市櫃興櫃公司完整法說會簡報資料。支援公司代碼搜尋、PDF快速下載，最新財報說明會、投資人簡報一應俱全。涵蓋超過1000家公司的歷年法說會資料，為投資人、分析師提供完整的台股投資參考資訊。",
+                "keywords": "台股,法說會,投資人說明會,財報,簡報,PDF",
+                "creator": {
+                  "@type": "Organization",
+                  "name": "FinmoAI",
+                  "url": baseUrl
+                },
+                "license": "https://creativecommons.org/licenses/by-nc/4.0/"
               }
             })
           }}
