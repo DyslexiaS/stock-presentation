@@ -1,11 +1,17 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Script from 'next/script'
 
 export function AdSenseScript() {
+  const [isClient, setIsClient] = useState(false)
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID 
   
-  if (process.env.NODE_ENV !== 'production') {
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  if (!isClient || process.env.NODE_ENV !== 'production' || !adsenseId) {
     return null
   }
 

@@ -1,20 +1,19 @@
-import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-import Link from 'next/link'
-import dbConnect from '@/lib/mongodb'
-import Presentation from '@/lib/models/Presentation'
-import { Presentation as PresentationType } from '@/types'
-import { 
-  generateCompanyPageTitle, 
-  generateCompanyPageDescription, 
-  generateCompanyKeywords,
-  generateCompanyStructuredData,
-  generateCompanyBreadcrumbData
-} from '@/lib/seo'
-import { SearchResults } from '@/components/search/search-results'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { AdBanner } from '@/components/ads/ad-banner'
-import { Building2, Calendar, FileText, TrendingUp } from 'lucide-react'
+import PresentationModel from '@/lib/models/Presentation'
+import dbConnect from '@/lib/mongodb'
+import {
+  generateCompanyBreadcrumbData,
+  generateCompanyKeywords,
+  generateCompanyPageDescription,
+  generateCompanyPageTitle,
+  generateCompanyStructuredData
+} from '@/lib/seo'
+import { Presentation as PresentationType } from '@/types'
+import { Metadata } from 'next'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
+import CompanyPresentations from './company-presentations'
 
 interface Props {
   params: Promise<{ companyCode: string }>
@@ -34,9 +33,10 @@ async function getCompanyData(companyCode: string): Promise<CompanyData | null> 
   try {
     await dbConnect()
     
-    const presentations = await Presentation.find({ companyCode })
+    const presentations = await PresentationModel.find({ companyCode })
       .sort({ eventDate: -1 })
       .lean()
+      .exec()
 
     if (presentations.length === 0) {
       return null
@@ -46,11 +46,28 @@ async function getCompanyData(companyCode: string): Promise<CompanyData | null> 
     const latestDate = new Date(presentations[0].eventDate)
     const earliestDate = new Date(presentations[presentations.length - 1].eventDate)
 
+    // 將 MongoDB 數據序列化為純對象
+    const serializedPresentations: PresentationType[] = presentations.map((p: any) => ({
+      _id: p._id.toString(),
+      companyCode: p.companyCode,
+      companyName: p.companyName,
+      eventDate: p.eventDate.toISOString(),
+      presentationTWUrl: p.presentationTWUrl,
+      presentationEnUrl: p.presentationEnUrl,
+      audioLinkUrl: p.audioLinkUrl,
+      typek: p.typek,
+      createdAt: p.createdAt?.toISOString() || p.eventDate.toISOString(),
+      updatedAt: p.updatedAt?.toISOString(),
+      slug: p.slug,
+      keywords: p.keywords,
+      description: p.description
+    }))
+
     return {
       companyCode,
       companyName: firstPresentation.companyName,
       typek: firstPresentation.typek,
-      presentations: presentations as unknown as PresentationType[],
+      presentations: serializedPresentations,
       totalPresentations: presentations.length,
       latestPresentationDate: latestDate.toISOString(),
       earliestPresentationDate: earliestDate.toISOString()
@@ -67,7 +84,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   
   if (!companyData) {
     return {
-      title: `${companyCode} 公司不存在 | 台股法說會搜尋`,
+      title: `${companyCode} 公司不存在 | FinmoConf - 台股法說會搜尋`,
       description: '找不到指定公司的法說會資料'
     }
   }
@@ -158,7 +175,7 @@ export default async function CompanyPage({ params }: Props) {
             <div className="space-y-4">
               {/* 麵包屑導航 */}
               <nav className="text-sm text-muted-foreground">
-                <Link href="/" className="hover:text-foreground">台股法說會搜尋</Link>
+                <Link href="/" className="hover:text-foreground">FinmoConf - 台股法說會搜尋</Link>
                 <span className="mx-2">→</span>
                 <span className="text-foreground font-medium">
                   {companyName}({companyCode}) 法說會簡報
@@ -171,7 +188,7 @@ export default async function CompanyPage({ params }: Props) {
                   {companyName}({companyCode}) 法說會簡報
                 </h1>
                 <p className="text-lg text-muted-foreground">
-                  {typeLabel}公司投資人說明會總覽 • 共 {totalPresentations} 場法說會
+                  {typeLabel}公司投資人說明會資料庫 • 收錄從 {new Date(earliestPresentationDate).getFullYear()} 年至 {new Date(latestPresentationDate).getFullYear()} 年，共計 {totalPresentations} 場法說會簡報，包含中英文版本及會議錄音檔案，提供完整的投資研究資訊
                 </p>
               </div>
             </div>
@@ -190,111 +207,39 @@ export default async function CompanyPage({ params }: Props) {
 
         {/* Main Content */}
         <main className="container mx-auto px-4 py-8">
-          {/* 公司統計資訊 */}
-          <section className="mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">公司代碼</CardTitle>
-                  <Building2 className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{companyCode}</div>
-                  <p className="text-xs text-muted-foreground">{typeLabel}公司</p>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">法說會總數</CardTitle>
-                  <FileText className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{totalPresentations}</div>
-                  <p className="text-xs text-muted-foreground">場投資人說明會</p>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">最新法說會</CardTitle>
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {new Date(latestPresentationDate).toLocaleDateString('zh-TW')}
-                  </div>
-                  <p className="text-xs text-muted-foreground">最近更新</p>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">資料範圍</CardTitle>
-                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {new Date(earliestPresentationDate).getFullYear()} - {new Date(latestPresentationDate).getFullYear()}
-                  </div>
-                  <p className="text-xs text-muted-foreground">年度覆蓋</p>
-                </CardContent>
-              </Card>
-            </div>
-          </section>
-
-          {/* SEO 關鍵字內容 */}
-          <section className="mb-8">
-            <Card>
-              <CardHeader>
-                <CardTitle>關於 {companyName}({companyCode}) 法說會簡報</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4 text-muted-foreground">
-                                 <p>
-                   {companyName}(股票代碼：{companyCode})是{typeLabel}公司，本頁面提供{companyName}歷年完整的法說會簡報資料，
-                   包含{totalPresentations}場投資人說明會的 PDF。
-                 </p>
-                <p>
-                  您可以在此查看{companyName}各季度財報說明會、年度法人說明會等重要投資人簡報資料。
-                  所有{companyCode}法說會簡報均提供中文版PDF下載，部分資料另有英文版本。
-                </p>
-                <p>
-                  {companyName}法說會資料涵蓋{new Date(earliestPresentationDate).getFullYear()}年至{new Date(latestPresentationDate).getFullYear()}年，
-                  為投資人、分析師和研究人員提供完整的{companyCode}股票投資參考資訊。
-                </p>
-              </CardContent>
-            </Card>
-          </section>
 
           {/* 法說會列表 */}
           <section className="mb-8">
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               <div className="lg:col-span-3">
                 <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-bold">
-                      {companyName} 法說會簡報列表
-                    </h2>
-                    <Link 
-                      href="/"
-                      className="text-sm text-muted-foreground hover:text-foreground underline"
-                    >
-                      返回搜尋頁面
-                    </Link>
-                  </div>
                   
-                  {/* 按年份分組顯示 */}
-                  {years.map(year => (
-                    <div key={year} className="space-y-4">
-                      <h3 className="text-xl font-semibold text-foreground border-b border-gray-200 pb-2">
-                        {year}年 {companyName} 法說會
-                      </h3>
-                                             <SearchResults
-                         results={presentationsByYear[year]}
-                         onPreview={() => {}}
-                       />
+                  {/* 按年份分組顯示 - 使用 Suspense 優化 */}
+                  <Suspense fallback={
+                    <div className="space-y-6">
+                      {years.map(year => (
+                        <div key={year} className="space-y-4">
+                          <h3 className="text-xl font-semibold text-foreground border-b border-gray-200 pb-2">
+                            {year}年 {companyName} 法說會
+                          </h3>
+                          <div className="space-y-4">
+                            {[1, 2, 3].map(i => (
+                              <div key={i} className="bg-gray-100 rounded-lg p-6 animate-pulse">
+                                <div className="h-4 bg-gray-300 rounded w-3/4 mb-2"></div>
+                                <div className="h-3 bg-gray-300 rounded w-1/2"></div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  }>
+                    <CompanyPresentations 
+                      presentationsByYear={presentationsByYear}
+                      years={years}
+                      companyName={companyName}
+                    />
+                  </Suspense>
                 </div>
               </div>
               
@@ -307,18 +252,6 @@ export default async function CompanyPage({ params }: Props) {
                     className="w-full"
                     style={{ minHeight: '250px' }}
                   />
-                  
-                  {/* 相關公司連結 */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-sm">相關{typeLabel}公司</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-muted-foreground">
-                        查看更多{typeLabel}公司法說會資料
-                      </p>
-                    </CardContent>
-                  </Card>
                 </div>
               </div>
             </div>
@@ -339,7 +272,7 @@ export default async function CompanyPage({ params }: Props) {
         <footer className="bg-card border-t border-gray-200 mt-16">
           <div className="container mx-auto px-4 py-8">
             <div className="text-center text-muted-foreground space-y-2">
-              <p>© 2025 台股法說會搜尋平台 - 提供{companyName}({companyCode})完整法說會簡報資料</p>
+              <p>© 2025 FinmoConf - 台股法說會搜尋平台 - 提供{companyName}({companyCode})完整法說會簡報資料</p>
               <p className="text-sm">
                 {companyName}法說會、{companyCode}法說會簡報、{companyName}投資人說明會PDF下載
               </p>

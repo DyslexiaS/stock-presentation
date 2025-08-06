@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   
   if (!presentation) {
     return {
-      title: '法說會不存在 | 台股法說會搜尋',
+      title: '法說會不存在 | FinmoConf - 台股法說會搜尋',
       description: '找不到指定的法說會資料'
     }
   }

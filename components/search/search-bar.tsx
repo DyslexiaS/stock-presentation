@@ -39,54 +39,60 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      <div className="bg-card rounded-lg border shadow-sm p-6">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Search Input with Button */}
-          <div className="flex gap-2">
+    <div className="w-full max-w-5xl mx-auto">
+      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-lg hover:shadow-xl transition-shadow duration-300 p-8">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Enhanced Search Input with Button */}
+          <div className="flex gap-3">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 h-5 w-5" />
               <Input
                 type="text"
                 placeholder="搜尋公司代碼 (如: 1101) 或公司名稱 (如: 台泥)..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="pl-10 h-12 text-base"
+                className="pl-12 h-14 text-base border-slate-200 focus:border-slate-400 focus:ring-1 focus:ring-slate-400 rounded-xl bg-slate-50/50 hover:bg-white transition-colors"
               />
             </div>
             <Button
               type="submit"
               size="lg"
-              className="h-12 px-6 text-base font-medium flex items-center justify-center gap-2"
+              className="h-14 px-8 text-base font-semibold flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl transition-all duration-200 hover:scale-105 shadow-md hover:shadow-lg"
               disabled={isLoading}
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="h-5 w-5 animate-spin" />
                   搜尋中
                 </>
               ) : (
                 <>
-                  <Search className="h-4 w-4" />
+                  <Search className="h-5 w-5" />
                   搜尋法說會
                 </>
               )}
             </Button>
           </div>
 
-          {/* Filter Types */}
+          {/* Enhanced Filter Types */}
           <div className="flex flex-wrap items-center gap-3">
-            <span className="text-sm text-muted-foreground font-medium">篩選類型:</span>
-            {companyTypes.map((type) => (
-              <Badge
-                key={type.value}
-                variant={selectedType === type.value ? "default" : "outline"}
-                className="cursor-pointer hover:bg-primary/10 transition-colors px-3 py-1.5 text-sm"
-                onClick={() => handleTypeSelect(type.value)}
-              >
-                {type.label}
-              </Badge>
-            ))}
+            <span className="text-sm text-slate-600 font-semibold">篩選類型:</span>
+            <div className="flex flex-wrap gap-2">
+              {companyTypes.map((type) => (
+                <Badge
+                  key={type.value}
+                  variant={selectedType === type.value ? "default" : "outline"}
+                  className={`cursor-pointer transition-all duration-200 px-4 py-2 text-sm font-medium rounded-lg hover:scale-105 ${
+                    selectedType === type.value 
+                      ? "bg-slate-800 text-white hover:bg-slate-700 shadow-md" 
+                      : "bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200 hover:border-slate-300"
+                  }`}
+                  onClick={() => handleTypeSelect(type.value)}
+                >
+                  {type.label}
+                </Badge>
+              ))}
+            </div>
           </div>
         </form>
       </div>
