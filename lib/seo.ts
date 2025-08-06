@@ -34,8 +34,8 @@ interface SEOConfig {
 const seoConfig: SEOConfig = {
   baseUrl: process.env.NEXTAUTH_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://stock.diveinvest.net',
   siteName: '台股法說會資料庫',
-  defaultTitle: '台股法說會資料庫 | 台灣上市櫃公司投資人說明會簡報下載',
-  defaultDescription: '提供台股上市櫃公司最新法說會簡報PDF下載，包含財報分析、投資亮點、未來展望等完整投資人說明會資料。'
+  defaultTitle: '台股法說會資料庫 | 台灣上市櫃公司法人說明會簡報下載',
+  defaultDescription: '提供台股上市櫃公司最新法說會簡報PDF下載，包含財報分析、投資亮點、未來展望等完整法人說明會資料。'
 }
 
 // 增強版SEO標題生成 - 更符合搜尋習慣
@@ -47,7 +47,7 @@ export function generateSEOTitle(presentation: Presentation): string {
   const monthDay = date.toLocaleDateString('zh-TW', { month: '2-digit', day: '2-digit' })
   
   // 優化標題結構：主要關鍵字前置，重要信息突出
-  return `${presentation.companyName}(${presentation.companyCode}) ${yearQuarter}法說會簡報PDF下載 | ${monthDay}投資人說明會`
+  return `${presentation.companyName}(${presentation.companyCode}) ${yearQuarter}法說會簡報PDF下載 | ${monthDay}法人說明會`
 }
 
 // 增強版描述 - 包含更多語義關鍵字和CTA
@@ -64,7 +64,7 @@ export function generateSEODescription(presentation: Presentation): string {
   }[presentation.typek]
   
   // 結構化描述：公司信息 + 時間 + 內容描述 + CTA
-  return `【${typeLabel}】${presentation.companyName}(${presentation.companyCode}) ${yearQuarter}財報法說會完整簡報。${dateStr}最新投資人說明會PDF免費下載，包含營收獲利分析、未來展望、中英文版法人說明會資料。立即查看${presentation.companyName}股價投資亮點！`
+  return `【${typeLabel}】${presentation.companyName}(${presentation.companyCode}) ${yearQuarter}財報法說會完整簡報。${dateStr}最新法人說明會PDF免費下載，包含營收獲利分析、未來展望、中英文版法人說明會資料。立即查看${presentation.companyName}股價投資亮點！`
 }
 
 // 智能關鍵字生成系統 - 基於搜尋意圖和優先級
@@ -89,8 +89,8 @@ export function generateSmartKeywords(presentation: Presentation): SEOKeyword[] 
     { keyword: `${companyCode}${yearQuarter}法說會`, priority: KeywordPriority.PRIMARY, intent: SearchIntent.INFORMATIONAL, volume: 'medium' },
     
     // SECONDARY 關鍵字 - 支援性關鍵字
-    { keyword: `${companyName}投資人說明會`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.INFORMATIONAL, volume: 'medium' },
-    { keyword: `${companyCode}投資人說明會`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.INFORMATIONAL, volume: 'medium' },
+    { keyword: `${companyName}法人說明會`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.INFORMATIONAL, volume: 'medium' },
+    { keyword: `${companyCode}法人說明會`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.INFORMATIONAL, volume: 'medium' },
     { keyword: `${companyName}財報說明會`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.INFORMATIONAL, volume: 'medium' },
     { keyword: `${companyCode}財報說明會`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.INFORMATIONAL, volume: 'medium' },
     { keyword: `${companyName}法說會簡報`, priority: KeywordPriority.SECONDARY, intent: SearchIntent.TRANSACTIONAL, volume: 'medium' },
@@ -109,7 +109,7 @@ export function generateSmartKeywords(presentation: Presentation): SEOKeyword[] 
     
     // LONG_TAIL 關鍵字 - 精準流量，高轉化
     { keyword: `${companyName} ${yearQuarter} 法說會 PDF 下載`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.TRANSACTIONAL, volume: 'low' },
-    { keyword: `${companyCode} ${yearQuarter} 投資人說明會 簡報`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.TRANSACTIONAL, volume: 'low' },
+    { keyword: `${companyCode} ${yearQuarter} 法人說明會 簡報`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.TRANSACTIONAL, volume: 'low' },
     { keyword: `${companyName} 最新 財報 法說會 ${year}`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.INFORMATIONAL, volume: 'low' },
     { keyword: `${companyCode} ${typeLabel} 公司 法說會 資料`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.INFORMATIONAL, volume: 'low' },
     { keyword: `${companyName} 股價 投資 亮點 法說會`, priority: KeywordPriority.LONG_TAIL, intent: SearchIntent.COMMERCIAL, volume: 'low' },
@@ -228,8 +228,8 @@ export function generateCompanyMetadata(
   totalPresentations: number,
   typek: string
 ): Metadata {
-  const title = `${companyName}(${companyCode}) 法說會簡報 | ${companyCode}投資人說明會 | ${seoConfig.siteName}`
-  const description = `${companyName}(${companyCode})歷年法說會簡報總覽，共${totalPresentations}場投資人說明會。提供${companyCode}最新財報法說會PDF下載，包含中英文版法人說明會資料。`
+  const title = `${companyName}(${companyCode}) 法說會簡報 | ${companyCode}法人說明會 | ${seoConfig.siteName}`
+  const description = `${companyName}(${companyCode})歷年法說會簡報總覽，共${totalPresentations}場法人說明會。提供${companyCode}最新財報法說會PDF下載，包含中英文版法人說明會資料。`
   const url = `${seoConfig.baseUrl}/company/${companyCode}`
   const imageUrl = `${seoConfig.baseUrl}/api/og/company/${companyCode}`
   
@@ -242,8 +242,8 @@ export function generateCompanyMetadata(
   const keywords = [
     `${companyName}法說會`,
     `${companyCode}法說會`,
-    `${companyName}投資人說明會`,
-    `${companyCode}投資人說明會`,
+    `${companyName}法人說明會`,
+    `${companyCode}法人說明會`,
     `${companyName}歷年法說會`,
     `${companyCode}歷年法說會`,
     `${typeLabel}${companyName}`,
@@ -308,7 +308,7 @@ export function generateHomeMetadata(): Metadata {
   
   // 2025年熱門搜尋關鍵字
   const trendingKeywords = [
-    '台股法說會', '投資人說明會', '財報簡報', '法說會搜尋', '台灣股市', '上市公司簡報', '法人說明會',
+    '台股法說會', '法人說明會', '財報簡報', '法說會搜尋', '台灣股市', '上市公司簡報', '法人說明會',
     '2025法說會', 'Q1法說會', '台積電2330法說會', '鴻海2317法說會', '聯發科2454法說會', 
     '台塑1301法說會', '中華電2412法說會', '富邦金2881法說會', '國泰金2882法說會',
     'AI概念股法說會', '半導體法說會', '電動車法說會', '5G法說會', 'ESG法說會',
@@ -488,11 +488,11 @@ export function generateKeywords(presentation: Presentation): string[] {
 
 // 舊函數保持向後相容
 export function generateCompanyPageTitle(companyCode: string, companyName: string): string {
-  return `${companyName}(${companyCode}) 法說會簡報 | ${companyCode}投資人說明會 | ${seoConfig.siteName}`
+  return `${companyName}(${companyCode}) 法說會簡報 | ${companyCode}法人說明會 | ${seoConfig.siteName}`
 }
 
 export function generateCompanyPageDescription(companyCode: string, companyName: string, totalPresentations: number): string {
-  return `${companyName}(${companyCode})歷年法說會簡報總覽，共${totalPresentations}場投資人說明會。提供${companyCode}最新財報法說會PDF下載，包含中英文版法人說明會資料。`
+  return `${companyName}(${companyCode})歷年法說會簡報總覽，共${totalPresentations}場法人說明會。提供${companyCode}最新財報法說會PDF下載，包含中英文版法人說明會資料。`
 }
 
 export function generateCompanyKeywords(companyCode: string, companyName: string, typek: string): string[] {
@@ -505,8 +505,8 @@ export function generateCompanyKeywords(companyCode: string, companyName: string
   return [
     `${companyName}法說會`,
     `${companyCode}法說會`,
-    `${companyName}投資人說明會`,
-    `${companyCode}投資人說明會`,
+    `${companyName}法人說明會`,
+    `${companyCode}法人說明會`,
     `${companyName}歷年法說會`,
     `${companyCode}歷年法說會`,
     `${typeLabel}${companyName}`,

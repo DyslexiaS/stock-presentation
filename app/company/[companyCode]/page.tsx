@@ -188,7 +188,7 @@ export default async function CompanyPage({ params }: Props) {
                   {companyName}({companyCode}) 法說會簡報
                 </h1>
                 <p className="text-lg text-muted-foreground">
-                  {typeLabel}公司投資人說明會資料庫 • 收錄從 {new Date(earliestPresentationDate).getFullYear()} 年至 {new Date(latestPresentationDate).getFullYear()} 年，共計 {totalPresentations} 場法說會簡報，包含中英文版本及會議錄音檔案，提供完整的投資研究資訊
+                  {typeLabel}公司法人說明會資料庫 • 收錄從 {new Date(earliestPresentationDate).getFullYear()} 年至 {new Date(latestPresentationDate).getFullYear()} 年，共計 {totalPresentations} 場法說會簡報，包含中英文版本及會議錄音檔案，提供完整的投資研究資訊
                 </p>
               </div>
             </div>
@@ -274,7 +274,7 @@ export default async function CompanyPage({ params }: Props) {
             <div className="text-center text-muted-foreground space-y-2">
               <p>© 2025 FinmoConf - 台股法說會搜尋平台 - 提供{companyName}({companyCode})完整法說會簡報資料</p>
               <p className="text-sm">
-                {companyName}法說會、{companyCode}法說會簡報、{companyName}投資人說明會PDF下載
+                {companyName}法說會、{companyCode}法說會簡報、{companyName}法人說明會PDF下載
               </p>
             </div>
           </div>

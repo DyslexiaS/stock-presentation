@@ -54,7 +54,7 @@ export function SearchResults({ results, pagination, onPageChange }: SearchResul
             <div className="sr-only">
               {presentation.companyName} 法說會簡報 {presentation.companyCode} 法說會簡報 
               {presentation.companyName}法說會 {presentation.companyCode}法說會 
-              {presentation.companyName}投資人說明會 {presentation.companyCode}投資人說明會
+              {presentation.companyName}法人說明會 {presentation.companyCode}法人說明會
               {presentation.companyName}財報說明會 {presentation.companyCode}財報說明會
               {presentation.companyName}簡報PDF {presentation.companyCode}簡報PDF
               {presentation.companyName}法說會下載 {presentation.companyCode}法說會下載

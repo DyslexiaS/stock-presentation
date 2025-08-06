@@ -140,7 +140,7 @@ export default async function HomePage() {
                 "@id": "https://stock.diveinvest.net/#dataset",
                 "name": "FinmoConf 台股法說會簡報資料集",
                 "description": "FinmoConf 提供台積電(2330)、鴻海(2317)等台灣上市櫃興櫃公司完整法說會簡報資料。FinmoAI 相關產品，涵蓋超過 2000 家公司的歷年法說會資料，為投資人、分析師提供完整的台股投資參考資訊。",
-                "keywords": "FinmoConf,台股,法說會,投資人說明會,財報,簡報,PDF,台積電,鴻海,台塑,2330,2317,1301",
+                "keywords": "FinmoConf,台股,法說會,法人說明會,財報,簡報,PDF,台積電,鴻海,台塑,2330,2317,1301",
                 "creator": {
                   "@id": "https://stock.diveinvest.net/#organization"
                 },

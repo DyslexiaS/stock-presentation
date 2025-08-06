@@ -13,9 +13,9 @@ export const metadata: Metadata = {
   description: 'FinmoConf 提供台積電(2330)、鴻海(2317)等台灣上市櫃興櫃公司完整法說會簡報資料。FinmoAI 家族產品，支援公司代碼搜尋、PDF 快速下載，最新財報說明會、投資人簡報一應俱全。',
   keywords: [
     'FinmoConf', '台股法說會資料庫', '台股法說會', '法說會簡報', '台積電法說會簡報', '2330 法說會簡報', '鴻海法說會簡報', '2317 法說會簡報',
-    '法人說明會', '投資人說明會', '財報說明會', '台灣股市法說會', '上市公司法說會', '上櫃公司法說會',
+    '法人說明會', '法人說明會', '財報說明會', '台灣股市法說會', '上市公司法說會', '上櫃公司法說會',
     '法說會 PDF', '法說會下載', '投資人簡報', '財報簡報', '股票法說會', '公司法說會',
-    '台股投資人說明會', '證券法說會', '上市簡報', '櫃買簡報', '興櫃簡報', "法說會行事曆", "法說會時間"
+    '台股法人說明會', '證券法說會', '上市簡報', '櫃買簡報', '興櫃簡報', "法說會行事曆", "法說會時間"
   ],
   robots: {
     index: true,
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
         url: `${baseUrl}/FinmoAI-brand.png`,
         width: 1200,
         height: 630,
-        alt: "FinmoConf - 台股法說會簡報資料庫 - 台積電鴻海等上市櫃公司投資人說明會",
+        alt: "FinmoConf - 台股法說會簡報資料庫 - 台積電鴻海等上市櫃公司法人說明會",
         type: "image/png",
       },
     ],
@@ -113,7 +113,7 @@ export default function RootLayout({
               "about": {
                 "@type": "Thing",
                 "name": "台股法說會",
-                "description": "台灣上市櫃公司投資人說明會簡報資料"
+                "description": "台灣上市櫃公司法人說明會簡報資料"
               },
               "audience": {
                 "@type": "Audience",
@@ -123,7 +123,7 @@ export default function RootLayout({
                 "@type": "Dataset",
                 "name": "FinmoConf 台股法說會簡報資料集",
                 "description": "FinmoConf 提供台積電(2330)、鴻海(2317)等台灣上市櫃興櫃公司完整法說會簡報資料。FinmoAI 家族產品，支援公司代碼搜尋、PDF快速下載，最新財報說明會、投資人簡報一應俱全。涵蓋超過1000家公司的歷年法說會資料，為投資人、分析師提供完整的台股投資參考資訊。",
-                "keywords": "FinmoConf,台股,法說會,投資人說明會,財報,簡報,PDF",
+                "keywords": "FinmoConf,台股,法說會,法人說明會,財報,簡報,PDF",
                 "creator": {
                   "@type": "Organization",
                   "name": "FinmoAI",

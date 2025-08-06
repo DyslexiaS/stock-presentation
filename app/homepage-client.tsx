@@ -127,10 +127,45 @@ export default function HomePageClient({
                     <span className="font-medium text-slate-800 mx-1">2330 台積電</span>、
                     <span className="font-medium text-slate-800 mx-1">2317 鴻海</span>、
                     <span className="font-medium text-slate-800 mx-1">1301 台塑</span>
-                    等 <span className="font-semibold text-slate-700">2000+</span> 家上市櫃公司的投資人說明會簡報。
+                    等 <span className="font-semibold text-slate-700">2000+</span> 家上市櫃公司的法人說明會簡報。
                   </p>
                 </div>
               </div>
+
+              {/* Features Pills - Moved under title */}
+              <div className="flex flex-wrap justify-center gap-4 mb-8">
+                <div className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-full">
+                  <FileText className="h-4 w-4 text-slate-600" />
+                  <span className="text-sm font-medium text-slate-700">PDF 下載</span>
+                </div>
+                
+                <div className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-full">
+                  <Search className="h-4 w-4 text-slate-600" />
+                  <span className="text-sm font-medium text-slate-700">智能搜尋</span>
+                </div>
+                
+                <div className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-full">
+                  <Bell className="h-4 w-4 text-slate-600" />
+                  <span className="text-sm font-medium text-slate-700">即時通知</span>
+                </div>
+                
+                <div className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-full">
+                  <TrendingUp className="h-4 w-4 text-slate-600" />
+                  <span className="text-sm font-medium text-slate-700">即時更新</span>
+                </div>
+              </div>
+
+              {/* Simple Info Text */}
+              {!hasSearched && (
+                <section className="mb-16">
+                  <div className="text-center">
+                    <p className="text-sm text-slate-500">
+                      所有資料來源於<span className="font-medium text-slate-600">公開資訊觀測站</span>，
+                      涵蓋 <span className="font-medium text-slate-600">2000+ 上市櫃公司</span>
+                    </p>
+                  </div>
+                </section>
+              )}
 
               {/* Enhanced Search Section */}
               <div className="mb-2">
@@ -147,55 +182,6 @@ export default function HomePageClient({
           <section className="mb-12">
             <div className="max-w-5xl mx-auto">
               <SearchBar onSearch={handleSearch} isLoading={isLoading} />
-            </div>
-          </section>
-        )}
-
-        {/* Features & Info Section - Clean & Simple */}
-        {!hasSearched && (
-          <section className="mb-16">
-            {/* Features Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-              <div className="text-center">
-                <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
-                  <Search className="h-6 w-6 text-slate-600" />
-                </div>
-                <h3 className="text-base font-medium text-slate-800 mb-2">智能搜尋</h3>
-                <p className="text-sm text-slate-500">公司代碼、名稱快速搜尋</p>
-              </div>
-              
-              <div className="text-center">
-                <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
-                  <FileText className="h-6 w-6 text-slate-600" />
-                </div>
-                <h3 className="text-base font-medium text-slate-800 mb-2">PDF 下載</h3>
-                <p className="text-sm text-slate-500">快速下載，支援中英文版</p>
-              </div>
-              
-              <div className="text-center">
-                <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
-                  <Bell className="h-6 w-6 text-slate-600" />
-                </div>
-                <h3 className="text-base font-medium text-slate-800 mb-2">Telegram 通知</h3>
-                <p className="text-sm text-slate-500">每晚8點推送最新資訊</p>
-              </div>
-              
-              <div className="text-center">
-                <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
-                  <TrendingUp className="h-6 w-6 text-slate-600" />
-                </div>
-                <h3 className="text-base font-medium text-slate-800 mb-2">即時更新</h3>
-                <p className="text-sm text-slate-500">最新法說會資料同步</p>
-              </div>
-            </div>
-
-            {/* Info Banner */}
-            <div className="bg-slate-50 rounded-lg p-6 mb-6">
-              <p className="text-base text-slate-600 text-center">
-                所有資料來源於<span className="font-medium text-slate-700">公開資訊觀測站</span>，
-                涵蓋 <span className="font-semibold text-slate-700">2000+ 上市櫃公司</span>，
-                支援中英文版本下載
-              </p>
             </div>
           </section>
         )}
