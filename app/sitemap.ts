@@ -3,7 +3,10 @@ import dbConnect from '@/lib/mongodb'
 import PresentationModel from '@/lib/models/Presentation'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXTAUTH_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://stock.diveinvest.net')
+  // Single source of truth for canonical base
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://finmoconf.diveinvest.net')
   
   const routes: MetadataRoute.Sitemap = [
     {
