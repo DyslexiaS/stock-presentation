@@ -1,12 +1,11 @@
 import { AdBanner } from '@/components/ads/ad-banner'
+import { PromotionCards } from '@/components/ui/promotion-cards'
 import PresentationModel from '@/lib/models/Presentation'
 import dbConnect from '@/lib/mongodb'
 import {
   generateCompanyBreadcrumbData,
-  generateCompanyKeywords,
-  generateCompanyPageDescription,
-  generateCompanyPageTitle,
-  generateCompanyStructuredData
+  generateCompanyStructuredData,
+  generateCompanyMetadata
 } from '@/lib/seo'
 import { Presentation as PresentationType } from '@/types'
 import { Metadata } from 'next'
@@ -85,40 +84,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!companyData) {
     return {
       title: `${companyCode} 公司不存在 | FinmoConf - 台股法說會搜尋`,
-      description: '找不到指定公司的法說會資料'
+      description: '找不到指定公司的法說會資料',
+      robots: { index: false, follow: false },
     }
   }
 
   const { companyName, typek, totalPresentations } = companyData
-  const title = generateCompanyPageTitle(companyCode, companyName)
-  const description = generateCompanyPageDescription(companyCode, companyName, totalPresentations)
-  const keywords = generateCompanyKeywords(companyCode, companyName, typek)
-
-  return {
-    title,
-    description,
-    keywords: keywords.join(', '),
-    openGraph: {
-      title,
-      description,
-      type: 'website',
-      siteName: '台股法說會搜尋',
-      images: [{
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: `${companyName}(${companyCode}) 法說會簡報`
-      }]
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-    },
-    alternates: {
-      canonical: `${process.env.NEXTAUTH_URL}/company/${companyCode}`
-    }
-  }
+  return generateCompanyMetadata(companyCode, companyName, totalPresentations, typek)
 }
 
 export default async function CompanyPage({ params }: Props) {
@@ -246,6 +218,9 @@ export default async function CompanyPage({ params }: Props) {
               {/* 側邊廣告 */}
               <div className="lg:col-span-1">
                 <div className="sticky top-4 space-y-6">
+                  {/* Promotion Cards */}
+                  <PromotionCards />
+
                   <AdBanner
                     slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT || "1234567889"}
                     format="rectangle"

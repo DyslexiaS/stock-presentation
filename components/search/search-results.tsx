@@ -50,7 +50,7 @@ export function SearchResults({ results, pagination, onPageChange }: SearchResul
       <div className="grid gap-4">
         {results.map((presentation) => (
           <Card key={presentation._id} className="hover:shadow-md transition-shadow">
-            {/* Hidden SEO Keywords */}
+            {/* Hidden SEO Keywords - kept for accessibility and minor SEO assistance */}
             <div className="sr-only">
               {presentation.companyName} 法說會簡報 {presentation.companyCode} 法說會簡報 
               {presentation.companyName}法說會 {presentation.companyCode}法說會 

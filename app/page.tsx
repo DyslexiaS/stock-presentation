@@ -159,6 +159,67 @@ export default async function HomePage() {
         }}
       />
 
+      {/* FAQPage Structured Data for keyword intents like 法說會查詢/簡報/行事曆/是什麼 */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "法說會是什麼？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "法說會（法人說明會）是公司向投資人與分析師說明財務與營運的重要公開會議。FinmoConf 匯整各公司歷年法說會簡報與音訊，方便投資人快速查詢。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "法說會查詢要去哪裡？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "您可在 FinmoConf 以公司代碼、公司名稱或日期直接進行法說會查詢，並快速存取 PDF 簡報與音訊連結。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "法說會簡報在哪裡下載？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "在 FinmoConf 的法說會詳細頁可直接下載中文版與英文版法說會簡報（若有提供），並支援外部開啟原始 PDF。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "哪裡可以看法說會行事曆？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "FinmoConf 會即時收錄最新活動日期，您可透過搜尋條件（日期與公司）查看近期法說會時間表與歷史紀錄。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "公開資訊觀測站法說會一覽表與 FinmoConf 有何不同？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "公開資訊觀測站提供官方公告，FinmoConf 在此基礎上進一步整合 PDF 下載、雙語檔案、音訊連結與快搜功能，以更友善的方式協助投資研究。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "線上法說會哪裡看？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "若公司提供線上直播或錄音，我們會在 FinmoConf 詳細頁附上連結，您可直接前往收看或收聽。"
+                }
+              }
+            ]
+          })
+        }}
+      />
+
       {/* Enhanced Footer - Server-side rendered */}
       <footer className="relative bg-gradient-to-t from-slate-50 to-white border-t border-slate-200/50 mt-20 overflow-hidden">
         {/* Subtle footer decoration */}

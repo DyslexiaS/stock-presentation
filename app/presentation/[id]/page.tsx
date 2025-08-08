@@ -2,7 +2,8 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import dbConnect from '@/lib/mongodb'
 import PresentationModel from '@/lib/models/Presentation'
-import { generateSEOTitle, generateSEODescription, generateKeywords, generateStructuredData, generateBreadcrumbData } from '@/lib/seo'
+import { generatePresentationMetadata, generateStructuredData, generateBreadcrumbData } from '@/lib/seo'
+
 import PresentationDetailPage from './presentation-detail'
 import { Presentation } from '@/types'
 
@@ -63,35 +64,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!presentation) {
     return {
       title: '法說會不存在 | FinmoConf - 台股法說會搜尋',
-      description: '找不到指定的法說會資料'
+      description: '找不到指定的法說會資料',
+      robots: { index: false, follow: false },
     }
   }
 
-  const title = generateSEOTitle(presentation)
-  const description = generateSEODescription(presentation)
-  const keywords = generateKeywords(presentation)
-
-  return {
-    title,
-    description,
-    keywords: keywords.join(', '),
-    openGraph: {
-      title,
-      description,
-      type: 'article',
-      publishedTime: presentation.eventDate,
-      authors: [presentation.companyName],
-      tags: keywords,
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-    },
-    alternates: {
-      canonical: `${process.env.NEXTAUTH_URL}/presentation/${id}`
-    }
-  }
+  return generatePresentationMetadata(presentation)
 }
 
 export default async function Page({ params }: Props) {

@@ -59,16 +59,17 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
               size="lg"
               className="h-14 px-8 text-base font-semibold flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl transition-all duration-200 hover:scale-105 shadow-md hover:shadow-lg"
               disabled={isLoading}
+              aria-label="搜尋法說會"
             >
               {isLoading ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />
-                  搜尋中
+                  <span className="hidden sm:inline">搜尋中</span>
                 </>
               ) : (
                 <>
                   <Search className="h-5 w-5" />
-                  搜尋法說會
+                  <span className="hidden sm:inline">搜尋法說會</span>
                 </>
               )}
             </Button>

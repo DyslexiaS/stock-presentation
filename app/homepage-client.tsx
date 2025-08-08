@@ -141,7 +141,7 @@ export default function HomePageClient({
                 
                 <div className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-full">
                   <Search className="h-4 w-4 text-slate-600" />
-                  <span className="text-sm font-medium text-slate-700">智能搜尋</span>
+                  <span className="text-sm font-medium text-slate-700">快速搜尋</span>
                 </div>
                 
                 <div className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-full">
@@ -160,7 +160,7 @@ export default function HomePageClient({
                 <section className="mb-16">
                   <div className="text-center">
                     <p className="text-sm text-slate-500">
-                      所有資料來源於<span className="font-medium text-slate-600">公開資訊觀測站</span>，
+                      所有資料來源於<a href="https://mopsov.twse.com.tw/mops/web/index" target="_blank" rel="noopener noreferrer" className="font-medium text-slate-600 hover:text-slate-800 underline decoration-slate-300 hover:decoration-slate-500 transition-colors">公開資訊觀測站</a>，
                       涵蓋 <span className="font-medium text-slate-600">2000+ 上市櫃公司</span>
                     </p>
                   </div>
@@ -235,6 +235,34 @@ export default function HomePageClient({
                   style={{ minHeight: '250px' }}
                 />
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Keyword-focused help content for user intent coverage */}
+        <section className="mb-16">
+          <div className="max-w-5xl mx-auto grid gap-8 lg:grid-cols-3">
+            <div className="bg-white border border-slate-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-slate-900 mb-3">法說會是什麼？</h3>
+              <p className="text-slate-600 text-sm leading-6">
+                法說會（法人說明會）是公司對投資人與分析師的公開說明，內容涵蓋財報重點、營運展望與投資重點。您可在本平台查詢各公司歷年
+                <span className="font-medium text-slate-800">法說會簡報</span> 與（若有提供）音訊連結。
+              </p>
+            </div>
+            <div className="bg-white border border-slate-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-slate-900 mb-3">如何快速進行法說會查詢</h3>
+              <p className="text-slate-600 text-sm leading-6">
+                於上方搜尋列輸入公司代碼（如 <span className="font-medium">2330</span>）、公司名稱（如 <span className="font-medium">台積電</span>），
+                或設定日期條件，即可快速找到相關 <span className="font-medium text-slate-800">法說會查詢</span> 結果與
+                <span className="font-medium text-slate-800"> 法說會簡報</span> PDF 下載。
+              </p>
+            </div>
+            <div className="bg-white border border-slate-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-slate-900 mb-3">法說會行事曆與時間表</h3>
+              <p className="text-slate-600 text-sm leading-6">
+                我們持續收錄最新活動日期，您可透過搜尋條件檢視近期 <span className="font-medium text-slate-800">法說會行事曆</span> 與
+                <span className="font-medium text-slate-800"> 法說會時間表</span>；若公司提供線上直播或錄音，也會附上「線上法說會哪裡看」的相關連結。
+              </p>
             </div>
           </div>
         </section>

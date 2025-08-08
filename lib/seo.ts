@@ -32,7 +32,9 @@ interface SEOConfig {
 
 // SEO 配置 - 可從環境變數或配置文件讀取
 const seoConfig: SEOConfig = {
-  baseUrl: process.env.NEXTAUTH_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://stock.diveinvest.net',
+  baseUrl:
+    process.env.NEXTAUTH_URL
+      || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://finmoconf.diveinvest.net'),
   siteName: '台股法說會資料庫',
   defaultTitle: '台股法說會資料庫 | 台灣上市櫃公司法人說明會簡報下載',
   defaultDescription: '提供台股上市櫃公司最新法說會簡報PDF下載，包含財報分析、投資亮點、未來展望等完整法人說明會資料。'
