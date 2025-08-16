@@ -93,13 +93,13 @@ NEXT_PUBLIC_ADSENSE_ID=ca-pub-xxxxxxxxxx
 
 # Replace these with your actual AdSense ad unit IDs from your AdSense dashboard
 # Header Banner Ad Unit ID
-NEXT_PUBLIC_ADSENSE_HEADER_SLOT=xxx
+NEXT_PUBLIC_ADSENSE_HEADER_SLOT=6322775233
 
 # Sidebar Ad Unit ID  
-NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT=xxx
+NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT=9966506770
 
 # Content Banner Ad Unit ID
-NEXT_PUBLIC_ADSENSE_CONTENT_SLOT=xxx
+NEXT_PUBLIC_ADSENSE_CONTENT_SLOT=1138747228
 ```
 
 ### AdSense 廣告位說明
@@ -402,6 +402,12 @@ bun run type-check
 MIT License - 詳見 [LICENSE](LICENSE) 檔案
 
 ## 最近優化 (Latest Improvements)
+
+### Open Graph API 移除 🔧 (2025-01-28)
+- **簡化 SEO 配置**: 移除 Open Graph 自訂圖片 API 依賴，改用預設社群分享預覽
+- **減少複雜度**: 移除不必要的動態圖片生成端點，簡化系統架構
+- **維持 robots.txt 封鎖**: 保持 `/api/` 路徑封鎖，避免 API 端點被搜尋引擎索引
+- **效能優化**: 減少服務器負載，提升整體系統效能
 
 ### SEO 與索引優化 🚀 (2025-01-27)
 - **完整 Sitemap 實作**: 建立動態 XML sitemap，包含所有公司頁面和法說會頁面

@@ -172,7 +172,7 @@ export function generatePresentationMetadata(presentation: Presentation): Metada
   const keywords = generateSmartKeywords(presentation)
   const keywordString = generatePrioritizedKeywords(keywords, 30)
   const url = `${seoConfig.baseUrl}/presentation/${presentation._id}`
-  const imageUrl = `${seoConfig.baseUrl}/api/og/presentation/${presentation._id}` // OG image API
+  // Removed OG image API - using default social preview
   
   return {
     title,
@@ -207,14 +207,7 @@ export function generatePresentationMetadata(presentation: Presentation): Metada
       locale: 'zh_TW',
       publishedTime: new Date(presentation.eventDate).toISOString(),
       modifiedTime: new Date(presentation.updatedAt || presentation.eventDate).toISOString(),
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
+      // Removed custom OG images - using default social preview
     },
     other: {
       'article:published_time': new Date(presentation.eventDate).toISOString(),
@@ -234,7 +227,7 @@ export function generateCompanyMetadata(
   const title = `${companyName}(${companyCode}) 法說會簡報 | ${companyCode}法人說明會 | ${seoConfig.siteName}`
   const description = `${companyName}(${companyCode})歷年法說會簡報總覽，共${totalPresentations}場法人說明會。提供${companyCode}最新財報法說會PDF下載，包含中英文版法人說明會資料。`
   const url = `${seoConfig.baseUrl}/company/${companyCode}`
-  const imageUrl = `${seoConfig.baseUrl}/api/og/company/${companyCode}`
+  // Removed OG image API - using default social preview
   
   const typeLabel = {
     sii: '上市',
@@ -284,20 +277,13 @@ export function generateCompanyMetadata(
       siteName: seoConfig.siteName,
       type: 'website',
       locale: 'zh_TW',
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
+      // Removed custom OG images - using default social preview
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [imageUrl],
+      // Removed custom OG images - using default social preview
     },
   }
 }
@@ -307,7 +293,7 @@ export function generateHomeMetadata(): Metadata {
   const title = seoConfig.defaultTitle
   const description = seoConfig.defaultDescription
   const url = seoConfig.baseUrl
-  const imageUrl = `${seoConfig.baseUrl}/api/og/home`
+  // Removed OG image API - using default social preview
   
   // 2025年熱門搜尋關鍵字
   const trendingKeywords = [
@@ -347,20 +333,13 @@ export function generateHomeMetadata(): Metadata {
       siteName: seoConfig.siteName,
       type: 'website',
       locale: 'zh_TW',
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
+      // Removed custom OG images - using default social preview
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [imageUrl],
+      // Removed custom OG images - using default social preview
     },
   }
 }
