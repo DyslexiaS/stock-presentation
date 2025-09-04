@@ -364,8 +364,40 @@ export function generatePresentationJsonLd(presentation: Presentation) {
         eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
         isAccessibleForFree: true,
         inLanguage: ['zh-TW', 'en-US'],
+        // Location - Critical field for Event structured data
+        location: {
+          '@type': 'VirtualLocation',
+          name: '線上法人說明會',
+          description: '線上舉辦的投資人說明會',
+          url: `${seoConfig.baseUrl}/presentation/${presentation._id}`
+        },
+        // Image - Recommended field for Event structured data
+        image: {
+          '@type': 'ImageObject',
+          url: `${seoConfig.baseUrl}/FinmoAI-brand.png`,
+          width: 1200,
+          height: 630,
+          caption: `${presentation.companyName} 法說會簡報`
+        },
+        // Enhanced organizer with complete object instead of just reference
         organizer: {
-          '@id': `${seoConfig.baseUrl}/company/${presentation.companyCode}#organization`
+          '@type': 'Organization',
+          '@id': `${seoConfig.baseUrl}/company/${presentation.companyCode}`,
+          name: presentation.companyName,
+          identifier: presentation.companyCode,
+          url: `${seoConfig.baseUrl}/company/${presentation.companyCode}`,
+          sameAs: [
+            `https://www.twse.com.tw/zh/index.html`
+          ]
+        },
+        // Offers - For free access events
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'TWD',
+          availability: 'https://schema.org/InStock',
+          validFrom: eventDate.toISOString(),
+          description: '免費查閱法說會簡報資料'
         },
         about: {
           '@id': `${seoConfig.baseUrl}/company/${presentation.companyCode}#organization`
@@ -453,12 +485,50 @@ export function generateCompanyJsonLd(
       `https://www.twse.com.tw/zh/listed/company/${companyCode}`,
       `https://mops.twse.com.tw/mops/web/t57sb01_q1?TYPEK=sii&step=show&co_id=${companyCode}`
     ],
-    event: presentations.slice(0, 5).map(p => ({
-      '@type': 'Event',
-      name: `${companyName} 法說會`,
-      startDate: new Date(p.eventDate).toISOString(),
-      url: `${seoConfig.baseUrl}/presentation/${p._id}`
-    }))
+    event: presentations.slice(0, 5).map(p => {
+      const eventDate = new Date(p.eventDate)
+      const year = eventDate.getFullYear()
+      const quarter = Math.ceil((eventDate.getMonth() + 1) / 3)
+      
+      return {
+        '@type': 'Event',
+        '@id': `${seoConfig.baseUrl}/presentation/${p._id}#event`,
+        name: `${companyName}(${companyCode}) ${year}Q${quarter}法說會`,
+        description: `${companyName}於${eventDate.toLocaleDateString('zh-TW')}舉辦的${year}年第${quarter}季度法人說明會，提供投資人財報與營運概況說明。`,
+        startDate: eventDate.toISOString(),
+        endDate: new Date(eventDate.getTime() + 2 * 60 * 60 * 1000).toISOString(),
+        isAccessibleForFree: true,
+        inLanguage: ['zh-TW', 'en-US'],
+        location: {
+          '@type': 'VirtualLocation',
+          name: '線上法人說明會',
+          description: '線上舉辦的投資人說明會',
+          url: `${seoConfig.baseUrl}/presentation/${p._id}`
+        },
+        image: {
+          '@type': 'ImageObject',
+          url: `${seoConfig.baseUrl}/FinmoAI-brand.png`,
+          width: 1200,
+          height: 630,
+          caption: `${companyName} 法說會簡報`
+        },
+        organizer: {
+          '@type': 'Organization',
+          name: companyName,
+          identifier: companyCode,
+          url: `${seoConfig.baseUrl}/company/${companyCode}`
+        },
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'TWD',
+          availability: 'https://schema.org/InStock',
+          validFrom: eventDate.toISOString(),
+          description: '免費查閱法說會簡報資料'
+        },
+        url: `${seoConfig.baseUrl}/presentation/${p._id}`
+      }
+    })
   }
 }
 
