@@ -4,23 +4,11 @@ const nextConfig = {
     config.resolve.alias.canvas = false;
     return config;
   },
+  // Simplified redirect configuration to avoid regex issues
   async redirects() {
-    // Force canonical host to primary domain
-    const canonical = process.env.NEXT_PUBLIC_SITE_URL || 'https://finmoconf.diveinvest.net'
-    const canonicalHost = new URL(canonical).host
-
     return [
-      {
-        source: '/:path*',
-        has: [
-          {
-            type: 'host',
-            value: `((?!${canonicalHost.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}).)*`,
-          },
-        ],
-        destination: `${canonical}/:path*`,
-        permanent: true,
-      },
+      // Add specific redirects here if needed
+      // The complex canonical host redirect has been removed to prevent URL issues
     ]
   },
 }

@@ -89,7 +89,7 @@ NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=your-secret-key
 
 # Google AdSense (可選)
-NEXT_PUBLIC_ADSENSE_ID=ca-pub-xxxxxxxxxx
+NEXT_PUBLIC_ADSENSE_ID=ca-pub-9797466100759078
 
 # Replace these with your actual AdSense ad unit IDs from your AdSense dashboard
 # Header Banner Ad Unit ID
@@ -402,6 +402,12 @@ bun run type-check
 MIT License - 詳見 [LICENSE](LICENSE) 檔案
 
 ## 最近優化 (Latest Improvements)
+
+### 404 錯誤修復 🔧 (2025-01-28)
+- **移除問題重定向規則**: 移除 `next.config.js` 中可能導致 URL 末尾出現 `$` 字符的複雜正則表達式重定向
+- **新增自訂 404 頁面**: 建立美觀的 404 錯誤頁面，包含 AdSense 廣告位和結構化數據
+- **SEO 友善錯誤處理**: 404 頁面包含適當的元數據和麵包屑導航
+- **用戶體驗優化**: 提供清晰的錯誤說明和返回首頁的便捷連結
 
 ### Open Graph API 移除 🔧 (2025-01-28)
 - **簡化 SEO 配置**: 移除 Open Graph 自訂圖片 API 依賴，改用預設社群分享預覽
