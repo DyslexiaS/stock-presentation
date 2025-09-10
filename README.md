@@ -309,6 +309,7 @@ stock-presentation/
 - **公司專頁SEO**: 為每家公司建立獨立 Landing Page
 - **動態 Meta Tags**: 針對每個公司和法說會自動生成 SEO 友善標題和描述
 - **結構化數據 (JSON-LD)**: Event、Organization、BreadcrumbList schema
+  - Event fields covered: `name`, `description`, `startDate`, `endDate`, `eventStatus`, `eventAttendanceMode`, `isAccessibleForFree`, `inLanguage`, `location`, `image`, `organizer`, `performer`, `offers.url`, `offers.price`, `offers.priceCurrency`, `offers.availability`, `offers.validFrom`, `url`, `about`, `workFeatured`
 - **XML Sitemap 自動生成**: 包含所有公司頁面和法說會頁面
 - **內容SEO**: 自然融入關鍵字的內容描述
 - **麵包屑導航**: 完整的頁面層級結構
@@ -402,6 +403,13 @@ bun run type-check
 MIT License - 詳見 [LICENSE](LICENSE) 檔案
 
 ## 最近優化 (Latest Improvements)
+
+### 結構化數據修復 🔧 (2025-09-10)
+- **修復 Event Schema Location 問題**: 將 `VirtualLocation` 改為符合 Schema.org 標準的 `Place` 類型
+- **新增 Offers URL 欄位**: 在所有 Event 結構化數據的 `offers` 中加入必要的 `url` 欄位
+- **完善 PostalAddress**: 為 Location 新增完整的地址結構，包含 `addressCountry` 屬性
+- **Search Console 兼容性**: 解決 Google Search Console 回報的 2 項「活動結構化資料」問題
+- **SEO 優化提升**: 確保所有法說會頁面的結構化數據符合最新的 Schema.org 規範
 
 ### 404 錯誤修復 🔧 (2025-01-28)
 - **移除問題重定向規則**: 移除 `next.config.js` 中可能導致 URL 末尾出現 `$` 字符的複雜正則表達式重定向

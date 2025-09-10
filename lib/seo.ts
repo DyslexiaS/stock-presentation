@@ -366,9 +366,13 @@ export function generatePresentationJsonLd(presentation: Presentation) {
         inLanguage: ['zh-TW', 'en-US'],
         // Location - Critical field for Event structured data
         location: {
-          '@type': 'VirtualLocation',
+          '@type': 'Place',
           name: '線上法人說明會',
           description: '線上舉辦的投資人說明會',
+          address: {
+            '@type': 'PostalAddress',
+            addressCountry: 'TW'
+          },
           url: `${seoConfig.baseUrl}/presentation/${presentation._id}`
         },
         // Image - Recommended field for Event structured data
@@ -390,6 +394,13 @@ export function generatePresentationJsonLd(presentation: Presentation) {
             `https://www.twse.com.tw/zh/index.html`
           ]
         },
+        // Performer - using organization as performer for corporate events
+        performer: {
+          '@type': 'Organization',
+          name: presentation.companyName,
+          identifier: presentation.companyCode,
+          url: `${seoConfig.baseUrl}/company/${presentation.companyCode}`
+        },
         // Offers - For free access events
         offers: {
           '@type': 'Offer',
@@ -397,7 +408,8 @@ export function generatePresentationJsonLd(presentation: Presentation) {
           priceCurrency: 'TWD',
           availability: 'https://schema.org/InStock',
           validFrom: eventDate.toISOString(),
-          description: '免費查閱法說會簡報資料'
+          description: '免費查閱法說會簡報資料',
+          url: `${seoConfig.baseUrl}/presentation/${presentation._id}`
         },
         about: {
           '@id': `${seoConfig.baseUrl}/company/${presentation.companyCode}#organization`
@@ -497,12 +509,17 @@ export function generateCompanyJsonLd(
         description: `${companyName}於${eventDate.toLocaleDateString('zh-TW')}舉辦的${year}年第${quarter}季度法人說明會，提供投資人財報與營運概況說明。`,
         startDate: eventDate.toISOString(),
         endDate: new Date(eventDate.getTime() + 2 * 60 * 60 * 1000).toISOString(),
+        eventStatus: 'https://schema.org/EventScheduled',
         isAccessibleForFree: true,
         inLanguage: ['zh-TW', 'en-US'],
         location: {
-          '@type': 'VirtualLocation',
+          '@type': 'Place',
           name: '線上法人說明會',
           description: '線上舉辦的投資人說明會',
+          address: {
+            '@type': 'PostalAddress',
+            addressCountry: 'TW'
+          },
           url: `${seoConfig.baseUrl}/presentation/${p._id}`
         },
         image: {
@@ -518,13 +535,20 @@ export function generateCompanyJsonLd(
           identifier: companyCode,
           url: `${seoConfig.baseUrl}/company/${companyCode}`
         },
+        performer: {
+          '@type': 'Organization',
+          name: companyName,
+          identifier: companyCode,
+          url: `${seoConfig.baseUrl}/company/${companyCode}`
+        },
         offers: {
           '@type': 'Offer',
           price: '0',
           priceCurrency: 'TWD',
           availability: 'https://schema.org/InStock',
           validFrom: eventDate.toISOString(),
-          description: '免費查閱法說會簡報資料'
+          description: '免費查閱法說會簡報資料',
+          url: `${seoConfig.baseUrl}/presentation/${p._id}`
         },
         url: `${seoConfig.baseUrl}/presentation/${p._id}`
       }
