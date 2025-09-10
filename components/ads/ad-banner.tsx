@@ -109,7 +109,7 @@ export function AdBanner({
         data-ad-slot={slot}
         data-ad-format={format}
         data-full-width-responsive={responsive.toString()}
-        data-ad-test={!isProduction ? 'on' : undefined}
+        data-adtest={!isProduction ? 'on' : undefined}
       />
     </div>
   )

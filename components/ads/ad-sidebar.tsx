@@ -13,7 +13,7 @@ export function AdSidebar({ className = '' }: AdSidebarProps) {
       <div className="sticky top-4">
         <AdBanner
           slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT || "1234567890"}
-          format="rectangle"
+          format="auto"
           className="w-full"
           style={{ minHeight: '250px' }}
         />
@@ -22,7 +22,7 @@ export function AdSidebar({ className = '' }: AdSidebarProps) {
       {/* 側邊廣告 - 直立式 */}
       <AdBanner
         slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT || "1234567891"}
-        format="vertical"
+        format="auto"
         className="w-full"
         style={{ minHeight: '600px' }}
       />
