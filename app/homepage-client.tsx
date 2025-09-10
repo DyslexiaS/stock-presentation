@@ -229,8 +229,8 @@ export default function HomePageClient({
 
                 {/* 側邊廣告 */}
                 <AdBanner
-                  slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT || "1234567889"}
-                  format="rectangle"
+                  slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT || "9966506770"}
+                  format="auto"
                   className="w-full"
                   style={{ minHeight: '250px' }}
                 />

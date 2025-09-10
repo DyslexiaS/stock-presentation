@@ -233,7 +233,7 @@ export default async function HomePage() {
           <div className="mb-12">
             <AdBanner
               slot={process.env.NEXT_PUBLIC_ADSENSE_CONTENT_SLOT || "1234567896"}
-              format="horizontal"
+              format="auto"
               className="w-full max-w-4xl mx-auto rounded-lg overflow-hidden"
               style={{ minHeight: '90px' }}
             />

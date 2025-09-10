@@ -87,7 +87,7 @@ export default function PresentationDetailPage({ presentation }: Props) {
           }>
             <ClientAdBanner
               slot={process.env.NEXT_PUBLIC_ADSENSE_HEADER_SLOT || "1234567892"}
-              format="horizontal"
+              format="auto"
               className="w-full max-w-4xl mx-auto"
               style={{ minHeight: '90px' }}
             />
@@ -259,7 +259,7 @@ export default function PresentationDetailPage({ presentation }: Props) {
               }>
                 <ClientAdBanner
                   slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT || "1234567893"}
-                  format="rectangle"
+                  format="auto"
                   className="w-full"
                   style={{ minHeight: '250px' }}
                 />
