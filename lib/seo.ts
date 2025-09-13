@@ -364,25 +364,13 @@ export function generatePresentationJsonLd(presentation: Presentation) {
         eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
         isAccessibleForFree: true,
         inLanguage: ['zh-TW', 'en-US'],
-        // Location - Critical field for Event structured data
+        // Location - prefer VirtualLocation for online events per Google guidance
         location: {
-          '@type': 'Place',
-          name: '線上法人說明會',
-          description: '線上舉辦的投資人說明會',
-          address: {
-            '@type': 'PostalAddress',
-            addressCountry: 'TW'
-          },
+          '@type': 'VirtualLocation',
           url: `${seoConfig.baseUrl}/presentation/${presentation._id}`
         },
-        // Image - Recommended field for Event structured data
-        image: {
-          '@type': 'ImageObject',
-          url: `${seoConfig.baseUrl}/FinmoAI-brand.png`,
-          width: 1200,
-          height: 630,
-          caption: `${presentation.companyName} 法說會簡報`
-        },
+        // Image - simplified to URL array to satisfy validators
+        image: [`${seoConfig.baseUrl}/FinmoAI-brand.png`],
         // Enhanced organizer with complete object instead of just reference
         organizer: {
           '@type': 'Organization',
@@ -510,25 +498,14 @@ export function generateCompanyJsonLd(
         startDate: eventDate.toISOString(),
         endDate: new Date(eventDate.getTime() + 2 * 60 * 60 * 1000).toISOString(),
         eventStatus: 'https://schema.org/EventScheduled',
+        eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
         isAccessibleForFree: true,
         inLanguage: ['zh-TW', 'en-US'],
         location: {
-          '@type': 'Place',
-          name: '線上法人說明會',
-          description: '線上舉辦的投資人說明會',
-          address: {
-            '@type': 'PostalAddress',
-            addressCountry: 'TW'
-          },
+          '@type': 'VirtualLocation',
           url: `${seoConfig.baseUrl}/presentation/${p._id}`
         },
-        image: {
-          '@type': 'ImageObject',
-          url: `${seoConfig.baseUrl}/FinmoAI-brand.png`,
-          width: 1200,
-          height: 630,
-          caption: `${companyName} 法說會簡報`
-        },
+        image: [`${seoConfig.baseUrl}/FinmoAI-brand.png`],
         organizer: {
           '@type': 'Organization',
           name: companyName,
