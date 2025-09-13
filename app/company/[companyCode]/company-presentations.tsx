@@ -17,7 +17,7 @@ export default function CompanyPresentations({
   return (
     <div className="space-y-6">
       {years.map(year => (
-        <div key={year} className="space-y-4">
+        <div key={year} id={`year-${year}`} className="space-y-4 scroll-mt-24">
           <h3 className="text-xl font-semibold text-foreground border-b border-gray-200 pb-2">
             {year}年 {companyName} 法說會
           </h3>

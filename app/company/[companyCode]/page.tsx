@@ -13,6 +13,8 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import CompanyPresentations from './company-presentations'
+import YearlyCallsChart from './yearly-chart'
+import { ArrowUp } from 'lucide-react'
 
 interface Props {
   params: Promise<{ companyCode: string }>
@@ -128,6 +130,7 @@ export default async function CompanyPage({ params }: Props) {
   }, {} as Record<number, PresentationType[]>)
 
   const years = Object.keys(presentationsByYear).map(Number).sort((a, b) => b - a)
+  const yearlyData = years.map(year => ({ year, count: presentationsByYear[year].length }))
 
   return (
     <>
@@ -140,7 +143,7 @@ export default async function CompanyPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbData) }}
       />
       
-      <div className="min-h-screen bg-white text-gray-900">
+      <div id="top" className="min-h-screen bg-white text-gray-900">
         {/* Header */}
         <header className="bg-card border-b border-gray-200 shadow-sm">
           <div className="container mx-auto px-4 py-6">
@@ -179,6 +182,15 @@ export default async function CompanyPage({ params }: Props) {
 
         {/* Main Content */}
         <main className="container mx-auto px-4 py-8">
+
+          {/* 年度趨勢圖 */}
+          <section className="mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+              <div className="lg:col-span-3">
+                <YearlyCallsChart data={yearlyData} companyName={companyName} />
+              </div>
+            </div>
+          </section>
 
           {/* 法說會列表 */}
           <section className="mb-8">
@@ -242,6 +254,16 @@ export default async function CompanyPage({ params }: Props) {
             />
           </div>
         </main>
+
+        {/* Back to Top floating button */}
+        <a
+          href="#top"
+          aria-label="返回頂部"
+          className="fixed bottom-6 right-6 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg border border-gray-200 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          <ArrowUp className="h-5 w-5" />
+          <span className="sr-only">返回頂部</span>
+        </a>
 
         {/* Footer */}
         <footer className="bg-card border-t border-gray-200 mt-16">

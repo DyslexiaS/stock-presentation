@@ -14,6 +14,7 @@
 - 🎯 **服務器端渲染**: SEO友善的首頁渲染
 - 📊 **結構化數據**: 完整的 JSON-LD 標記
 - 🤖 **AI 友善**: LLMs.txt 標準支援
+ - 📈 **年度趨勢圖**: 公司頁面內建「每年法說會次數」長條圖（零 JS）
 
 ## 技術架構
 
@@ -291,6 +292,22 @@ stock-presentation/
 - `/` - 首頁 (搜尋界面，包含熱門公司法說會簡報)
 - `/company/[companyCode]` - 公司專頁 (按年份分組顯示)
 - `/presentation/[id]` - 法說會詳細頁
+
+### 年度趨勢圖（SEO 友善）
+- 公司頁面在列表上方展示「年度法說會次數」長條圖
+- 使用伺服器端渲染的 SVG，無額外 JS 依賴，首次渲染快速
+- 顏色遵循全站設計系統：`--primary`、`--foreground`、`--muted-foreground`
+- 可讀性與可及性：
+  - `role="img"` 與 `aria-label`，並提供 `sr-only` 文字摘要
+  - 寬度自適應容器，行動裝置可水平滾動
+  
+元件位置：
+`app/company/[companyCode]/yearly-chart.tsx`
+
+匯入與使用（摘要）：
+```tsx
+<YearlyCallsChart data={[{ year: 2021, count: 5 }]} companyName="台達電" />
+```
 
 ### 強力SEO關鍵字策略
 每個公司頁面自動生成包含以下模式的關鍵字：
