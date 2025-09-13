@@ -232,7 +232,7 @@ export default async function HomePage() {
           {/* Footer Ad */}
           <div className="mb-2">
             <AdBanner
-              slot={process.env.NEXT_PUBLIC_ADSENSE_CONTENT_SLOT || "1234567896"}
+              slot={process.env.NEXT_PUBLIC_ADSENSE_CONTENT_SLOT || "1138747228"}
               format="auto"
               className="w-full max-w-4xl mx-auto rounded-lg overflow-hidden"
               style={{ minHeight: '90px' }}

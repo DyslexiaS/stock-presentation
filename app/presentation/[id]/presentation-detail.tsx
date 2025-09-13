@@ -11,6 +11,7 @@ import {
   Download
 } from 'lucide-react'
 import { Presentation } from '@/types'
+import { AdBanner } from '@/components/ads/ad-banner'
 
 interface Props {
   presentation: Presentation
@@ -70,6 +71,16 @@ export default function PresentationDetailPage({ presentation }: Props) {
               </ol>
             </nav>
           </div>
+        </div>
+
+        {/* 頁首橫幅廣告 */}
+        <div className="container mx-auto px-4 pb-4">
+          <AdBanner
+            slot={process.env.NEXT_PUBLIC_ADSENSE_HEADER_SLOT || "6322775233"}
+            format="auto"
+            className="w-full max-w-4xl mx-auto"
+            style={{ minHeight: '90px' }}
+          />
         </div>
       </header>
 
@@ -226,6 +237,13 @@ export default function PresentationDetailPage({ presentation }: Props) {
             <div className="sticky top-4 space-y-6">
               {/* Promotion Cards */}
               <PromotionCards />
+
+              <AdBanner
+                slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT || "9966506770"}
+                format="auto"
+                className="w-full"
+                style={{ minHeight: '250px' }}
+              />
             </div>
           </div>
         </div>
