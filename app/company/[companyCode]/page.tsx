@@ -171,14 +171,12 @@ export default async function CompanyPage({ params }: Props) {
           
           {/* 頁首橫幅廣告 */}
           <div className="container mx-auto px-4 pb-4">
-          <ins class="adsbygoogle"
-              data-ad-client="ca-pub-9797466100759078"
-              data-ad-slot="6322775233"
-              data-ad-format="auto"
-              data-full-width-responsive="true"></ins>
-          <script>
-              (adsbygoogle = window.adsbygoogle || []).push({});
-          </script>
+            <AdBanner
+              slot={process.env.NEXT_PUBLIC_ADSENSE_HEADER_SLOT || "6322775233"}
+              format="auto"
+              className="w-full max-w-4xl mx-auto"
+              style={{ minHeight: '90px' }}
+            />
           </div>
         </header>
 
