@@ -230,7 +230,7 @@ export default async function HomePage() {
         
         <div className="relative container mx-auto px-6 py-16">
           {/* Footer Ad */}
-          <div className="mb-12">
+          <div className="mb-2">
             <AdBanner
               slot={process.env.NEXT_PUBLIC_ADSENSE_CONTENT_SLOT || "1234567896"}
               format="auto"

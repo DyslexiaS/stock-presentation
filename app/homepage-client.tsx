@@ -240,7 +240,7 @@ export default function HomePageClient({
         </section>
 
         {/* Keyword-focused help content for user intent coverage */}
-        <section className="mb-16">
+        <section className="mb-2">
           <div className="max-w-5xl mx-auto grid gap-8 lg:grid-cols-3">
             <div className="bg-white border border-slate-200 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-slate-900 mb-3">法說會是什麼？</h3>

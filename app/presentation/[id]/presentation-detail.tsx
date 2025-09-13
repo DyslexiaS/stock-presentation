@@ -12,7 +12,6 @@ import {
   Download
 } from 'lucide-react'
 import { Presentation } from '@/types'
-import ClientAdBanner from './client-ad-banner'
 
 interface Props {
   presentation: Presentation
@@ -74,26 +73,6 @@ export default function PresentationDetailPage({ presentation }: Props) {
           </div>
         </div>
       </header>
-
-      {/* Banner Ad - Client-side with Suspense */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-4">
-          <Suspense fallback={
-            <div 
-              className="w-full max-w-4xl mx-auto bg-gray-100 rounded animate-pulse" 
-              style={{ minHeight: '90px' }}
-              aria-label="廣告載入中"
-            />
-          }>
-            <ClientAdBanner
-              slot={process.env.NEXT_PUBLIC_ADSENSE_HEADER_SLOT || "1234567892"}
-              format="auto"
-              className="w-full max-w-4xl mx-auto"
-              style={{ minHeight: '90px' }}
-            />
-          </Suspense>
-        </div>
-      </div>
 
       {/* Main Content - Server-side rendered for optimal SEO */}
       <main className="container mx-auto px-4 py-8">
@@ -248,22 +227,6 @@ export default function PresentationDetailPage({ presentation }: Props) {
             <div className="sticky top-4 space-y-6">
               {/* Promotion Cards */}
               <PromotionCards />
-              
-              {/* Ad Banner */}
-              <Suspense fallback={
-                <div 
-                  className="w-full bg-gray-100 rounded animate-pulse" 
-                  style={{ minHeight: '250px' }}
-                  aria-label="廣告載入中"
-                />
-              }>
-                <ClientAdBanner
-                  slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT || "1234567893"}
-                  format="auto"
-                  className="w-full"
-                  style={{ minHeight: '250px' }}
-                />
-              </Suspense>
             </div>
           </div>
         </div>

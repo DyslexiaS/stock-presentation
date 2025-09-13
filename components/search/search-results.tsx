@@ -116,6 +116,19 @@ export function SearchResults({ results, pagination, onPageChange }: SearchResul
                     查看詳情
                   </Link>
                 </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  asChild
+                >
+                  <Link
+                    href={`/company/${presentation.companyCode}`}
+                    className="flex items-center gap-1"
+                  >
+                    <Building2 className="h-4 w-4" />
+                    歷年法說會
+                  </Link>
+                </Button>
                 {presentation.presentationTWUrl && (
                   <Button
                     variant="outline"
