@@ -75,14 +75,14 @@ export default function PresentationDetailPage({ presentation }: Props) {
         </div>
 
         {/* 頁首橫幅廣告 */}
-        <div className="container mx-auto px-4 pb-4">
+        {/* <div className="container mx-auto px-4 pb-4">
           <AdBanner
             slot={process.env.NEXT_PUBLIC_ADSENSE_HEADER_SLOT || "6322775233"}
             format="auto"
             className="w-full max-w-4xl mx-auto"
             style={{ minHeight: '90px', maxHeight: '90px' }}
           />
-        </div>
+        </div> */}
       </header>
 
       {/* Main Content - Server-side rendered for optimal SEO */}
