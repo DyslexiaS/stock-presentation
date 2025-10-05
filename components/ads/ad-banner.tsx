@@ -56,7 +56,9 @@ export function AdBanner({
       color: '#dc2626',
       fontSize: '14px',
       fontWeight: '500',
-      minHeight: '100px',
+      minHeight: style.minHeight || '100px',
+      width: '100%',
+      maxWidth: '100%',
       ...style
     }
 
@@ -80,7 +82,9 @@ export function AdBanner({
       color: '#64748b',
       fontSize: '14px',
       fontWeight: '500',
-      minHeight: '100px',
+      minHeight: style.minHeight || '100px',
+      width: '100%',
+      maxWidth: '100%',
       padding: '16px',
       textAlign: 'center' as const,
       ...style
@@ -100,11 +104,23 @@ export function AdBanner({
   }
 
   // 生產環境或測試模式下顯示真實廣告
+  const adContainerStyle = {
+    width: '100%',
+    maxWidth: '100%',
+    minHeight: style.minHeight || '100px',
+    ...style
+  }
+
   return (
-    <div className={className} style={style}>
+    <div className={className} style={adContainerStyle}>
       <ins
         className="adsbygoogle"
-        style={{ display: 'block', ...style }}
+        style={{ 
+          display: 'block', 
+          width: '100%',
+          minHeight: style.minHeight || '100px',
+          ...style 
+        }}
         data-ad-client={adsenseId}
         data-ad-slot={slot}
         data-ad-format={format}

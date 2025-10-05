@@ -37,6 +37,7 @@ export default function PresentationDetailPage({ presentation }: Props) {
 
   return (
     <div className="min-h-screen bg-neutral-50">
+      <div className="w-full max-w-screen-2xl mx-auto">
       {/* Header - Server-side rendered for SEO */}
       <header className="bg-white border-b">
         <div className="container mx-auto px-4 py-4">
@@ -79,7 +80,7 @@ export default function PresentationDetailPage({ presentation }: Props) {
             slot={process.env.NEXT_PUBLIC_ADSENSE_HEADER_SLOT || "6322775233"}
             format="auto"
             className="w-full max-w-4xl mx-auto"
-            style={{ minHeight: '90px' }}
+            style={{ minHeight: '90px', maxHeight: '90px' }}
           />
         </div>
       </header>
@@ -242,12 +243,13 @@ export default function PresentationDetailPage({ presentation }: Props) {
                 slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT || "9966506770"}
                 format="auto"
                 className="w-full"
-                style={{ minHeight: '250px' }}
+                style={{ minHeight: '250px', maxHeight: '250px' }}
               />
             </div>
           </div>
         </div>
       </main>
+      </div>
     </div>
   )
 }

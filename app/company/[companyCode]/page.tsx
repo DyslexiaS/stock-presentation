@@ -175,7 +175,7 @@ export default async function CompanyPage({ params }: Props) {
               slot={process.env.NEXT_PUBLIC_ADSENSE_HEADER_SLOT || "6322775233"}
               format="auto"
               className="w-full max-w-4xl mx-auto"
-              style={{ minHeight: '90px' }}
+              style={{ minHeight: '90px', maxHeight: '90px' }}
             />
           </div>
         </header>
@@ -207,10 +207,26 @@ export default async function CompanyPage({ params }: Props) {
                             {year}年 {companyName} 法說會
                           </h3>
                           <div className="space-y-4">
-                            {[1, 2, 3].map(i => (
-                              <div key={i} className="bg-gray-100 rounded-lg p-6 animate-pulse">
-                                <div className="h-4 bg-gray-300 rounded w-3/4 mb-2"></div>
-                                <div className="h-3 bg-gray-300 rounded w-1/2"></div>
+                            {presentationsByYear[year]?.slice(0, 3).map((_, i) => (
+                              <div key={i} className="bg-white border border-gray-200 rounded-lg p-6 animate-pulse">
+                                <div className="flex items-start justify-between mb-3">
+                                  <div className="space-y-2 flex-1">
+                                    <div className="flex items-center gap-2">
+                                      <div className="h-5 bg-gray-300 rounded w-32"></div>
+                                      <div className="h-5 bg-gray-300 rounded w-16"></div>
+                                      <div className="h-5 bg-gray-300 rounded w-12"></div>
+                                    </div>
+                                    <div className="flex items-center gap-4">
+                                      <div className="h-4 bg-gray-300 rounded w-20"></div>
+                                      <div className="h-4 bg-gray-300 rounded w-16"></div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="flex gap-2 flex-wrap">
+                                  <div className="h-8 bg-gray-300 rounded w-20"></div>
+                                  <div className="h-8 bg-gray-300 rounded w-24"></div>
+                                  <div className="h-8 bg-gray-300 rounded w-20"></div>
+                                </div>
                               </div>
                             ))}
                           </div>
@@ -237,7 +253,7 @@ export default async function CompanyPage({ params }: Props) {
                     slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT || "9966506770"}
                     format="auto"
                     className="w-full"
-                    style={{ minHeight: '250px' }}
+                    style={{ minHeight: '250px', maxHeight: '250px' }}
                   />
                 </div>
               </div>
@@ -250,7 +266,7 @@ export default async function CompanyPage({ params }: Props) {
               slot={process.env.NEXT_PUBLIC_ADSENSE_CONTENT_SLOT || "1138747228"}
               format="auto"
               className="w-full max-w-4xl mx-auto"
-              style={{ minHeight: '90px' }}
+              style={{ minHeight: '90px', maxHeight: '90px' }}
             />
           </div>
         </main>

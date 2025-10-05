@@ -19,7 +19,7 @@ export default function YearlyCallsChart({ data, companyName }: YearlyCallsChart
   const normalizedData = [...data].sort((a, b) => a.year - b.year)
   const maxCount = Math.max(...normalizedData.map(d => d.count)) || 1
 
-  // SVG layout
+  // SVG layout - responsive design
   const width = 800
   const height = 260
   const margin = { top: 10, right: 16, bottom: 40, left: 32 }
@@ -50,7 +50,9 @@ export default function YearlyCallsChart({ data, companyName }: YearlyCallsChart
             viewBox={`0 0 ${width} ${height}`}
             role="img"
             aria-label={`${companyName} 歷年法說會次數長條圖`}
-            className="max-w-full h-auto"
+            className="w-full h-auto max-w-full"
+            style={{ minHeight: '260px', maxHeight: '260px' }}
+            preserveAspectRatio="xMidYMid meet"
           >
             {/* Background */}
             <rect x={0} y={0} width={width} height={height} style={{ fill: 'rgb(var(--card))' }} />
