@@ -57,8 +57,6 @@ export function AdBanner({
       fontSize: '14px',
       fontWeight: '500',
       minHeight: style.minHeight || '100px',
-      width: '100%',
-      maxWidth: '100%',
       ...style
     }
 
@@ -83,8 +81,6 @@ export function AdBanner({
       fontSize: '14px',
       fontWeight: '500',
       minHeight: style.minHeight || '100px',
-      width: '100%',
-      maxWidth: '100%',
       padding: '16px',
       textAlign: 'center' as const,
       ...style
@@ -117,8 +113,6 @@ export function AdBanner({
         className="adsbygoogle"
         style={{ 
           display: 'block', 
-          width: '100%',
-          minHeight: style.minHeight || '100px',
           ...style 
         }}
         data-ad-client={adsenseId}
