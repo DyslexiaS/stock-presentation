@@ -1,4 +1,4 @@
-import { AdBanner } from '@/components/ads/ad-banner'
+// import { AdBanner } from '@/components/ads/ad-banner'
 import PresentationModel from '@/lib/models/Presentation'
 import dbConnect from '@/lib/mongodb'
 import { generateHomeMetadata } from '@/lib/seo'
