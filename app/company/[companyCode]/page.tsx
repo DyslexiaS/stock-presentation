@@ -259,16 +259,6 @@ export default async function CompanyPage({ params }: Props) {
               </div>
             </div>
           </section>
-
-          {/* 內容中間廣告 */}
-          <div className="mt-8">
-            <AdBanner
-              slot={process.env.NEXT_PUBLIC_ADSENSE_CONTENT_SLOT || "1138747228"}
-              format="auto"
-              className="w-full max-w-4xl mx-auto"
-              style={{ minHeight: '90px', maxHeight: '90px' }}
-            />
-          </div>
         </main>
 
         {/* Back to Top floating button */}
