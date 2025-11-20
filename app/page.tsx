@@ -8,6 +8,7 @@ import HomePageClient from './homepage-client'
 
 // Generate metadata for homepage
 export const metadata = generateHomeMetadata()
+export const revalidate = 86400
 
 // Fetch initial presentations data on server
 async function getInitialPresentations(): Promise<{
@@ -23,11 +24,11 @@ async function getInitialPresentations(): Promise<{
 }> {
   try {
     await dbConnect()
-    
+
     const limit = 20
     const page = 1
     const skip = (page - 1) * limit
-    
+
     // Get latest presentations
     const presentations = await PresentationModel.find({})
       .sort({ eventDate: -1, createdAt: -1 })
@@ -35,10 +36,10 @@ async function getInitialPresentations(): Promise<{
       .skip(skip)
       .lean()
       .exec()
-    
+
     const total = await PresentationModel.countDocuments({})
     const pages = Math.ceil(total / limit)
-    
+
     return {
       presentations: presentations.map((p: any) => ({
         ...p,
@@ -61,14 +62,14 @@ async function getInitialPresentations(): Promise<{
     // Return mock data as fallback
     return {
       presentations: [{
-    _id: '687b18f1a2ef6df0427f27e4',
-    companyCode: '1101',
-    companyName: '台泥',
-    eventDate: '2025-05-19T00:00:00.000Z',
-    presentationTWUrl: 'https://mopsov.twse.com.tw/nas/STR/110120250519M001.pdf',
-    presentationEnUrl: 'https://mopsov.twse.com.tw/nas/STR/110120250519E001.pdf',
-    typek: 'sii',
-    createdAt: '2025-07-19T12:02:57.055Z'
+        _id: '687b18f1a2ef6df0427f27e4',
+        companyCode: '1101',
+        companyName: '台泥',
+        eventDate: '2025-05-19T00:00:00.000Z',
+        presentationTWUrl: 'https://mopsov.twse.com.tw/nas/STR/110120250519M001.pdf',
+        presentationEnUrl: 'https://mopsov.twse.com.tw/nas/STR/110120250519E001.pdf',
+        typek: 'sii',
+        createdAt: '2025-07-19T12:02:57.055Z'
       }],
       pagination: {
         page: 1,
@@ -96,7 +97,7 @@ export default async function HomePage() {
           <div className="text-center">載入中...</div>
         </div>
       }>
-        <HomePageClient 
+        <HomePageClient
           initialPresentations={presentations}
           initialPagination={pagination}
         />
@@ -114,7 +115,7 @@ export default async function HomePage() {
                 "@id": "https://finmoconf.diveinvest.net/#website",
                 "url": "https://finmoconf.diveinvest.net/",
                 "name": "FinmoConf - 台股法說會資料庫",
-                "description": "FinmoConf 提供台積電(2330)、鴻海(2317)等台灣上市櫃興櫃公司完整法說會簡報資料。FinmoAI 家族產品，支援公司代碼搜尋、PDF 快速下載，最新財報說明會、投資人簡報一應俱全。",
+                "description": "FinmoConf 提供台積電(2330)、鴻海(2317)等台灣上市櫃興櫃公司完整法說會簡報資料。FinmoAI 系列產品，支援公司代碼搜尋、PDF 快速下載，最新財報說明會、投資人簡報一應俱全。",
                 "publisher": {
                   "@id": "https://finmoconf.diveinvest.net/#organization"
                 },
@@ -227,7 +228,7 @@ export default async function HomePage() {
           <div className="absolute bottom-0 left-1/3 w-24 h-24 bg-gradient-to-br from-slate-100 to-slate-50 rounded-full blur-2xl"></div>
           <div className="absolute top-0 right-1/3 w-20 h-20 bg-gradient-to-br from-slate-50 to-white rounded-full blur-2xl"></div>
         </div>
-        
+
         <div className="relative container mx-auto px-6 py-16">
           {/* Footer Ad */}
           {/* <div className="mb-2">

@@ -1,6 +1,6 @@
 # FinmoConf - 台股法說會搜尋平台
 
-一個專注於台灣股市法人說明會資料的搜尋平台，提供快速搜尋、PDF下載和SEO優化的使用者體驗。FinmoAI 家族產品，與 FinmoAI 收益電話轉錄服務互補。
+一個專注於台灣股市法人說明會資料的搜尋平台，提供快速搜尋、PDF下載和SEO優化的使用者體驗。FinmoAI 系列產品，與 FinmoAI 收益電話轉錄服務互補。
 
 ## 專案特色
 
@@ -477,4 +477,4 @@ MIT License - 詳見 [LICENSE](LICENSE) 檔案
 
 ---
 
-**目標**: 透過 SEO 優化獲取台股法說會搜尋的自然流量，並通過 Google AdSense 實現變現。FinmoConf 作為 FinmoAI 家族產品，與 FinmoAI 收益電話轉錄服務形成完整的投資研究解決方案。
+**目標**: 透過 SEO 優化獲取台股法說會搜尋的自然流量，並通過 Google AdSense 實現變現。FinmoConf 作為 FinmoAI 系列產品，與 FinmoAI 收益電話轉錄服務形成完整的投資研究解決方案。
