@@ -12,6 +12,7 @@ export interface Presentation {
   slug?: string
   keywords?: string[]
   description?: string
+  presentationContent?: string
 }
 
 export interface SearchParams {

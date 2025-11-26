@@ -7,13 +7,14 @@ export interface IPresentation extends mongoose.Document {
   eventDate: Date
   presentationTWUrl: string
   presentationEnUrl: string
+  presentationContent?: string,
   audioLinkUrl?: string
   typek: 'sii' | 'otc' | 'rotc'
   createdAt: Date
   updatedAt?: Date
   slug?: string
   keywords?: string[]
-  description?: string
+  description?: string,
 }
 
 const PresentationSchema = new mongoose.Schema<IPresentation>(
@@ -37,6 +38,10 @@ const PresentationSchema = new mongoose.Schema<IPresentation>(
       required: true,
     },
     presentationEnUrl: {
+      type: String,
+      required: false,
+    },
+    presentationContent: {
       type: String,
       required: false,
     },
@@ -65,12 +70,12 @@ const PresentationSchema = new mongoose.Schema<IPresentation>(
 )
 
 // Generate slug before saving
-PresentationSchema.pre('save', function(next) {
+PresentationSchema.pre('save', function (next) {
   if (!this.slug) {
     const date = new Date(this.eventDate).toISOString().split('T')[0]
     this.slug = `${this.companyCode}-${date}`.toLowerCase()
   }
-  
+
   // Generate keywords for SEO
   if (!this.keywords || this.keywords.length === 0) {
     this.keywords = [
@@ -82,14 +87,14 @@ PresentationSchema.pre('save', function(next) {
       '財報說明會'
     ]
   }
-  
+
   // Generate description for SEO
   if (!this.description) {
     const date = new Date(this.eventDate).toLocaleDateString('zh-TW')
-    const audioText = this.audioLinkUrl ? '，提供中英文PDF下載、線上預覽及音訊錄音。' : '，提供中英文PDF下載和線上預覽。'
+    const audioText = this.audioLinkUrl ? '，提供中英文 PDF 下載、線上預覽及音訊錄音。' : '，提供中英文 PDF 下載和線上預覽。'
     this.description = `${this.companyName}(${this.companyCode})於${date}舉辦的法人說明會資料${audioText}`
   }
-  
+
   next()
 })
 

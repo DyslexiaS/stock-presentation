@@ -15,10 +15,10 @@ async function getPresentation(id: string): Promise<Presentation | null> {
   try {
     await dbConnect()
     const result = await PresentationModel.findById(id).lean()
-    
+
     // Handle the case where result could be null
     if (!result || Array.isArray(result)) return null
-    
+
     // Properly type the Mongoose document without using 'any'
     const doc = result as unknown as {
       _id: { toString(): string }
@@ -35,7 +35,7 @@ async function getPresentation(id: string): Promise<Presentation | null> {
       keywords?: string[]
       description?: string
     }
-    
+
     // Convert to Presentation type
     return {
       _id: doc._id.toString(),
@@ -50,7 +50,8 @@ async function getPresentation(id: string): Promise<Presentation | null> {
       updatedAt: doc.updatedAt?.toISOString(),
       slug: doc.slug,
       keywords: doc.keywords,
-      description: doc.description
+      description: doc.description,
+      presentationContent: (doc as any).presentationContent
     }
   } catch {
     return null
@@ -60,7 +61,7 @@ async function getPresentation(id: string): Promise<Presentation | null> {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params
   const presentation = await getPresentation(id)
-  
+
   if (!presentation) {
     return {
       title: '法說會不存在 | FinmoConf - 台股法說會搜尋',
@@ -75,7 +76,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { id } = await params
   const presentation = await getPresentation(id)
-  
+
   if (!presentation) {
     notFound()
   }
