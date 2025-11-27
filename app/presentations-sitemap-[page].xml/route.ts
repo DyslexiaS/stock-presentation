@@ -1,12 +1,17 @@
+import { NextRequest } from 'next/server'
 import dbConnect from '@/lib/mongodb'
 import PresentationModel from '@/lib/models/Presentation'
 
 const CHUNK_SIZE = 50000
 
+// Tell Next.js about the dynamic segment
+export const dynamic = 'force-dynamic'
+
 export async function GET(
-  request: Request,
-  { params }: { params: { page: string } }
+  _request: NextRequest,
+  context: any
 ) {
+  const params = await context.params as { page: string }
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://finmoconf.diveinvest.net')
