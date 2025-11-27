@@ -8,6 +8,14 @@ const nextConfig = {
       // The complex canonical host redirect has been removed to prevent URL issues
     ]
   },
+  async rewrites() {
+    return [
+      {
+        source: '/presentations-sitemap-:page.xml',
+        destination: '/presentations-sitemap/:page',
+      },
+    ]
+  },
 }
 
 export default nextConfig
