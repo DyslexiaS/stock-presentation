@@ -23,7 +23,7 @@ export async function GET() {
     <lastmod>${new Date().toISOString()}</lastmod>
   </sitemap>`,
       ...Array.from({ length: totalPages }, (_, i) => `  <sitemap>
-    <loc>${baseUrl}/presentations-sitemap.xml?page=${i}</loc>
+    <loc>${baseUrl}/presentations-sitemap-${i}.xml</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
   </sitemap>`)
     ]

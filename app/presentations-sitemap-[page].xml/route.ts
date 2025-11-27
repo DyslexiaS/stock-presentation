@@ -3,13 +3,15 @@ import PresentationModel from '@/lib/models/Presentation'
 
 const CHUNK_SIZE = 50000
 
-export async function GET(request: Request) {
+export async function GET(
+  request: Request,
+  { params }: { params: { page: string } }
+) {
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://finmoconf.diveinvest.net')
 
-  const { searchParams } = new URL(request.url)
-  const page = parseInt(searchParams.get('page') || '0')
+  const page = parseInt(params.page)
 
   try {
     await dbConnect()
