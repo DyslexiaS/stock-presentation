@@ -16,6 +16,9 @@ import CompanyPresentations from './company-presentations'
 import YearlyCallsChart from './yearly-chart'
 import { ArrowUp } from 'lucide-react'
 
+// 快取 7 天以減少 Function Invocations
+export const revalidate = 604800
+
 interface Props {
   params: Promise<{ companyCode: string }>
 }

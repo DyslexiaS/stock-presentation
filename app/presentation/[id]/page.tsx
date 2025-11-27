@@ -7,6 +7,9 @@ import { generatePresentationMetadata, generateStructuredData, generateBreadcrum
 import PresentationDetailPage from './presentation-detail'
 import { Presentation } from '@/types'
 
+// 快取 7 天以減少 Function Invocations
+export const revalidate = 604800
+
 interface Props {
   params: Promise<{ id: string }>
 }
