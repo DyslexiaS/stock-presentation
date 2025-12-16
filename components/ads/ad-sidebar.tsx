@@ -20,12 +20,12 @@ export function AdSidebar({ className = '' }: AdSidebarProps) {
       </div>
 
       {/* 側邊廣告 - 直立式 */}
-      <AdBanner
+      {/* <AdBanner
         slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT || "1234567891"}
         format="auto"
         className="w-full"
         style={{ minHeight: '600px' }}
-      />
+      /> */}
     </aside>
   )
 }
