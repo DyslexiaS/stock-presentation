@@ -242,7 +242,7 @@ export default function PresentationDetailPage({ presentation }: Props) {
                   <CardHeader>
                     <div className="flex items-center gap-2">
                       <FileText className="h-5 w-5 text-muted-foreground" />
-                      <CardTitle>法說會簡報重點與營運摘要</CardTitle>
+                      <CardTitle>{presentation.companyName} {yearQuarter} 法說會簡報重點與營運摘要</CardTitle>
                     </div>
                   </CardHeader>
                   <CardContent>
