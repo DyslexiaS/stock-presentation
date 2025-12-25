@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server'
 import dbConnect from '@/lib/mongodb'
 import PresentationModel from '@/lib/models/Presentation'
 
-const CHUNK_SIZE = 50000
+const CHUNK_SIZE = 10000
 
 // Tell Next.js about the dynamic segment
 export const dynamic = 'force-dynamic'

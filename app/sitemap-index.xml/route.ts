@@ -1,7 +1,7 @@
 import dbConnect from '@/lib/mongodb'
 import PresentationModel from '@/lib/models/Presentation'
 
-const CHUNK_SIZE = 50000
+const CHUNK_SIZE = 10000
 
 export async function GET() {
   const baseUrl =
@@ -23,7 +23,7 @@ export async function GET() {
     <lastmod>${new Date().toISOString()}</lastmod>
   </sitemap>`,
       ...Array.from({ length: totalPages }, (_, i) => `  <sitemap>
-    <loc>${baseUrl}/presentations-sitemap-${i}.xml</loc>
+    <loc>${baseUrl}/presentations-sitemap/${i}</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
   </sitemap>`)
     ]
