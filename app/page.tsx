@@ -221,20 +221,15 @@ export default async function HomePage() {
         }}
       />
 
-      {/* Enhanced Footer - Server-side rendered */}
-      <footer className="relative bg-gradient-to-t from-slate-50 to-white border-t border-slate-200/50 mt-20 overflow-hidden">
-        {/* Subtle footer decoration */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute bottom-0 left-1/3 w-24 h-24 bg-gradient-to-br from-slate-100 to-slate-50 rounded-full blur-2xl"></div>
-          <div className="absolute top-0 right-1/3 w-20 h-20 bg-gradient-to-br from-slate-50 to-white rounded-full blur-2xl"></div>
-        </div>
-
-        <div className="relative container mx-auto px-6 py-16">
-          <div className="text-center">
-            <p className="text-slate-600 text-base font-medium">
-              © 2025 FinmoConf - 台股法說會搜尋平台 - 提供最完整的法人說明會資料
-            </p>
-          </div>
+      {/* Footer - Server-side rendered */}
+      <footer className="bg-white border-t border-slate-200 mt-12">
+        <div className="container mx-auto px-6 py-8 text-center">
+          <p className="text-sm text-slate-400">
+            © {new Date().getFullYear()} FinmoConf · 台股法說會搜尋平台 · 提供最完整的法人說明會資料
+          </p>
+          <p className="text-xs text-slate-300 mt-1">
+            資料來源：公開資訊觀測站 · FinmoAI 系列產品
+          </p>
         </div>
       </footer>
     </div>
