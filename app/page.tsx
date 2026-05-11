@@ -119,12 +119,7 @@ export default async function HomePage() {
                 "publisher": {
                   "@id": "https://finmoconf.diveinvest.net/#organization"
                 },
-                "inLanguage": "zh-TW",
-                "potentialAction": {
-                  "@type": "SearchAction",
-                  "target": "https://finmoconf.diveinvest.net/search?q={search_term_string}",
-                  "query-input": "required name=search_term_string"
-                }
+                "inLanguage": "zh-TW"
               },
               {
                 "@type": "Organization",

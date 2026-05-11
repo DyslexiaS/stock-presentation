@@ -94,8 +94,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
-  const { companyName, typek, totalPresentations } = companyData
-  return generateCompanyMetadata(companyCode, companyName, totalPresentations, typek)
+  const { companyName, typek, totalPresentations, latestPresentationDate } = companyData
+  const latestYear = new Date(latestPresentationDate).getFullYear()
+  return generateCompanyMetadata(companyCode, companyName, totalPresentations, typek, latestYear)
 }
 
 export default async function CompanyPage({ params }: Props) {

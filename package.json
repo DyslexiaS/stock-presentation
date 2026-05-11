@@ -22,6 +22,7 @@
     "autoprefixer": "^10.4.21",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "googleapis": "^171.4.0",
     "lucide-react": "^0.532.0",
     "mongoose": "^8.16.5",
     "next": "^16.0.10",

@@ -2,6 +2,7 @@ import dbConnect from '@/lib/mongodb'
 import PresentationModel from '@/lib/models/Presentation'
 
 const CHUNK_SIZE = 10000
+export const revalidate = 86400
 
 export async function GET() {
   const baseUrl =
@@ -13,7 +14,7 @@ export async function GET() {
     const totalPresentations = await PresentationModel.countDocuments()
     const totalPages = Math.ceil(totalPresentations / CHUNK_SIZE)
 
-    const sitemaps = [
+    const entries = [
       `  <sitemap>
     <loc>${baseUrl}/companies-sitemap.xml</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
@@ -21,12 +22,12 @@ export async function GET() {
       ...Array.from({ length: totalPages }, (_, i) => `  <sitemap>
     <loc>${baseUrl}/presentations-sitemap/${i}</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
-  </sitemap>`)
+  </sitemap>`),
     ]
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${sitemaps.join('\n')}
+${entries.join('\n')}
 </sitemapindex>`
 
     return new Response(xml, {
@@ -36,7 +37,7 @@ ${sitemaps.join('\n')}
       },
     })
   } catch (error) {
-    console.error('Error generating sitemap index:', error)
-    return new Response('Error generating sitemap index', { status: 500 })
+    console.error('Error generating sitemap:', error)
+    return new Response('Error generating sitemap', { status: 500 })
   }
 }

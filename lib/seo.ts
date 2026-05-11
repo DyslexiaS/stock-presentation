@@ -47,9 +47,8 @@ export function generateSEOTitle(presentation: Presentation): string {
   const year = date.getFullYear()
   const quarter = Math.ceil((date.getMonth() + 1) / 3)
   const yearQuarter = `${year}Q${quarter}`
-  const monthDay = date.toLocaleDateString('zh-TW', { month: '2-digit', day: '2-digit' })
+  const monthDay = `${date.getMonth() + 1}月${date.getDate()}日`
 
-  // 優化標題結構：主要關鍵字前置，重要信息突出
   return `${presentation.companyName}(${presentation.companyCode}) ${yearQuarter}法說會簡報PDF下載 | ${monthDay}法人說明會`
 }
 
@@ -222,12 +221,14 @@ export function generateCompanyMetadata(
   companyCode: string,
   companyName: string,
   totalPresentations: number,
-  typek: string
+  typek: string,
+  latestYear?: number
 ): Metadata {
-  const title = `${companyName}(${companyCode}) 法說會簡報 | ${companyCode}法人說明會 | ${seoConfig.siteName}`
-  const description = `${companyName}(${companyCode})歷年法說會簡報總覽，共${totalPresentations}場法人說明會。提供${companyCode}最新財報法說會PDF下載，包含中英文版法人說明會資料。`
+  const year = latestYear ?? new Date().getFullYear()
+
+  const title = `${companyName}(${companyCode}) 法說會簡報 PDF | ${year}最新 ${totalPresentations}場完整下載 | ${seoConfig.siteName}`
+  const description = `${companyName}(${companyCode}) ${year}最新法說會簡報免費下載！收錄${totalPresentations}場完整法人說明會，含中英文版PDF、財報重點、營運展望，投資人研究${companyCode}首選資源。立即查看${companyName}最新法說會！`
   const url = `${seoConfig.baseUrl}/company/${companyCode}`
-  // Removed OG image API - using default social preview
 
   const typeLabel = {
     sii: '上市',
@@ -238,10 +239,14 @@ export function generateCompanyMetadata(
   const keywords = [
     `${companyName}法說會`,
     `${companyCode}法說會`,
+    `${companyName}${year}法說會`,
+    `${companyCode}${year}法說會`,
     `${companyName}法人說明會`,
     `${companyCode}法人說明會`,
     `${companyName}歷年法說會`,
     `${companyCode}歷年法說會`,
+    `${companyName}法說會PDF`,
+    `${companyCode}法說會PDF`,
     `${typeLabel}${companyName}`,
     `${typeLabel}${companyCode}`,
     '台股法說會',
@@ -539,13 +544,15 @@ export function generateKeywords(presentation: Presentation): string[] {
   return smartKeywords.map(k => k.keyword)
 }
 
-// 舊函數保持向後相容
-export function generateCompanyPageTitle(companyCode: string, companyName: string): string {
-  return `${companyName}(${companyCode}) 法說會簡報 | ${companyCode}法人說明會 | ${seoConfig.siteName}`
+// Legacy wrappers kept for backwards compatibility
+export function generateCompanyPageTitle(companyCode: string, companyName: string, latestYear?: number): string {
+  const year = latestYear ?? new Date().getFullYear()
+  return `${companyName}(${companyCode}) 法說會簡報 PDF | ${year}最新 | ${seoConfig.siteName}`
 }
 
-export function generateCompanyPageDescription(companyCode: string, companyName: string, totalPresentations: number): string {
-  return `${companyName}(${companyCode})歷年法說會簡報總覽，共${totalPresentations}場法人說明會。提供${companyCode}最新財報法說會 PDF 下載，包含中英文版法人說明會資料。`
+export function generateCompanyPageDescription(companyCode: string, companyName: string, totalPresentations: number, latestYear?: number): string {
+  const year = latestYear ?? new Date().getFullYear()
+  return `${companyName}(${companyCode}) ${year}最新法說會簡報免費下載！收錄${totalPresentations}場完整法人說明會，含中英文版PDF、財報重點、營運展望，投資人研究${companyCode}首選資源。`
 }
 
 export function generateCompanyKeywords(companyCode: string, companyName: string, typek: string): string[] {
