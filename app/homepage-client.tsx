@@ -91,7 +91,7 @@ export default function HomePageClient({
     <div className="min-h-screen bg-slate-50">
 
       {/* ── Hero ── */}
-      <section className="bg-white border-b border-slate-200">
+      <section className="bg-white border-b border-slate-200 adsbygoogle-noablate">
         <div className="container mx-auto px-6">
 
           {/* Service nav */}

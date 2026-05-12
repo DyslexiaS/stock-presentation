@@ -32,7 +32,7 @@ export default function YearlyCallsChart({ data, companyName }: YearlyCallsChart
   const maxBarHeight = Math.max(1, innerHeight - labelHeadroom)
 
   return (
-    <Card className="w-full">
+    <Card className="w-full adsbygoogle-noablate">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg">年度法說會次數</CardTitle>
         <CardDescription>
@@ -40,12 +40,11 @@ export default function YearlyCallsChart({ data, companyName }: YearlyCallsChart
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {/* Accessible textual data for crawlers/screen readers */}
-        <div className="sr-only" aria-live="polite">
-          {normalizedData.map(d => `${d.year} 年：${d.count} 場`).join('；')}
-        </div>
-
         <div className="w-full overflow-x-auto">
+          {/* Accessible textual data for crawlers/screen readers */}
+          <div className="sr-only" aria-live="polite">
+            {normalizedData.map(d => `${d.year} 年：${d.count} 場`).join('；')}
+          </div>
           <svg
             viewBox={`0 0 ${width} ${height}`}
             role="img"
