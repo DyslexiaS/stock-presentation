@@ -9,6 +9,8 @@ export async function generateStaticParams() {
   return ALL_SUB_INDUSTRIES.map((s) => ({ slug: s.id }))
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://finmoconf.diveinvest.net'
+
 export async function generateMetadata({
   params,
 }: {
@@ -19,13 +21,20 @@ export async function generateMetadata({
   if (!industry) return {}
 
   const companyCount = industry.representativeCompanies.length
+  const canonicalUrl = `${BASE_URL}/industry/${slug}`
   return {
-    title: `${industry.name} | 台灣產業鏈 - FinmoConf`,
-    description: `${industry.name}的供應鏈結構、代表廠商與下游應用。包含${companyCount}家台灣上市公司的法說會資料。`,
+    title: `${industry.name} | 台灣產業鏈供應鏈 - FinmoConf`,
+    description: `${industry.name}供應鏈結構、代表廠商與下游應用。${industry.representativeCompanies.slice(0, 5).join('、')}等${companyCount}家台灣上市公司法說會資料。`,
     robots: { index: true, follow: true },
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
-      title: `${industry.name} | 台灣產業鏈`,
-      description: `${industry.name}供應鏈結構與代表廠商`,
+      title: `${industry.name} | 台灣產業鏈供應鏈 - FinmoConf`,
+      description: `${industry.name}供應鏈結構與代表廠商，包含 ${industry.representativeCompanies.slice(0, 5).join('、')} 等台灣上市公司。`,
+      url: canonicalUrl,
+      siteName: 'FinmoConf',
+      type: 'website',
     },
   }
 }

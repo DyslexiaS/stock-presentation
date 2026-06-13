@@ -2,10 +2,22 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { ALL_SUB_INDUSTRIES } from '@/lib/data/industry-map'
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://finmoconf.diveinvest.net'
+
 export const metadata: Metadata = {
   title: '台股產業地圖 | FinmoConf - 依產業瀏覽法說會',
   description: '依產業分類瀏覽台灣上市櫃公司法說會簡報。半導體、金融、電子等各產業法人說明會資料一覽，快速掌握產業動態。',
   robots: { index: true, follow: true },
+  alternates: {
+    canonical: `${BASE_URL}/industry`,
+  },
+  openGraph: {
+    title: '台股產業地圖 | FinmoConf',
+    description: '依產業分類瀏覽台灣上市櫃公司法說會簡報。半導體、金融、電子等各產業法人說明會資料一覽。',
+    url: `${BASE_URL}/industry`,
+    siteName: 'FinmoConf',
+    type: 'website',
+  },
 }
 
 type SectorCfg = {
