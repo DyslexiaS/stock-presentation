@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ALL_SUB_INDUSTRIES } from '@/lib/data/industry-map'
 import { getCompanyCode } from '@/lib/data/tw-company-codes'
+import { INDUSTRY_FAQS } from '@/lib/data/industry-faqs'
 
 // SSG: pre-generate all pages at build time
 export async function generateStaticParams() {
@@ -89,8 +90,8 @@ export default async function IndustrySlugPage({
     ],
   }
 
-  // FAQ: build questions dynamically from industry data
-  const faqs: { question: string; answer: string }[] = [
+  // FAQ: rich content from industry-faqs.ts, followed by auto-generated structural FAQs
+  const autoFaqs: { question: string; answer: string }[] = [
     {
       question: `台灣${industry.name}有哪些代表性公司？`,
       answer: `台灣${industry.name}的代表性公司包括：${industry.representativeCompanies.join('、')}等。這些企業在台灣產業供應鏈中扮演重要角色。`,
@@ -108,6 +109,7 @@ export default async function IndustrySlugPage({
         ]
       : []),
   ]
+  const faqs = [...(INDUSTRY_FAQS[slug] ?? []), ...autoFaqs]
 
   // JSON-LD: FAQPage
   const faqJsonLd = {
