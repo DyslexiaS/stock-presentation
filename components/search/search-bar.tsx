@@ -13,6 +13,7 @@ interface SearchBarProps {
     type?: 'sii' | 'otc' | 'rotc'
   }) => void
   isLoading?: boolean
+  initialQuery?: string
 }
 
 const companyTypes = [
@@ -22,8 +23,8 @@ const companyTypes = [
   { value: 'rotc', label: '興櫃', description: '興櫃市場' },
 ] as const
 
-export function SearchBar({ onSearch, isLoading }: SearchBarProps) {
-  const [query, setQuery] = useState('')
+export function SearchBar({ onSearch, isLoading, initialQuery = '' }: SearchBarProps) {
+  const [query, setQuery] = useState(initialQuery)
   const [selectedType, setSelectedType] = useState<'all' | 'sii' | 'otc' | 'rotc'>('all')
 
   const handleSubmit = (e: React.FormEvent) => {

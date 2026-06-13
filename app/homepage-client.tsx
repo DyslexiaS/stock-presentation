@@ -6,7 +6,8 @@ import { SearchResults } from '@/components/search/search-results'
 import { PromotionCards } from '@/components/ui/promotion-cards'
 import { Presentation } from '@/types'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 interface PaginationData {
   page: number
@@ -26,6 +27,9 @@ export default function HomePageClient({
   initialPresentations,
   initialPagination
 }: HomePageClientProps) {
+  const urlSearchParams = useSearchParams()
+  const initialQ = urlSearchParams.get('q') ?? ''
+
   const [presentations, setPresentations] = useState<Presentation[]>(initialPresentations)
   const [isLoading, setIsLoading] = useState(false)
   const [pagination, setPagination] = useState<PaginationData>(initialPagination)
@@ -33,8 +37,15 @@ export default function HomePageClient({
     q?: string
     companyCode?: string
     type?: 'sii' | 'otc' | 'rotc'
-  }>({})
-  const [hasSearched, setHasSearched] = useState(false)
+  }>(initialQ ? { q: initialQ } : {})
+  const [hasSearched, setHasSearched] = useState(!!initialQ)
+
+  useEffect(() => {
+    if (initialQ) {
+      fetchPresentations(1, { q: initialQ })
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const fetchPresentations = async (page: number = 1, params?: {
     q?: string
@@ -110,8 +121,8 @@ export default function HomePageClient({
               <span className="text-sm text-slate-400 group-hover:text-slate-500 transition-colors leading-snug">
                 產業地圖
               </span>
-              <span className="text-[9px] font-semibold tracking-widest px-1.5 py-0.5 rounded bg-slate-100 text-slate-400 leading-none uppercase">
-                Soon
+              <span className="text-[9px] font-semibold tracking-widest px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-600 leading-none uppercase">
+                New
               </span>
             </Link>
           </nav>
@@ -154,7 +165,7 @@ export default function HomePageClient({
 
           {/* Search Bar */}
           <div className="max-w-3xl mx-auto pb-8">
-            <SearchBar onSearch={handleSearch} isLoading={isLoading} />
+            <SearchBar onSearch={handleSearch} isLoading={isLoading} initialQuery={initialQ} />
           </div>
         </div>
       </section>

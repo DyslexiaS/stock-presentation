@@ -12,9 +12,7 @@ export async function GET(
   context: any
 ) {
   const params = await context.params as { page: string }
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://finmoconf.diveinvest.net')
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://finmoconf.diveinvest.net'
 
   const page = parseInt(params.page)
 

@@ -2,9 +2,7 @@ import dbConnect from '@/lib/mongodb'
 import PresentationModel from '@/lib/models/Presentation'
 
 export async function GET() {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://finmoconf.diveinvest.net')
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://finmoconf.diveinvest.net'
 
   try {
     await dbConnect()

@@ -5,9 +5,7 @@ const CHUNK_SIZE = 10000
 export const revalidate = 86400
 
 export async function GET() {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://finmoconf.diveinvest.net')
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://finmoconf.diveinvest.net'
 
   try {
     await dbConnect()

@@ -4,9 +4,7 @@ import PresentationModel from '@/lib/models/Presentation'
 const CHUNK_SIZE = 10000
 
 export async function GET() {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://finmoconf.diveinvest.net')
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://finmoconf.diveinvest.net'
 
   try {
     await dbConnect()
@@ -16,6 +14,10 @@ export async function GET() {
     const sitemaps = [
       `  <sitemap>
     <loc>${baseUrl}/companies-sitemap.xml</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+  </sitemap>`,
+      `  <sitemap>
+    <loc>${baseUrl}/industry-sitemap.xml</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
   </sitemap>`,
       ...Array.from({ length: totalPages }, (_, i) => `  <sitemap>

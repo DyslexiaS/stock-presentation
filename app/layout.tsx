@@ -1,14 +1,9 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { AdSenseScript } from '@/components/ads/adsense-script'
-import { Analytics } from "@vercel/analytics/next"
-import { SpeedInsights } from "@vercel/speed-insights/next"
 import './globals.css'
 
-// Single source of truth for canonical origin
-const baseUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://finmoconf.diveinvest.net')
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://finmoconf.diveinvest.net'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -99,8 +94,6 @@ export default function RootLayout({
             `,
           }}
         />
-        <Analytics />
-        <SpeedInsights />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
