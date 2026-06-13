@@ -9,6 +9,15 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 
+const FEATURED_INDUSTRIES = [
+  { label: 'IC 設計', slug: 'ic-design',               dot: 'bg-blue-400',   text: 'text-blue-700',   bg: 'bg-blue-50 border-blue-200 hover:bg-blue-100' },
+  { label: 'AI',      slug: 'ai',                      dot: 'bg-purple-400', text: 'text-purple-700', bg: 'bg-purple-50 border-purple-200 hover:bg-purple-100' },
+  { label: '伺服器',  slug: 'server',                  dot: 'bg-violet-400', text: 'text-violet-700', bg: 'bg-violet-50 border-violet-200 hover:bg-violet-100' },
+  { label: '電動車',  slug: 'ev-car',                  dot: 'bg-amber-400',  text: 'text-amber-700',  bg: 'bg-amber-50 border-amber-200 hover:bg-amber-100' },
+  { label: 'PCB',     slug: 'pcb',                     dot: 'bg-emerald-400',text: 'text-emerald-700',bg: 'bg-emerald-50 border-emerald-200 hover:bg-emerald-100' },
+  { label: '半導體設備', slug: 'semiconductor-equipment', dot: 'bg-teal-400',  text: 'text-teal-700',   bg: 'bg-teal-50 border-teal-200 hover:bg-teal-100' },
+]
+
 interface PaginationData {
   page: number
   limit: number
@@ -164,8 +173,31 @@ export default function HomePageClient({
           </div>
 
           {/* Search Bar */}
-          <div className="max-w-3xl mx-auto pb-8">
+          <div className="max-w-3xl mx-auto pt-2">
             <SearchBar onSearch={handleSearch} isLoading={isLoading} initialQuery={initialQ} />
+          </div>
+
+          {/* Featured industry chips */}
+          <div className="max-w-3xl mx-auto pb-8 pt-5 border-t border-slate-100 mt-6">
+            <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest mb-3">熱門產業</p>
+            <div className="flex flex-wrap gap-2">
+              {FEATURED_INDUSTRIES.map(({ label, slug, dot, text, bg }) => (
+                <Link
+                  key={slug}
+                  href={`/industry/${slug}`}
+                  className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-sm font-medium border transition-colors ${bg} ${text}`}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${dot} flex-shrink-0`} />
+                  {label}
+                </Link>
+              ))}
+              <Link
+                href="/industry"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-medium border border-slate-200 bg-white text-slate-500 hover:bg-slate-50 transition-colors"
+              >
+                查看全部 →
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -189,6 +221,44 @@ export default function HomePageClient({
                 </button>
               )}
             </div>
+
+            {/* Recent highlights — shown only before any search */}
+            {!hasSearched && presentations.length > 0 && (
+              <div className="mb-6 rounded-xl border border-slate-200 bg-white overflow-hidden">
+                <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
+                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">本週速覽</span>
+                  <span className="text-[11px] text-slate-400">最近新增</span>
+                </div>
+                <ul className="divide-y divide-slate-100">
+                  {presentations.slice(0, 3).map((p) => {
+                    const date = new Date(p.eventDate)
+                    const dateStr = `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}`
+                    const typeLabel = p.typek === 'sii' ? '上市' : p.typek === 'otc' ? '上櫃' : '興櫃'
+                    const typeColor = p.typek === 'sii' ? 'text-blue-600 bg-blue-50' : p.typek === 'otc' ? 'text-emerald-600 bg-emerald-50' : 'text-purple-600 bg-purple-50'
+                    return (
+                      <li key={p._id} className="flex items-center gap-4 px-4 py-3 hover:bg-slate-50 transition-colors">
+                        <div className="flex-1 min-w-0">
+                          <Link href={`/company/${p.companyCode}`} className="font-semibold text-slate-800 hover:text-slate-900 text-sm">
+                            {p.companyName}
+                          </Link>
+                          <span className="ml-2 font-mono text-xs text-slate-400">{p.companyCode}</span>
+                        </div>
+                        <span className={`text-[11px] font-medium px-2 py-0.5 rounded ${typeColor}`}>{typeLabel}</span>
+                        <span className="text-xs text-slate-400 font-mono tabular-nums shrink-0">{dateStr}</span>
+                        <Link
+                          href={p.presentationTWUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="shrink-0 text-xs text-blue-600 hover:text-blue-800 font-medium"
+                        >
+                          PDF ↗
+                        </Link>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+            )}
 
             <SearchResults
               results={presentations}
