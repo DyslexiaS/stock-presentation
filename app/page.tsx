@@ -21,6 +21,8 @@ async function getInitialPresentations(): Promise<{
     hasNext: boolean
     hasPrev: boolean
   }
+  weekCount: number
+  monthCount: number
 }> {
   try {
     await dbConnect()
@@ -29,15 +31,17 @@ async function getInitialPresentations(): Promise<{
     const page = 1
     const skip = (page - 1) * limit
 
-    // Get latest presentations
-    const presentations = await PresentationModel.find({})
-      .sort({ eventDate: -1, createdAt: -1 })
-      .limit(limit)
-      .skip(skip)
-      .lean()
-      .exec()
+    const now = new Date()
+    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
 
-    const total = await PresentationModel.countDocuments({})
+    const [presentations, total, weekCount, monthCount] = await Promise.all([
+      PresentationModel.find({}).sort({ eventDate: -1, createdAt: -1 }).limit(limit).skip(skip).lean().exec(),
+      PresentationModel.countDocuments({}),
+      PresentationModel.countDocuments({ eventDate: { $gte: weekAgo } }),
+      PresentationModel.countDocuments({ eventDate: { $gte: monthStart } }),
+    ])
+
     const pages = Math.ceil(total / limit)
 
     return {
@@ -48,18 +52,12 @@ async function getInitialPresentations(): Promise<{
         createdAt: p.createdAt?.toISOString() || p.eventDate.toISOString(),
         updatedAt: p.updatedAt?.toISOString()
       })),
-      pagination: {
-        page,
-        limit,
-        total,
-        pages,
-        hasNext: page < pages,
-        hasPrev: page > 1
-      }
+      pagination: { page, limit, total, pages, hasNext: page < pages, hasPrev: page > 1 },
+      weekCount,
+      monthCount,
     }
   } catch (error) {
     console.error('Error fetching presentations:', error)
-    // Return mock data as fallback
     return {
       presentations: [{
         _id: '687b18f1a2ef6df0427f27e4',
@@ -71,14 +69,9 @@ async function getInitialPresentations(): Promise<{
         typek: 'sii',
         createdAt: '2025-07-19T12:02:57.055Z'
       }],
-      pagination: {
-        page: 1,
-        limit: 20,
-        total: 1,
-        pages: 1,
-        hasNext: false,
-        hasPrev: false
-      }
+      pagination: { page: 1, limit: 20, total: 1, pages: 1, hasNext: false, hasPrev: false },
+      weekCount: 0,
+      monthCount: 0,
     }
   }
 }
@@ -86,10 +79,10 @@ async function getInitialPresentations(): Promise<{
 // Server-side rendered homepage
 export default async function HomePage() {
   // Fetch initial data on the server
-  const { presentations, pagination } = await getInitialPresentations()
+  const { presentations, pagination, weekCount, monthCount } = await getInitialPresentations()
 
   return (
-    <div className="min-h-screen bg-slate-50">{/* Changed to match homepage-client.tsx background */}
+    <div className="min-h-screen bg-slate-50">
 
       {/* Client-side interactive components */}
       <Suspense fallback={
@@ -100,6 +93,8 @@ export default async function HomePage() {
         <HomePageClient
           initialPresentations={presentations}
           initialPagination={pagination}
+          weekCount={weekCount}
+          monthCount={monthCount}
         />
       </Suspense>
 

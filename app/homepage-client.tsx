@@ -30,11 +30,15 @@ interface PaginationData {
 interface HomePageClientProps {
   initialPresentations: Presentation[]
   initialPagination: PaginationData
+  weekCount: number
+  monthCount: number
 }
 
 export default function HomePageClient({
   initialPresentations,
-  initialPagination
+  initialPagination,
+  weekCount,
+  monthCount,
 }: HomePageClientProps) {
   const urlSearchParams = useSearchParams()
   const initialQ = urlSearchParams.get('q') ?? ''
@@ -222,41 +226,18 @@ export default function HomePageClient({
               )}
             </div>
 
-            {/* Recent highlights — shown only before any search */}
-            {!hasSearched && presentations.length > 0 && (
-              <div className="mb-6 rounded-xl border border-slate-200 bg-white overflow-hidden">
-                <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
-                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">本週速覽</span>
-                  <span className="text-[11px] text-slate-400">最近新增</span>
+            {/* Activity stats — shown only before any search */}
+            {!hasSearched && (weekCount > 0 || monthCount > 0) && (
+              <div className="mb-6 rounded-xl border border-slate-200 bg-white px-5 py-4 flex items-center gap-8">
+                <div>
+                  <p className="text-2xl font-bold font-mono tabular-nums text-slate-900">{weekCount}</p>
+                  <p className="text-xs text-slate-500 mt-0.5">本週新增場次</p>
                 </div>
-                <ul className="divide-y divide-slate-100">
-                  {presentations.slice(0, 3).map((p) => {
-                    const date = new Date(p.eventDate)
-                    const dateStr = `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}`
-                    const typeLabel = p.typek === 'sii' ? '上市' : p.typek === 'otc' ? '上櫃' : '興櫃'
-                    const typeColor = p.typek === 'sii' ? 'text-blue-600 bg-blue-50' : p.typek === 'otc' ? 'text-emerald-600 bg-emerald-50' : 'text-purple-600 bg-purple-50'
-                    return (
-                      <li key={p._id} className="flex items-center gap-4 px-4 py-3 hover:bg-slate-50 transition-colors">
-                        <div className="flex-1 min-w-0">
-                          <Link href={`/company/${p.companyCode}`} className="font-semibold text-slate-800 hover:text-slate-900 text-sm">
-                            {p.companyName}
-                          </Link>
-                          <span className="ml-2 font-mono text-xs text-slate-400">{p.companyCode}</span>
-                        </div>
-                        <span className={`text-[11px] font-medium px-2 py-0.5 rounded ${typeColor}`}>{typeLabel}</span>
-                        <span className="text-xs text-slate-400 font-mono tabular-nums shrink-0">{dateStr}</span>
-                        <Link
-                          href={p.presentationTWUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="shrink-0 text-xs text-blue-600 hover:text-blue-800 font-medium"
-                        >
-                          PDF ↗
-                        </Link>
-                      </li>
-                    )
-                  })}
-                </ul>
+                <div className="w-px bg-slate-200 self-stretch" />
+                <div>
+                  <p className="text-2xl font-bold font-mono tabular-nums text-slate-900">{monthCount}</p>
+                  <p className="text-xs text-slate-500 mt-0.5">本月新增場次</p>
+                </div>
               </div>
             )}
 
