@@ -4,6 +4,10 @@ import { notFound } from 'next/navigation'
 import { ALL_SUB_INDUSTRIES } from '@/lib/data/industry-map'
 import { getCompanyCode } from '@/lib/data/tw-company-codes'
 import { INDUSTRY_FAQS } from '@/lib/data/industry-faqs'
+import PresentationModel from '@/lib/models/Presentation'
+import dbConnect from '@/lib/mongodb'
+
+export const revalidate = 86400
 
 // SSG: pre-generate all pages at build time
 export async function generateStaticParams() {
@@ -63,6 +67,22 @@ export default async function IndustrySlugPage({
 
   // Chip-style layers from "A / B / C" string
   const mainLayerChips = industry.mainLayers.split(' / ').map((l) => l.trim()).filter(Boolean)
+
+  // Fetch presentation counts for representative companies
+  const repCodes = industry.representativeCompanies
+    .map(name => getCompanyCode(name))
+    .filter(Boolean) as string[]
+  let presentationCounts: Record<string, number> = {}
+  try {
+    await dbConnect()
+    const countDocs: { _id: string; count: number }[] = await PresentationModel.aggregate([
+      { $match: { companyCode: { $in: repCodes } } },
+      { $group: { _id: '$companyCode', count: { $sum: 1 } } },
+    ])
+    for (const doc of countDocs) presentationCounts[doc._id] = doc.count
+  } catch {
+    // DB unavailable — chips render without count badges
+  }
 
   // JSON-LD: ItemList
   const jsonLd = {
@@ -202,13 +222,17 @@ export default async function IndustrySlugPage({
           <div className="flex flex-wrap gap-2">
             {industry.representativeCompanies.map((name) => {
               const code = getCompanyCode(name)
+              const count = code ? (presentationCounts[code] ?? 0) : 0
               return code ? (
                 <Link
                   key={name}
                   href={`/company/${code}`}
-                  className="inline-block rounded-md border border-slate-300 bg-white px-3 py-1 text-sm text-slate-700 hover:border-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3 py-1 text-sm text-slate-700 hover:border-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-colors"
                 >
                   {name}
+                  {count > 0 && (
+                    <span className="font-mono text-[11px] text-slate-400 tabular-nums">{count}</span>
+                  )}
                 </Link>
               ) : (
                 <span

@@ -2,6 +2,8 @@ import { AdBanner } from '@/components/ads/ad-banner'
 import { PromotionCards } from '@/components/ui/promotion-cards'
 import PresentationModel from '@/lib/models/Presentation'
 import dbConnect from '@/lib/mongodb'
+import { ALL_SUB_INDUSTRIES } from '@/lib/data/industry-map'
+import { getCompanyCode } from '@/lib/data/tw-company-codes'
 import {
   generateCompanyBreadcrumbData,
   generateCompanyStructuredData,
@@ -136,6 +138,18 @@ export default async function CompanyPage({ params }: Props) {
   const years = Object.keys(presentationsByYear).map(Number).sort((a, b) => b - a)
   const yearlyData = years.map(year => ({ year, count: presentationsByYear[year].length }))
 
+  // Find the industry this company belongs to and get peer companies
+  const relatedIndustry = ALL_SUB_INDUSTRIES.find(ind =>
+    ind.representativeCompanies.includes(companyName)
+  )
+  const peerCompanies = relatedIndustry
+    ? relatedIndustry.representativeCompanies
+        .filter(name => name !== companyName)
+        .map(name => ({ name, code: getCompanyCode(name) }))
+        .filter(({ code }) => !!code)
+        .slice(0, 5)
+    : []
+
   return (
     <>
       <script
@@ -254,6 +268,37 @@ export default async function CompanyPage({ params }: Props) {
             </div>
           </section>
         </main>
+
+        {/* 同產業相關公司 */}
+        {(peerCompanies.length > 0 || relatedIndustry) && (
+          <section className="border-t border-gray-100 bg-slate-50 py-8">
+            <div className="container mx-auto px-4">
+              <div className="flex items-baseline gap-3 mb-4">
+                <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">同產業相關公司</h2>
+                {relatedIndustry && (
+                  <Link
+                    href={`/industry/${relatedIndustry.id}`}
+                    className="text-xs text-blue-600 hover:text-blue-800 font-medium"
+                  >
+                    {relatedIndustry.name} →
+                  </Link>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {peerCompanies.map(({ name, code }) => (
+                  <Link
+                    key={code}
+                    href={`/company/${code}`}
+                    className="inline-flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 hover:border-slate-500 hover:bg-white hover:text-slate-900 transition-colors"
+                  >
+                    {name}
+                    <span className="font-mono text-[11px] text-slate-400">{code}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Back to Top floating button */}
         <a
