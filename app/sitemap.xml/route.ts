@@ -17,6 +17,10 @@ export async function GET() {
     <loc>${baseUrl}/companies-sitemap.xml</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
   </sitemap>`,
+      `  <sitemap>
+    <loc>${baseUrl}/industry-sitemap.xml</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+  </sitemap>`,
       ...Array.from({ length: totalPages }, (_, i) => `  <sitemap>
     <loc>${baseUrl}/presentations-sitemap/${i}</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
