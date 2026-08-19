@@ -80,9 +80,9 @@ export default async function CompanyArchivePage({ params }: { params: Promise<{
               <p className="text-xs uppercase tracking-[0.15em] text-slate-500">
                 {memo.reportingPeriod || formatQuarterLabel(memo.quarter)} · {memo.eventDate}
               </p>
-              <h2 className="mt-2 font-[family-name:var(--font-en-serif)] text-2xl leading-snug text-slate-900 group-hover:underline group-hover:decoration-slate-300 group-hover:underline-offset-4">
+              <h3 className="mt-2 font-[family-name:var(--font-en-serif)] text-2xl leading-snug text-slate-900 group-hover:underline group-hover:decoration-slate-300 group-hover:underline-offset-4">
                 {memo.title}
-              </h2>
+              </h3>
               <p className="mt-3 leading-relaxed text-slate-600">{memo.description}</p>
             </Link>
           </li>
