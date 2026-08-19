@@ -24,27 +24,31 @@ export default async function CompanyArchivePage({ params }: { params: Promise<{
   const { companyName, ticker } = memos[0]
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-12">
+    <div className="mx-auto max-w-4xl px-6 py-14 md:px-10">
       <nav className="text-sm text-slate-500">
         <Link href="/en" className="hover:text-slate-800">English</Link>
         <span className="mx-2">/</span>
         <span>{companyName}</span>
       </nav>
-      <h1 className="mt-4 font-[family-name:var(--font-en-serif)] text-4xl font-semibold tracking-tight text-slate-900">
-        {companyName} ({ticker})
-      </h1>
-      <p className="mt-3 text-lg text-slate-600">
-        English earnings memos. {memos.length} briefing{memos.length === 1 ? '' : 's'} on file.
-      </p>
-      <ul className="mt-10 space-y-4">
+      <header className="mt-8 border-b border-slate-300 pb-10">
+        <h1 className="font-[family-name:var(--font-en-serif)] text-[2.5rem] font-semibold leading-[1.15] tracking-tight text-slate-900 md:text-[3rem]">
+          {companyName} ({ticker})
+        </h1>
+        <p className="mt-5 text-xl leading-relaxed text-slate-600">
+          English earnings memos. {memos.length} briefing{memos.length === 1 ? '' : 's'} on file.
+        </p>
+      </header>
+      <ul className="mt-10 divide-y divide-slate-200">
         {memos.map((memo) => (
-          <li key={memo.quarter}>
-            <Link href={`/en/${memo.companySlug}/${memo.quarter}`} className="block bg-white p-5 shadow-sm hover:shadow-md">
-              <p className="text-xs uppercase tracking-wide text-slate-500">
+          <li key={memo.quarter} className="group py-7 first:pt-2">
+            <Link href={`/en/${memo.companySlug}/${memo.quarter}`}>
+              <p className="text-xs uppercase tracking-[0.15em] text-slate-500">
                 {memo.reportingPeriod || formatQuarterLabel(memo.quarter)} · {memo.eventDate}
               </p>
-              <h2 className="mt-1 font-[family-name:var(--font-en-serif)] text-xl text-slate-900">{memo.title}</h2>
-              <p className="mt-2 text-sm leading-6 text-slate-600">{memo.description}</p>
+              <h2 className="mt-2 font-[family-name:var(--font-en-serif)] text-2xl leading-snug text-slate-900 group-hover:underline group-hover:decoration-slate-300 group-hover:underline-offset-4">
+                {memo.title}
+              </h2>
+              <p className="mt-3 leading-relaxed text-slate-600">{memo.description}</p>
             </Link>
           </li>
         ))}

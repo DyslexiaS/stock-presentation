@@ -6,7 +6,7 @@ export function EnHeader() {
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-6 px-6 py-4">
         <Link href="/en" className="group">
           <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-slate-400">
-            FinmoConf · English
+            FinmoConf
           </p>
           <p className="font-[family-name:var(--font-en-serif)] text-lg leading-tight text-white group-hover:text-slate-200">
             Taiwan Semiconductor Earnings
