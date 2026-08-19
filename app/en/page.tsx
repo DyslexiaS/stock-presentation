@@ -23,7 +23,7 @@ export default function EnglishHomePage() {
     <div className="mx-auto max-w-5xl px-6 py-12">
       <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">Overseas research desk</p>
       <h1 className="mt-3 font-[family-name:var(--font-en-serif)] text-4xl font-semibold tracking-tight text-slate-900 md:text-5xl">
-        English memos on Taiwan earnings calls
+        Taiwan Semiconductor Earnings Memos
       </h1>
       <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
         Briefings written for overseas investors who need Taiwan semiconductor context. First collection: companies tied to NVIDIA&apos;s 800V HVDC AI data-center architecture.

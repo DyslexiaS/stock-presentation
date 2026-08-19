@@ -7,6 +7,87 @@ import {
   formatQuarterLabel,
 } from '@/lib/content/en-memos'
 
+const OG_IMAGE = {
+  url: `${EN_BASE_URL}/FinmoAI-brand.png`,
+  width: 1200,
+  height: 630,
+  alt: 'FinmoConf English — Taiwan semiconductor earnings memos',
+  type: 'image/png',
+} as const
+
+const EN_ROBOTS: Metadata['robots'] = {
+  index: true,
+  follow: true,
+  googleBot: {
+    index: true,
+    follow: true,
+    'max-video-preview': -1,
+    'max-image-preview': 'large',
+    'max-snippet': -1,
+  },
+}
+
+function toIsoDate(value: string): string {
+  const parsed = new Date(value)
+  return Number.isNaN(parsed.getTime()) ? value : parsed.toISOString()
+}
+
+function englishHreflang(url: string): Metadata['alternates'] {
+  return {
+    canonical: url,
+    languages: {
+      en: url,
+    },
+  }
+}
+
+function englishSocial(title: string, description: string, url: string, type: 'website' | 'article' = 'website'): Pick<Metadata, 'openGraph' | 'twitter'> {
+  return {
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: EN_SITE_NAME,
+      type,
+      locale: 'en_US',
+      images: [OG_IMAGE],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [OG_IMAGE.url],
+    },
+  }
+}
+
+export function generateEnLayoutMetadata(): Metadata {
+  const url = `${EN_BASE_URL}/en`
+  return {
+    title: {
+      default: 'Taiwan Semiconductor Earnings Memos | FinmoConf English',
+      template: '%s',
+    },
+    description:
+      'English earnings-call briefings on Taiwan semiconductor and AI infrastructure suppliers, including NVIDIA 800V HVDC supply-chain memos.',
+    keywords: [
+      'Taiwan semiconductor earnings',
+      'Taiwan earnings call memo',
+      'NVIDIA 800V HVDC',
+      'NVIDIA 800V supply chain Taiwan',
+      'Lite-On earnings',
+      'AI data center power',
+    ],
+    robots: EN_ROBOTS,
+    alternates: englishHreflang(url),
+    ...englishSocial(
+      'Taiwan Semiconductor Earnings Memos | FinmoConf English',
+      'English earnings-call briefings on Taiwan semiconductor and AI infrastructure suppliers.',
+      url
+    ),
+  }
+}
+
 export function memoUrl(memo: EnMemo): string {
   return `${EN_BASE_URL}/en/${memo.companySlug}/${memo.quarter}`
 }
@@ -20,37 +101,38 @@ export function generateEnHomeMetadata(): Metadata {
   return {
     title,
     description,
-    alternates: {
-      canonical: url,
-      languages: { en: url },
-    },
-    robots: { index: true, follow: true },
-    openGraph: {
-      title,
-      description,
-      url,
-      siteName: EN_SITE_NAME,
-      type: 'website',
-      locale: 'en_US',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-    },
+    keywords: [
+      'Taiwan semiconductor earnings',
+      'Taiwan earnings call',
+      'NVIDIA 800V HVDC Taiwan',
+      'NVIDIA 800V supply chain',
+      'Lite-On earnings memo',
+    ],
+    alternates: englishHreflang(url),
+    robots: EN_ROBOTS,
+    ...englishSocial(title, description, url),
   }
 }
 
 export function generateEnMemoMetadata(memo: EnMemo): Metadata {
   const url = memoUrl(memo)
+  const title = `${memo.title} | FinmoConf`
+  const quarterLabel = formatQuarterLabel(memo.quarter)
+  const keywords = [
+    `${memo.companyName} earnings`,
+    `${memo.companyName} ${quarterLabel} earnings`,
+    `${memo.companyName} (${memo.ticker}) earnings memo`,
+    'NVIDIA 800V HVDC',
+    'Taiwan semiconductor earnings',
+  ]
+  const social = englishSocial(memo.title, memo.description, url, 'article')
+
   return {
-    title: `${memo.title} | FinmoConf`,
+    title,
     description: memo.description,
-    alternates: {
-      canonical: url,
-      languages: { en: url },
-    },
-    robots: { index: true, follow: true },
+    keywords,
+    alternates: englishHreflang(url),
+    robots: EN_ROBOTS,
     openGraph: {
       title: memo.title,
       description: memo.description,
@@ -58,13 +140,10 @@ export function generateEnMemoMetadata(memo: EnMemo): Metadata {
       siteName: EN_SITE_NAME,
       type: 'article',
       locale: 'en_US',
-      publishedTime: memo.eventDate,
+      publishedTime: toIsoDate(memo.eventDate),
+      images: [OG_IMAGE],
     },
-    twitter: {
-      card: 'summary_large_image',
-      title: memo.title,
-      description: memo.description,
-    },
+    twitter: social.twitter,
   }
 }
 
@@ -81,19 +160,16 @@ export function generateEnCompanyMetadata(
   return {
     title,
     description,
-    alternates: {
-      canonical: url,
-      languages: { en: url },
-    },
-    robots: { index: true, follow: true },
-    openGraph: {
-      title,
-      description,
-      url,
-      siteName: EN_SITE_NAME,
-      type: 'website',
-      locale: 'en_US',
-    },
+    keywords: [
+      `${companyName} earnings`,
+      `${companyName} earnings call`,
+      `${ticker} earnings memo`,
+      'NVIDIA 800V HVDC',
+      'Taiwan semiconductor earnings',
+    ],
+    alternates: englishHreflang(url),
+    robots: EN_ROBOTS,
+    ...englishSocial(title, description, url),
   }
 }
 
@@ -102,29 +178,29 @@ export function generateEnTopicMetadata(topic: EnTopic, count: number): Metadata
   const title = topic.title.includes('FinmoConf') ? topic.title : `${topic.title} | FinmoConf`
   const description =
     topic.description ||
-    `${count} English earnings memos tagged ${topic.slug}.`
+    `${count} English earnings memos on ${topic.title}.`
 
   return {
     title,
     description,
-    alternates: {
-      canonical: url,
-      languages: { en: url },
-    },
-    robots: { index: true, follow: true },
-    openGraph: {
-      title,
-      description,
-      url,
-      siteName: EN_SITE_NAME,
-      type: 'website',
-      locale: 'en_US',
-    },
+    keywords: [
+      'NVIDIA 800V HVDC',
+      'NVIDIA 800V supply chain Taiwan',
+      'Taiwan semiconductor earnings',
+      'AI data center power Taiwan',
+      topic.title,
+    ],
+    alternates: englishHreflang(url),
+    robots: EN_ROBOTS,
+    ...englishSocial(title, description, url),
   }
 }
 
 export function generateEnMemoJsonLd(memo: EnMemo) {
   const url = memoUrl(memo)
+  const published = toIsoDate(memo.eventDate)
+  const quarterLabel = formatQuarterLabel(memo.quarter)
+
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -133,8 +209,8 @@ export function generateEnMemoJsonLd(memo: EnMemo) {
         '@id': `${url}#article`,
         headline: memo.title,
         description: memo.description,
-        datePublished: memo.eventDate,
-        dateModified: memo.eventDate,
+        datePublished: published,
+        dateModified: published,
         inLanguage: 'en',
         url,
         author: {
@@ -147,12 +223,19 @@ export function generateEnMemoJsonLd(memo: EnMemo) {
           name: EN_SITE_NAME,
           url: `${EN_BASE_URL}/en`,
         },
+        image: OG_IMAGE.url,
         about: {
           '@type': 'Organization',
           name: memo.companyName,
           identifier: memo.ticker,
         },
-        keywords: [...memo.tags, memo.companyName, memo.ticker, formatQuarterLabel(memo.quarter)].join(', '),
+        keywords: [
+          `${memo.companyName} earnings`,
+          `${memo.companyName} ${quarterLabel} earnings memo`,
+          'NVIDIA 800V HVDC',
+          'Taiwan semiconductor earnings',
+          memo.ticker,
+        ].join(', '),
       },
       {
         '@type': 'BreadcrumbList',
@@ -160,7 +243,7 @@ export function generateEnMemoJsonLd(memo: EnMemo) {
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'English', item: `${EN_BASE_URL}/en` },
           { '@type': 'ListItem', position: 2, name: `${memo.companyName} (${memo.ticker})`, item: `${EN_BASE_URL}/en/${memo.companySlug}` },
-          { '@type': 'ListItem', position: 3, name: memo.reportingPeriod || formatQuarterLabel(memo.quarter), item: url },
+          { '@type': 'ListItem', position: 3, name: memo.reportingPeriod || quarterLabel, item: url },
         ],
       },
     ],
