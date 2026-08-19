@@ -1,0 +1,167 @@
+import fs from 'fs'
+import path from 'path'
+import matter from 'gray-matter'
+
+const MEMOS_DIR = path.join(process.cwd(), 'content/en/memos')
+const TOPICS_DIR = path.join(process.cwd(), 'content/en/topics')
+
+export interface EnMemo {
+  title: string
+  description: string
+  companySlug: string
+  ticker: string
+  companyName: string
+  quarter: string
+  eventDate: string
+  reportingPeriod: string
+  tags: string[]
+  draft: boolean
+  content: string
+}
+
+export interface EnTopic {
+  slug: string
+  title: string
+  description: string
+  content: string
+}
+
+let memoCache: EnMemo[] | null = null
+let topicCache: EnTopic[] | null = null
+
+function shouldCache() {
+  return process.env.NODE_ENV === 'production'
+}
+
+function parseMemoFile(filePath: string, companySlug: string, quarter: string): EnMemo | null {
+  const raw = fs.readFileSync(filePath, 'utf8')
+  const { data, content } = matter(raw)
+
+  if (data.draft === true) return null
+
+  return {
+    title: String(data.title ?? ''),
+    description: String(data.description ?? ''),
+    companySlug: String(data.companySlug ?? companySlug),
+    ticker: String(data.ticker ?? ''),
+    companyName: String(data.companyName ?? ''),
+    quarter: String(data.quarter ?? quarter),
+    eventDate: String(data.eventDate ?? ''),
+    reportingPeriod: String(data.reportingPeriod ?? ''),
+    tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
+    draft: false,
+    content: content.trim(),
+  }
+}
+
+function loadMemos(): EnMemo[] {
+  if (shouldCache() && memoCache) return memoCache
+
+  if (!fs.existsSync(MEMOS_DIR)) {
+    memoCache = []
+    return memoCache
+  }
+
+  const memos: EnMemo[] = []
+
+  for (const companySlug of fs.readdirSync(MEMOS_DIR)) {
+    const companyDir = path.join(MEMOS_DIR, companySlug)
+    if (!fs.statSync(companyDir).isDirectory()) continue
+
+    for (const fileName of fs.readdirSync(companyDir)) {
+      if (!fileName.endsWith('.md')) continue
+      const quarter = fileName.replace(/\.md$/, '')
+      const parsed = parseMemoFile(path.join(companyDir, fileName), companySlug, quarter)
+      if (parsed) memos.push(parsed)
+    }
+  }
+
+  memos.sort((a, b) => b.eventDate.localeCompare(a.eventDate))
+  memoCache = memos
+  return memos
+}
+
+function loadTopics(): EnTopic[] {
+  if (shouldCache() && topicCache) return topicCache
+
+  if (!fs.existsSync(TOPICS_DIR)) {
+    topicCache = []
+    return topicCache
+  }
+
+  const topics: EnTopic[] = []
+  for (const fileName of fs.readdirSync(TOPICS_DIR)) {
+    if (!fileName.endsWith('.md')) continue
+    const slug = fileName.replace(/\.md$/, '')
+    const raw = fs.readFileSync(path.join(TOPICS_DIR, fileName), 'utf8')
+    const { data, content } = matter(raw)
+    topics.push({
+      slug,
+      title: String(data.title ?? slug),
+      description: String(data.description ?? ''),
+      content: content.trim(),
+    })
+  }
+
+  topicCache = topics
+  return topics
+}
+
+export function getAllMemos(): EnMemo[] {
+  return loadMemos()
+}
+
+export function getMemo(companySlug: string, quarter: string): EnMemo | null {
+  return loadMemos().find((m) => m.companySlug === companySlug && m.quarter === quarter) ?? null
+}
+
+export function getMemosByCompany(companySlug: string): EnMemo[] {
+  return loadMemos().filter((m) => m.companySlug === companySlug)
+}
+
+export function getMemosByTag(tag: string): EnMemo[] {
+  return loadMemos().filter((m) => m.tags.includes(tag))
+}
+
+export function getCompanySlugs(): string[] {
+  return Array.from(new Set(loadMemos().map((m) => m.companySlug)))
+}
+
+export function getAllTags(): string[] {
+  return Array.from(new Set(loadMemos().flatMap((m) => m.tags))).sort()
+}
+
+export function getTopic(slug: string): EnTopic | null {
+  return loadTopics().find((t) => t.slug === slug) ?? null
+}
+
+export function getAllTopics(): EnTopic[] {
+  const fromFiles = loadTopics()
+  const fileSlugs = new Set(fromFiles.map((t) => t.slug))
+  const extra = getAllTags()
+    .filter((tag) => !fileSlugs.has(tag))
+    .map((slug) => ({
+      slug,
+      title: slug,
+      description: '',
+      content: '',
+    }))
+  return [...fromFiles, ...extra]
+}
+
+export function getRelatedMemos(memo: EnMemo, limit = 4): EnMemo[] {
+  return loadMemos()
+    .filter((m) => m.companySlug !== memo.companySlug || m.quarter !== memo.quarter)
+    .filter((m) => m.tags.some((tag) => memo.tags.includes(tag)))
+    .slice(0, limit)
+}
+
+export function formatQuarterLabel(quarter: string): string {
+  const match = quarter.match(/^(\d{4})-q(\d)(?:-(.+))?$/i)
+  if (!match) return quarter
+  const extra = match[3] ? ` (${match[3][0].toUpperCase()}${match[3].slice(1)})` : ''
+  return `Q${match[2]} ${match[1]}${extra}`
+}
+
+export const EN_SITE_NAME = 'FinmoConf English'
+export const EN_BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://finmoconf.diveinvest.net'

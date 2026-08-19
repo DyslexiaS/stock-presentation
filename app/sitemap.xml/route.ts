@@ -14,6 +14,10 @@ export async function GET() {
 
     const entries = [
       `  <sitemap>
+    <loc>${baseUrl}/en-sitemap.xml</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+  </sitemap>`,
+      `  <sitemap>
     <loc>${baseUrl}/companies-sitemap.xml</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
   </sitemap>`,

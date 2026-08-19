@@ -41,19 +41,21 @@ NEXT_PUBLIC_SITE_URL=https://finmoconf.diveinvest.net
 ```
 app/
 ├── page.tsx                          # 首頁 (SSR + ISR 24h)
+├── en/                               # 英文 memo 專區 (SSG)
 ├── company/[companyCode]/page.tsx    # 公司專頁 (ISR 7d)
 ├── presentation/[id]/page.tsx        # 法說會詳情頁 (ISR 7d)
 ├── api/presentations/                # REST API
 ├── sitemap.ts / robots.ts            # SEO 爬蟲設定
-└── sitemap-index.xml/                # 三層式 Sitemap 架構
+└── sitemap-index.xml/                # Sitemap 架構
 
-components/
-├── search/                           # 搜尋列、搜尋結果
-├── ui/                               # shadcn/ui 元件
-└── ads/                              # AdSense 廣告元件
+content/en/
+├── memos/[company]/[quarter].md      # 英文法說會 memo
+└── topics/nvidia-800v.md             # 主題 hub
 
 lib/
-├── seo.ts                            # 動態 metadata 生成（625 行）
+├── seo.ts                            # 中文頁 metadata
+├── seo-en.ts                         # 英文 memo metadata
+├── content/en-memos.ts               # Markdown loader
 ├── models/Presentation.ts            # Mongoose schema
 └── mongodb.ts                        # DB 連線
 ```
@@ -85,12 +87,16 @@ interface Presentation {
 | 頁面 | 目標關鍵字範例 | 數量 |
 |---|---|---|
 | `/` | 台股法說會、法說會查詢 | 1 |
+| `/en` | Taiwan semiconductor earnings memos | 1 |
+| `/en/topics/nvidia-800v` | NVIDIA 800V supply chain Taiwan | 1 |
+| `/en/[company]/[quarter]` | Lite-On Q2 2026 earnings memo | 隨 Markdown 增加 |
 | `/company/2330` | 台積電法說會、2330法說會簡報 | ~2,000 |
 | `/presentation/[id]` | 台積電2024Q3法說會、2330法人說明會PDF | ~10,000+ |
 
 ### Sitemap 三層架構
 ```
 /sitemap-index.xml
+  ├── /en-sitemap.xml                 # 英文 memo / 主題 / 公司檔案
   ├── /sitemap.xml                    # 首頁
   ├── /companies-sitemap.xml          # 所有公司頁（~2,000）
   └── /presentations-sitemap/[page]   # 分頁法說會（每頁 10,000）
@@ -100,6 +106,7 @@ interface Presentation {
 - 首頁：`WebSite` + `Organization` + `Dataset` + `FAQPage`
 - 法說會頁：`Event` + `Organization` + `BreadcrumbList`
 - 公司頁：`Organization` + `Event[]` + `BreadcrumbList`
+- 英文 memo：`Article` + `BreadcrumbList`（`lang=en`，不與中文 PDF 頁做 hreflang 配對）
 
 ### ISR 快取策略
 - 首頁：每 24 小時重新生成
@@ -110,11 +117,25 @@ interface Presentation {
 
 ## SEO 成長路線圖
 
+- [x] **英文 memo 專區 `/en`** — Markdown SSG，NVIDIA 800V 供應鏈為第一個主題
 - [ ] **AI 批次生成 `presentationContent`** — 將 10,000+ 薄頁面轉為有內容的頁面，最高優先
-- [ ] **產業分類頁** `/industry/[sector]` — 承接「半導體業法說會」等高搜尋量關鍵字
+- [x] **產業分類頁** `/industry/[sector]` — 承接「半導體業法說會」等高搜尋量關鍵字
 - [ ] **季度彙整頁** `/quarter/[year-q]` — 承接「2024 Q3 法說會」類查詢
 - [ ] **公司頁加 AI 簡介段落** — 增加文字密度，強化公司頁排名
 - [ ] **詳情頁同公司相關列表** — 強化內部連結，降低跳出率
+
+---
+
+## 英文 memo（`/en`）
+
+海外投資人專區。公開內容只有英文 briefing，中文逐字稿不上架。檔案放在 git，不進 MongoDB。
+
+新增一篇：
+
+1. 在 `content/en/memos/<company-slug>/<quarter>.md` 寫 Markdown（frontmatter：`title`, `description`, `companySlug`, `ticker`, `companyName`, `quarter`, `eventDate`, `reportingPeriod`, `tags`）
+2. 主題用 `tags`（例如 `nvidia-800v`），不要寫進網址
+3. 同一季兩場時，第二篇用 `2026-q1-jun` 這種後綴
+4. commit 後建置時 SSG 成 `/en/<company-slug>/<quarter>`
 
 ---
 
