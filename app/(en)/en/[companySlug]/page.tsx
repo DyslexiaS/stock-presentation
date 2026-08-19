@@ -1,6 +1,12 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { formatQuarterLabel, getCompanySlugs, getMemosByCompany } from '@/lib/content/en-memos'
+import { MarkdownBody } from '@/components/en/markdown-body'
+import {
+  formatQuarterLabel,
+  getCompanyProfile,
+  getCompanySlugs,
+  getMemosByCompany,
+} from '@/lib/content/en-memos'
 import { generateEnCompanyMetadata } from '@/lib/seo-en'
 
 export const dynamic = 'force-static'
@@ -22,6 +28,7 @@ export default async function CompanyArchivePage({ params }: { params: Promise<{
   if (memos.length === 0) notFound()
 
   const { companyName, ticker } = memos[0]
+  const profile = getCompanyProfile(companySlug)
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-14 md:px-10">
@@ -35,10 +42,38 @@ export default async function CompanyArchivePage({ params }: { params: Promise<{
           {companyName} ({ticker})
         </h1>
         <p className="mt-5 text-xl leading-relaxed text-slate-600">
-          English earnings memos. {memos.length} briefing{memos.length === 1 ? '' : 's'} on file.
+          English notes on {memos.length} earnings call{memos.length === 1 ? '' : 's'}.
         </p>
+        {profile && (
+          <dl className="mt-7 grid gap-x-8 gap-y-3 text-sm sm:grid-cols-[max-content_1fr]">
+            {profile.tier && (
+              <>
+                <dt className="font-semibold uppercase tracking-[0.14em] text-slate-500">Tier</dt>
+                <dd className="text-slate-700">{profile.tier}</dd>
+              </>
+            )}
+            {profile.role && (
+              <>
+                <dt className="font-semibold uppercase tracking-[0.14em] text-slate-500">Role</dt>
+                <dd className="text-slate-700">{profile.role}</dd>
+              </>
+            )}
+          </dl>
+        )}
       </header>
-      <ul className="mt-10 divide-y divide-slate-200">
+
+      {profile?.content && (
+        <div className="mt-14">
+          <MarkdownBody content={profile.content} />
+        </div>
+      )}
+
+      <section className="mt-16 border-t border-slate-300 pt-10">
+        <h2 className="font-[family-name:var(--font-en-serif)] text-[2rem] font-semibold leading-tight tracking-tight text-slate-900">
+          Earnings calls
+        </h2>
+      </section>
+      <ul className="mt-4 divide-y divide-slate-200">
         {memos.map((memo) => (
           <li key={memo.quarter} className="group py-7 first:pt-2">
             <Link href={`/en/${memo.companySlug}/${memo.quarter}`}>

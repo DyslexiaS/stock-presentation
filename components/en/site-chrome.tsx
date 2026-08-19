@@ -17,7 +17,7 @@ export function EnHeader() {
             800V topic
           </Link>
           <Link href="/en" className="text-slate-300 hover:text-white">
-            All memos
+            All calls
           </Link>
           <Link href="/" className="rounded border border-slate-600 px-2.5 py-1 text-xs uppercase tracking-wide text-slate-300 hover:border-slate-400 hover:text-white">
             中文原站
@@ -32,7 +32,7 @@ export function EnFooter() {
   return (
     <footer className="mt-16 border-t border-slate-200 bg-white">
       <div className="mx-auto max-w-5xl px-6 py-8 text-sm text-slate-500">
-        <p>English earnings memos are briefings of Taiwan-listed company calls. Not investment advice.</p>
+        <p>English notes on Taiwan-listed company earnings calls, known locally as investor conferences. Not investment advice.</p>
         <p className="mt-2">
           <Link href="/" className="underline decoration-slate-300 underline-offset-4 hover:text-slate-800">
             FinmoConf Chinese IR decks

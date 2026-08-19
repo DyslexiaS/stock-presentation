@@ -23,10 +23,10 @@ export default function EnglishHomePage() {
     <div className="mx-auto max-w-5xl px-6 py-12">
       <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">Overseas research desk</p>
       <h1 className="mt-3 font-[family-name:var(--font-en-serif)] text-4xl font-semibold tracking-tight text-slate-900 md:text-5xl">
-        Taiwan Semiconductor Earnings Memos
+        Taiwan Semiconductor Earnings Calls
       </h1>
       <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
-        Briefings written for overseas investors who need Taiwan semiconductor context. First collection: companies tied to NVIDIA&apos;s 800V HVDC AI data-center architecture.
+        Notes on Taiwan investor conferences, written in English for overseas investors. First collection: companies tied to NVIDIA&apos;s 800 VDC AI data-center architecture.
       </p>
 
       <section className="mt-12">
@@ -54,7 +54,7 @@ export default function EnglishHomePage() {
                 <span className="text-slate-900">
                   {company.name} <span className="text-slate-400">({company.ticker})</span>
                 </span>
-                <span className="text-sm text-slate-500">{company.count} memo{company.count === 1 ? '' : 's'}</span>
+                <span className="text-sm text-slate-500">{company.count} call{company.count === 1 ? '' : 's'}</span>
               </Link>
             </li>
           ))}
@@ -62,7 +62,7 @@ export default function EnglishHomePage() {
       </section>
 
       <section className="mt-14">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">Latest memos</h2>
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">Latest earnings calls</h2>
         <ul className="mt-4 space-y-4">
           {memos.map((memo) => (
             <li key={`${memo.companySlug}-${memo.quarter}`}>

@@ -75,13 +75,13 @@ export default async function MemoPage({
         </div>
       </header>
 
-      <div className="mt-4">
+      <div className="mt-14">
         <MarkdownBody content={memo.content} />
       </div>
 
       {archive.length > 0 && (
         <section className="mt-16 border-t border-slate-300 pt-8">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">More {memo.companyName} memos</h2>
+          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">More {memo.companyName} earnings calls</h2>
           <ul className="mt-4 space-y-3">
             {archive.map((item) => (
               <li key={item.quarter}>
@@ -96,7 +96,7 @@ export default async function MemoPage({
 
       {related.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Related 800V memos</h2>
+          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Related 800V companies</h2>
           <ul className="mt-4 space-y-3">
             {related.map((item) => (
               <li key={`${item.companySlug}-${item.quarter}`}>

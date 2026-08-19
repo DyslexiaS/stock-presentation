@@ -42,13 +42,13 @@ export default async function TopicPage({ params }: { params: Promise<{ tag: str
       </header>
 
       {topic?.content && (
-        <div className="mt-4">
+        <div className="mt-14">
           <MarkdownBody content={topic.content} />
         </div>
       )}
 
       <section className="mt-16 border-t border-slate-300 pt-8">
-        <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Memos in this topic</h2>
+        <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Earnings calls in this topic</h2>
         <ul className="mt-4 space-y-4">
           {memos.map((memo) => (
             <li key={`${memo.companySlug}-${memo.quarter}`}>
