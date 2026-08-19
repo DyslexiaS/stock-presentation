@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   turbopack: {},
+  serverExternalPackages: ['gray-matter'],
   // Simplified redirect configuration to avoid regex issues
   async redirects() {
     return [

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { headers } from 'next/headers'
 import { Inter } from 'next/font/google'
 import { AdSenseScript } from '@/components/ads/adsense-script'
 import './globals.css'
@@ -75,13 +76,15 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const locale = (await headers()).get('x-locale') === 'en' ? 'en' : 'zh-TW'
+
   return (
-    <html lang="zh-TW" className="antialiased">
+    <html lang={locale} className="antialiased">
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -100,42 +103,52 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              "name": "FinmoConf - 台股法說會資料庫",
-              "alternateName": "FinmoConf - 台灣股市法說會簡報資料庫",
-              "url": baseUrl,
-              "description": "FinmoConf 提供台積電(2330)、鴻海(2317)等台灣上市櫃興櫃公司完整法說會簡報資料。FinmoAI 系列產品，支援公司代碼搜尋、PDF 快速下載，最新財報說明會、投資人簡報一應俱全。",
-              "inLanguage": "zh-TW",
+              "name": locale === 'en' ? 'FinmoConf English - Taiwan Semiconductor Earnings' : 'FinmoConf - 台股法說會資料庫',
+              "alternateName": locale === 'en' ? 'FinmoConf English' : 'FinmoConf - 台灣股市法說會簡報資料庫',
+              "url": locale === 'en' ? `${baseUrl}/en` : baseUrl,
+              "description": locale === 'en'
+                ? 'English earnings-call briefings on Taiwan semiconductor and AI infrastructure companies.'
+                : 'FinmoConf 提供台積電(2330)、鴻海(2317)等台灣上市櫃興櫃公司完整法說會簡報資料。FinmoAI 系列產品，支援公司代碼搜尋、PDF 快速下載，最新財報說明會、投資人簡報一應俱全。',
+              "inLanguage": locale === 'en' ? 'en' : 'zh-TW',
               "publisher": {
                 "@type": "Organization",
                 "name": "FinmoAI",
                 "url": baseUrl
               },
-              "about": {
-                "@type": "Thing",
-                "name": "台股法說會",
-                "description": "台灣上市櫃公司法人說明會簡報資料"
-              },
-              "audience": {
-                "@type": "Audience",
-                "audienceType": "投資人、分析師、研究人員"
-              },
-              "mainEntity": {
-                "@type": "Dataset",
-                "name": "FinmoConf 台股法說會簡報資料集",
-                "description": "FinmoConf 提供台積電(2330)、鴻海(2317)等台灣上市櫃興櫃公司完整法說會簡報資料。FinmoAI 系列產品，支援公司代碼搜尋、PDF快速下載，最新財報說明會、投資人簡報一應俱全。涵蓋超過1000家公司的歷年法說會資料，為投資人、分析師提供完整的台股投資參考資訊。",
-                "keywords": "FinmoConf,台股,法說會,法人說明會,財報,簡報,PDF",
-                "creator": {
-                  "@type": "Organization",
-                  "name": "FinmoAI",
-                  "url": baseUrl
+              ...(locale === 'en' ? {
+                about: {
+                  "@type": "Thing",
+                  name: "Taiwan semiconductor earnings",
+                  description: "English briefings of Taiwan-listed company earnings calls",
                 },
-                "license": "https://creativecommons.org/licenses/by-nc/4.0/"
-              }
+              } : {
+                about: {
+                  "@type": "Thing",
+                  name: "台股法說會",
+                  description: "台灣上市櫃公司法人說明會簡報資料",
+                },
+                audience: {
+                  "@type": "Audience",
+                  audienceType: "投資人、分析師、研究人員",
+                },
+                mainEntity: {
+                  "@type": "Dataset",
+                  name: "FinmoConf 台股法說會簡報資料集",
+                  description: "FinmoConf 提供台積電(2330)、鴻海(2317)等台灣上市櫃興櫃公司完整法說會簡報資料。FinmoAI 系列產品，支援公司代碼搜尋、PDF快速下載，最新財報說明會、投資人簡報一應俱全。涵蓋超過1000家公司的歷年法說會資料，為投資人、分析師提供完整的台股投資參考資訊。",
+                  keywords: "FinmoConf,台股,法說會,法人說明會,財報,簡報,PDF",
+                  creator: {
+                    "@type": "Organization",
+                    name: "FinmoAI",
+                    url: baseUrl,
+                  },
+                  license: "https://creativecommons.org/licenses/by-nc/4.0/",
+                },
+              }),
             })
           }}
         />
       </head>
-      <body className={`${inter.className} min-h-screen bg-neutral-50`}>
+      <body className={`${locale === 'en' ? '' : inter.className} min-h-screen ${locale === 'en' ? 'bg-[#f4f1ea]' : 'bg-neutral-50'}`}>
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe

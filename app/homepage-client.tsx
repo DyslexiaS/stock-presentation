@@ -138,6 +138,15 @@ export default function HomePageClient({
                 New
               </span>
             </Link>
+            <Link
+              href="/en"
+              className="inline-flex items-center gap-2.5 group transition-opacity hover:opacity-70"
+            >
+              <span className="text-[10px] font-mono font-medium text-slate-300 tabular-nums">03</span>
+              <span className="text-sm text-slate-400 group-hover:text-slate-500 transition-colors leading-snug">
+                English memos
+              </span>
+            </Link>
           </nav>
 
           {/* Headline block */}

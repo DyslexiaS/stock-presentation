@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 
 export interface IPresentation extends mongoose.Document {
-  _id: string
   companyCode: string
   companyName: string
   eventDate: Date
