@@ -11,7 +11,7 @@ const OG_IMAGE = {
   url: `${EN_BASE_URL}/FinmoAI-brand.png`,
   width: 1200,
   height: 630,
-  alt: 'FinmoConf English — Taiwan semiconductor earnings memos',
+  alt: 'FinmoConf English — Taiwan semiconductor earnings calls',
   type: 'image/png',
 } as const
 
@@ -65,24 +65,24 @@ export function generateEnLayoutMetadata(): Metadata {
   const url = `${EN_BASE_URL}/en`
   return {
     title: {
-      default: 'Taiwan Semiconductor Earnings Memos | FinmoConf English',
+      default: 'Taiwan Semiconductor Earnings Calls | FinmoConf English',
       template: '%s',
     },
     description:
-      'English earnings-call briefings on Taiwan semiconductor and AI infrastructure suppliers, including NVIDIA 800V HVDC supply-chain memos.',
+      'English notes on Taiwan semiconductor earnings calls, including the NVIDIA 800V HVDC supply chain. Taiwan investor conferences, summarised for overseas investors.',
     keywords: [
-      'Taiwan semiconductor earnings',
-      'Taiwan earnings call memo',
+      'Taiwan semiconductor earnings call',
+      'Taiwan earnings call',
+      'Taiwan investor conference',
       'NVIDIA 800V HVDC',
       'NVIDIA 800V supply chain Taiwan',
-      'Lite-On earnings',
       'AI data center power',
     ],
     robots: EN_ROBOTS,
     alternates: englishHreflang(url),
     ...englishSocial(
-      'Taiwan Semiconductor Earnings Memos | FinmoConf English',
-      'English earnings-call briefings on Taiwan semiconductor and AI infrastructure suppliers.',
+      'Taiwan Semiconductor Earnings Calls | FinmoConf English',
+      'English notes on Taiwan semiconductor earnings calls.',
       url
     ),
   }
@@ -94,19 +94,19 @@ export function memoUrl(memo: EnMemo): string {
 
 export function generateEnHomeMetadata(): Metadata {
   const url = `${EN_BASE_URL}/en`
-  const title = 'Taiwan Semiconductor Earnings Memos | FinmoConf English'
+  const title = 'Taiwan Semiconductor Earnings Calls | FinmoConf English'
   const description =
-    'English earnings-call briefings on Taiwan semiconductor and AI infrastructure suppliers. Start with NVIDIA 800V HVDC supply-chain memos from Lite-On, Chang Wah, Voltronic and peers.'
+    'English notes on Taiwan semiconductor earnings calls. Start with the NVIDIA 800V HVDC supply chain: Delta, Lite-On, BizLink, Foxconn and peers.'
 
   return {
     title,
     description,
     keywords: [
-      'Taiwan semiconductor earnings',
+      'Taiwan semiconductor earnings call',
       'Taiwan earnings call',
+      'Taiwan investor conference',
       'NVIDIA 800V HVDC Taiwan',
       'NVIDIA 800V supply chain',
-      'Lite-On earnings memo',
     ],
     alternates: englishHreflang(url),
     robots: EN_ROBOTS,
@@ -119,11 +119,12 @@ export function generateEnMemoMetadata(memo: EnMemo): Metadata {
   const title = `${memo.title} | FinmoConf`
   const quarterLabel = formatQuarterLabel(memo.quarter)
   const keywords = [
-    `${memo.companyName} earnings`,
+    `${memo.companyName} earnings call`,
     `${memo.companyName} ${quarterLabel} earnings`,
-    `${memo.companyName} (${memo.ticker}) earnings memo`,
+    `${memo.companyName} ${quarterLabel} earnings call`,
+    `${memo.ticker} earnings call`,
+    'Taiwan investor conference',
     'NVIDIA 800V HVDC',
-    'Taiwan semiconductor earnings',
   ]
   const social = englishSocial(memo.title, memo.description, url, 'article')
 
@@ -154,18 +155,18 @@ export function generateEnCompanyMetadata(
   count: number
 ): Metadata {
   const url = `${EN_BASE_URL}/en/${companySlug}`
-  const title = `${companyName} (${ticker}) English Earnings Memos | FinmoConf`
-  const description = `${count} English earnings-call memo${count === 1 ? '' : 's'} on ${companyName} (${ticker}), including NVIDIA 800V HVDC and Taiwan AI infrastructure exposure.`
+  const title = `${companyName} (${ticker}) Earnings Call Notes in English | FinmoConf`
+  const description = `${count} English note${count === 1 ? '' : 's'} on ${companyName} (${ticker}) earnings calls, covering results, guidance, management Q&A and NVIDIA 800V HVDC exposure.`
 
   return {
     title,
     description,
     keywords: [
-      `${companyName} earnings`,
       `${companyName} earnings call`,
-      `${ticker} earnings memo`,
+      `${companyName} earnings`,
+      `${ticker} earnings call`,
+      'Taiwan investor conference',
       'NVIDIA 800V HVDC',
-      'Taiwan semiconductor earnings',
     ],
     alternates: englishHreflang(url),
     robots: EN_ROBOTS,
@@ -178,7 +179,7 @@ export function generateEnTopicMetadata(topic: EnTopic, count: number): Metadata
   const title = topic.title.includes('FinmoConf') ? topic.title : `${topic.title} | FinmoConf`
   const description =
     topic.description ||
-    `${count} English earnings memos on ${topic.title}.`
+    `${count} English notes on Taiwan earnings calls covering ${topic.title}.`
 
   return {
     title,
@@ -230,10 +231,10 @@ export function generateEnMemoJsonLd(memo: EnMemo) {
           identifier: memo.ticker,
         },
         keywords: [
-          `${memo.companyName} earnings`,
-          `${memo.companyName} ${quarterLabel} earnings memo`,
+          `${memo.companyName} earnings call`,
+          `${memo.companyName} ${quarterLabel} earnings`,
           'NVIDIA 800V HVDC',
-          'Taiwan semiconductor earnings',
+          'Taiwan investor conference',
           memo.ticker,
         ].join(', '),
       },

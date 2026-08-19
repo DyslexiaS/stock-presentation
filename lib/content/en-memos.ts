@@ -4,6 +4,7 @@ import matter from 'gray-matter'
 
 const MEMOS_DIR = path.join(process.cwd(), 'content/en/memos')
 const TOPICS_DIR = path.join(process.cwd(), 'content/en/topics')
+const COMPANIES_DIR = path.join(process.cwd(), 'content/en/companies')
 
 export interface EnMemo {
   title: string
@@ -26,8 +27,17 @@ export interface EnTopic {
   content: string
 }
 
+/** Static company background, written once instead of repeated in every quarterly memo. */
+export interface EnCompanyProfile {
+  slug: string
+  tier: string
+  role: string
+  content: string
+}
+
 let memoCache: EnMemo[] | null = null
 let topicCache: EnTopic[] | null = null
+let profileCache: Map<string, EnCompanyProfile> | null = null
 
 function shouldCache() {
   return process.env.NODE_ENV === 'production'
@@ -105,6 +115,33 @@ function loadTopics(): EnTopic[] {
 
   topicCache = topics
   return topics
+}
+
+function loadProfiles(): Map<string, EnCompanyProfile> {
+  if (shouldCache() && profileCache) return profileCache
+
+  const profiles = new Map<string, EnCompanyProfile>()
+  if (fs.existsSync(COMPANIES_DIR)) {
+    for (const fileName of fs.readdirSync(COMPANIES_DIR)) {
+      if (!fileName.endsWith('.md')) continue
+      const slug = fileName.replace(/\.md$/, '')
+      const raw = fs.readFileSync(path.join(COMPANIES_DIR, fileName), 'utf8')
+      const { data, content } = matter(raw)
+      profiles.set(slug, {
+        slug,
+        tier: String(data.tier ?? ''),
+        role: String(data.role ?? ''),
+        content: content.trim(),
+      })
+    }
+  }
+
+  profileCache = profiles
+  return profiles
+}
+
+export function getCompanyProfile(slug: string): EnCompanyProfile | null {
+  return loadProfiles().get(slug) ?? null
 }
 
 export function getAllMemos(): EnMemo[] {

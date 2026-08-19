@@ -28,25 +28,27 @@ export default async function TopicPage({ params }: { params: Promise<{ tag: str
   const description = topic?.description ?? ''
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
+    <div className="mx-auto max-w-4xl px-6 py-14 md:px-10">
       <nav className="text-sm text-slate-500">
         <Link href="/en" className="hover:text-slate-800">English</Link>
         <span className="mx-2">/</span>
         <span>Topics</span>
       </nav>
-      <h1 className="mt-4 font-[family-name:var(--font-en-serif)] text-4xl font-semibold tracking-tight text-slate-900">
-        {title}
-      </h1>
-      {description && <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-600">{description}</p>}
+      <header className="mt-8 border-b border-slate-300 pb-10">
+        <h1 className="font-[family-name:var(--font-en-serif)] text-[2.5rem] font-semibold leading-[1.15] tracking-tight text-slate-900 md:text-[3rem]">
+          {title}
+        </h1>
+        {description && <p className="mt-5 max-w-3xl text-xl leading-relaxed text-slate-600">{description}</p>}
+      </header>
 
       {topic?.content && (
-        <div className="mt-10 bg-white p-6 shadow-sm md:p-8">
+        <div className="mt-14">
           <MarkdownBody content={topic.content} />
         </div>
       )}
 
-      <section className="mt-12">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">Memos in this topic</h2>
+      <section className="mt-16 border-t border-slate-300 pt-8">
+        <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Earnings calls in this topic</h2>
         <ul className="mt-4 space-y-4">
           {memos.map((memo) => (
             <li key={`${memo.companySlug}-${memo.quarter}`}>
