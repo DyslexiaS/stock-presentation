@@ -1,6 +1,15 @@
+import { EN_BASE_URL, getAllMemos, getCompanySlugs } from '@/lib/content/en-memos'
+
 export async function GET() {
-  const currentDate = new Date().toISOString().split('T')[0];
-  
+  const currentDate = new Date().toISOString().split('T')[0]
+  const memos = getAllMemos()
+  const slugs = getCompanySlugs()
+  const companies = slugs.map((slug) => {
+    const latest = memos.find((memo) => memo.companySlug === slug)!
+    const count = memos.filter((memo) => memo.companySlug === slug).length
+    return `- ${latest.companyName} (${latest.ticker}): ${EN_BASE_URL}/en/${slug} — latest ${EN_BASE_URL}/en/${slug}/${latest.quarter} (${count} call${count === 1 ? '' : 's'})`
+  })
+
   const content = [
     '# FinmoConf - Taiwan Stock Earnings Conference Search Platform',
     'A comprehensive platform for Taiwan stock market investor relations presentations and earnings conferences. Part of the FinmoAI family of financial technology products.',
@@ -23,12 +32,15 @@ export async function GET() {
     '- Academic researchers studying Taiwan capital markets',
     '- International investors interested in Taiwan companies',
     '',
-    '## English Earnings Memos',
-    'English briefings of Taiwan-listed company earnings calls, written for overseas investors. Chinese transcripts are not published; only the English memo is indexed.',
-    '- English index: https://finmoconf.diveinvest.net/en',
-    '- NVIDIA 800V HVDC Taiwan supply chain: https://finmoconf.diveinvest.net/en/topics/nvidia-800v',
-    '- Example memo: Lite-On Q2 2026 — https://finmoconf.diveinvest.net/en/liteon/2026-q2',
-    '- Topics covered first: NVIDIA 800V HVDC power racks, BBUs, leadframes, fans, connectors, circuit protection',
+    '## English Earnings Calls',
+    `English briefings of Taiwan-listed company earnings calls, written for overseas investors. Chinese transcripts are not published. ${slugs.length} companies, ${memos.length} notes. First topic: NVIDIA 800V HVDC.`,
+    `- English index: ${EN_BASE_URL}/en`,
+    `- NVIDIA 800V HVDC Taiwan supply chain: ${EN_BASE_URL}/en/topics/nvidia-800v`,
+    `- English sitemap: ${EN_BASE_URL}/en-sitemap.xml`,
+    '- Topics covered: NVIDIA 800V HVDC — power racks, BBUs, SiC/GaN, leadframes, magnetics, relays, connectors, test gear, facility MV',
+    '',
+    '### Companies with English notes',
+    ...companies,
     '',
     '## Key Features',
     '- Smart Search: Search by company ticker (e.g., 2330 for TSMC), company name, date ranges, and market categories',

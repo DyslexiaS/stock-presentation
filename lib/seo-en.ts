@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import {
   EN_BASE_URL,
   EN_SITE_NAME,
+  getAllMemos,
+  getCompanySlugs,
+  type EnCompanyProfile,
   type EnMemo,
   type EnTopic,
   formatQuarterLabel,
@@ -27,6 +30,16 @@ const EN_ROBOTS: Metadata['robots'] = {
   },
 }
 
+const PUBLISHER = {
+  '@type': 'Organization' as const,
+  name: EN_SITE_NAME,
+  url: `${EN_BASE_URL}/en`,
+  logo: {
+    '@type': 'ImageObject' as const,
+    url: OG_IMAGE.url,
+  },
+}
+
 function toIsoDate(value: string): string {
   const parsed = new Date(value)
   return Number.isNaN(parsed.getTime()) ? value : parsed.toISOString()
@@ -41,7 +54,12 @@ function englishHreflang(url: string): Metadata['alternates'] {
   }
 }
 
-function englishSocial(title: string, description: string, url: string, type: 'website' | 'article' = 'website'): Pick<Metadata, 'openGraph' | 'twitter'> {
+function englishSocial(
+  title: string,
+  description: string,
+  url: string,
+  type: 'website' | 'article' = 'website'
+): Pick<Metadata, 'openGraph' | 'twitter'> {
   return {
     openGraph: {
       title,
@@ -61,15 +79,27 @@ function englishSocial(title: string, description: string, url: string, type: 'w
   }
 }
 
+function collectionCounts() {
+  const memos = getAllMemos()
+  return {
+    memoCount: memos.length,
+    companyCount: getCompanySlugs().length,
+    latestEventDate: memos[0]?.eventDate ?? '',
+  }
+}
+
 export function generateEnLayoutMetadata(): Metadata {
   const url = `${EN_BASE_URL}/en`
+  const { memoCount, companyCount } = collectionCounts()
+  const description = `English notes on ${memoCount} Taiwan semiconductor earnings calls across ${companyCount} companies in NVIDIA's 800V HVDC AI data-center supply chain.`
+
   return {
+    metadataBase: new URL(EN_BASE_URL),
     title: {
       default: 'Taiwan Semiconductor Earnings Calls | FinmoConf English',
       template: '%s',
     },
-    description:
-      'English notes on Taiwan semiconductor earnings calls, including the NVIDIA 800V HVDC supply chain. Taiwan investor conferences, summarised for overseas investors.',
+    description,
     keywords: [
       'Taiwan semiconductor earnings call',
       'Taiwan earnings call',
@@ -79,12 +109,19 @@ export function generateEnLayoutMetadata(): Metadata {
       'AI data center power',
     ],
     robots: EN_ROBOTS,
+    authors: [{ name: 'FinmoAI' }],
+    creator: 'FinmoAI',
+    publisher: 'FinmoAI',
+    icons: {
+      icon: [
+        { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+        { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+        { url: '/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+      ],
+      shortcut: ['/favicon.ico'],
+    },
     alternates: englishHreflang(url),
-    ...englishSocial(
-      'Taiwan Semiconductor Earnings Calls | FinmoConf English',
-      'English notes on Taiwan semiconductor earnings calls.',
-      url
-    ),
+    ...englishSocial('Taiwan Semiconductor Earnings Calls | FinmoConf English', description, url),
   }
 }
 
@@ -94,9 +131,9 @@ export function memoUrl(memo: EnMemo): string {
 
 export function generateEnHomeMetadata(): Metadata {
   const url = `${EN_BASE_URL}/en`
+  const { memoCount, companyCount } = collectionCounts()
   const title = 'Taiwan Semiconductor Earnings Calls | FinmoConf English'
-  const description =
-    'English notes on Taiwan semiconductor earnings calls. Start with the NVIDIA 800V HVDC supply chain: Delta, Lite-On, BizLink, Foxconn and peers.'
+  const description = `English notes on ${memoCount} Taiwan semiconductor earnings calls across ${companyCount} listed companies. First collection: NVIDIA 800V HVDC — Delta, Lite-On, BizLink, Foxconn, AcBel and the rest of the power, BBU and SiC/GaN stack.`
 
   return {
     title,
@@ -107,6 +144,9 @@ export function generateEnHomeMetadata(): Metadata {
       'Taiwan investor conference',
       'NVIDIA 800V HVDC Taiwan',
       'NVIDIA 800V supply chain',
+      'Lite-On earnings call',
+      'Delta Electronics earnings call',
+      'AI data center power Taiwan',
     ],
     alternates: englishHreflang(url),
     robots: EN_ROBOTS,
@@ -123,6 +163,7 @@ export function generateEnMemoMetadata(memo: EnMemo): Metadata {
     `${memo.companyName} ${quarterLabel} earnings`,
     `${memo.companyName} ${quarterLabel} earnings call`,
     `${memo.ticker} earnings call`,
+    `${memo.companyName} investor conference`,
     'Taiwan investor conference',
     'NVIDIA 800V HVDC',
   ]
@@ -142,6 +183,7 @@ export function generateEnMemoMetadata(memo: EnMemo): Metadata {
       type: 'article',
       locale: 'en_US',
       publishedTime: toIsoDate(memo.eventDate),
+      modifiedTime: toIsoDate(memo.eventDate),
       images: [OG_IMAGE],
     },
     twitter: social.twitter,
@@ -152,11 +194,13 @@ export function generateEnCompanyMetadata(
   companySlug: string,
   companyName: string,
   ticker: string,
-  count: number
+  count: number,
+  profile?: EnCompanyProfile | null
 ): Metadata {
   const url = `${EN_BASE_URL}/en/${companySlug}`
   const title = `${companyName} (${ticker}) Earnings Call Notes in English | FinmoConf`
-  const description = `${count} English note${count === 1 ? '' : 's'} on ${companyName} (${ticker}) earnings calls, covering results, guidance, management Q&A and NVIDIA 800V HVDC exposure.`
+  const role = profile?.role ? ` ${profile.role.replace(/\s+/g, ' ').trim()}.` : ''
+  const description = `${count} English note${count === 1 ? '' : 's'} on ${companyName} (${ticker}) Taiwan earnings calls.${role} Results, guidance, management Q&A and NVIDIA 800V HVDC read-through.`
 
   return {
     title,
@@ -165,6 +209,7 @@ export function generateEnCompanyMetadata(
       `${companyName} earnings call`,
       `${companyName} earnings`,
       `${ticker} earnings call`,
+      `${companyName} investor conference`,
       'Taiwan investor conference',
       'NVIDIA 800V HVDC',
     ],
@@ -179,14 +224,17 @@ export function generateEnTopicMetadata(topic: EnTopic, count: number): Metadata
   const title = topic.title.includes('FinmoConf') ? topic.title : `${topic.title} | FinmoConf`
   const description =
     topic.description ||
-    `${count} English notes on Taiwan earnings calls covering ${topic.title}.`
+    `${count} English earnings-call notes on Taiwan-listed companies covering ${topic.title}.`
 
   return {
     title,
     description,
     keywords: [
       'NVIDIA 800V HVDC',
+      'NVIDIA 800 VDC',
       'NVIDIA 800V supply chain Taiwan',
+      'Kyber rack power',
+      'AI data center BBU',
       'Taiwan semiconductor earnings',
       'AI data center power Taiwan',
       topic.title,
@@ -214,21 +262,23 @@ export function generateEnMemoJsonLd(memo: EnMemo) {
         dateModified: published,
         inLanguage: 'en',
         url,
+        mainEntityOfPage: url,
         author: {
           '@type': 'Organization',
           name: 'FinmoAI',
           url: EN_BASE_URL,
         },
-        publisher: {
-          '@type': 'Organization',
-          name: EN_SITE_NAME,
-          url: `${EN_BASE_URL}/en`,
-        },
+        publisher: PUBLISHER,
         image: OG_IMAGE.url,
         about: {
           '@type': 'Organization',
           name: memo.companyName,
           identifier: memo.ticker,
+        },
+        isPartOf: {
+          '@type': 'CollectionPage',
+          '@id': `${EN_BASE_URL}/en/topics/nvidia-800v`,
+          name: 'NVIDIA 800 VDC — Taiwan Supply Chain',
         },
         keywords: [
           `${memo.companyName} earnings call`,
@@ -243,8 +293,156 @@ export function generateEnMemoJsonLd(memo: EnMemo) {
         '@id': `${url}#breadcrumb`,
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'English', item: `${EN_BASE_URL}/en` },
-          { '@type': 'ListItem', position: 2, name: `${memo.companyName} (${memo.ticker})`, item: `${EN_BASE_URL}/en/${memo.companySlug}` },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: `${memo.companyName} (${memo.ticker})`,
+            item: `${EN_BASE_URL}/en/${memo.companySlug}`,
+          },
           { '@type': 'ListItem', position: 3, name: memo.reportingPeriod || quarterLabel, item: url },
+        ],
+      },
+    ],
+  }
+}
+
+export function generateEnHomeJsonLd() {
+  const url = `${EN_BASE_URL}/en`
+  const memos = getAllMemos()
+  const companies = Array.from(
+    memos.reduce((map, memo) => {
+      if (!map.has(memo.companySlug)) {
+        map.set(memo.companySlug, { name: memo.companyName, ticker: memo.ticker, slug: memo.companySlug })
+      }
+      return map
+    }, new Map<string, { name: string; ticker: string; slug: string }>())
+  ).map(([, company]) => company)
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': `${url}#page`,
+        name: 'Taiwan Semiconductor Earnings Calls',
+        description: generateEnHomeMetadata().description,
+        url,
+        inLanguage: 'en',
+        isPartOf: { '@type': 'WebSite', name: EN_SITE_NAME, url },
+        about: {
+          '@type': 'Thing',
+          name: 'NVIDIA 800 VDC Taiwan supply chain',
+        },
+        publisher: PUBLISHER,
+      },
+      {
+        '@type': 'ItemList',
+        '@id': `${url}#companies`,
+        name: 'Taiwan companies with English earnings-call notes',
+        numberOfItems: companies.length,
+        itemListElement: companies.map((company, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: `${company.name} (${company.ticker})`,
+          url: `${EN_BASE_URL}/en/${company.slug}`,
+        })),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
+        itemListElement: [{ '@type': 'ListItem', position: 1, name: 'English', item: url }],
+      },
+    ],
+  }
+}
+
+export function generateEnCompanyJsonLd(
+  companySlug: string,
+  companyName: string,
+  ticker: string,
+  memos: EnMemo[],
+  profile?: EnCompanyProfile | null
+) {
+  const url = `${EN_BASE_URL}/en/${companySlug}`
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': `${url}#page`,
+        name: `${companyName} (${ticker}) earnings calls`,
+        description: generateEnCompanyMetadata(companySlug, companyName, ticker, memos.length, profile).description,
+        url,
+        inLanguage: 'en',
+        about: {
+          '@type': 'Organization',
+          name: companyName,
+          identifier: ticker,
+        },
+        publisher: PUBLISHER,
+      },
+      {
+        '@type': 'ItemList',
+        '@id': `${url}#calls`,
+        name: `${companyName} English earnings-call notes`,
+        numberOfItems: memos.length,
+        itemListElement: memos.map((memo, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: memo.title,
+          url: memoUrl(memo),
+        })),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'English', item: `${EN_BASE_URL}/en` },
+          { '@type': 'ListItem', position: 2, name: `${companyName} (${ticker})`, item: url },
+        ],
+      },
+    ],
+  }
+}
+
+export function generateEnTopicJsonLd(topic: EnTopic, memos: EnMemo[]) {
+  const url = `${EN_BASE_URL}/en/topics/${topic.slug}`
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': `${url}#page`,
+        name: topic.title,
+        description: topic.description,
+        url,
+        inLanguage: 'en',
+        about: {
+          '@type': 'Thing',
+          name: 'NVIDIA 800 VDC',
+        },
+        publisher: PUBLISHER,
+      },
+      {
+        '@type': 'ItemList',
+        '@id': `${url}#notes`,
+        name: 'English earnings-call notes in this topic',
+        numberOfItems: memos.length,
+        itemListElement: memos.map((memo, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: memo.title,
+          url: memoUrl(memo),
+        })),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'English', item: `${EN_BASE_URL}/en` },
+          { '@type': 'ListItem', position: 2, name: topic.title, item: url },
         ],
       },
     ],

@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { JsonLd } from '@/components/en/json-ld'
 import { MarkdownBody } from '@/components/en/markdown-body'
 import { formatQuarterLabel, getAllTags, getMemosByTag, getTopic } from '@/lib/content/en-memos'
-import { generateEnTopicMetadata } from '@/lib/seo-en'
+import { generateEnTopicJsonLd, generateEnTopicMetadata } from '@/lib/seo-en'
 
 export const dynamic = 'force-static'
 
@@ -26,9 +27,11 @@ export default async function TopicPage({ params }: { params: Promise<{ tag: str
 
   const title = topic?.title ?? tag
   const description = topic?.description ?? ''
+  const jsonLdTopic = topic ?? { slug: tag, title, description, content: '' }
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-14 md:px-10">
+      <JsonLd data={generateEnTopicJsonLd(jsonLdTopic, memos)} />
       <nav className="text-sm text-slate-500">
         <Link href="/en" className="hover:text-slate-800">English</Link>
         <span className="mx-2">/</span>

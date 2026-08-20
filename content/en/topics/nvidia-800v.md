@@ -1,6 +1,6 @@
 ---
 title: "NVIDIA 800 VDC — Taiwan Supply Chain"
-description: "What NVIDIA's 800 VDC whitepaper actually specifies for AI data centers, and which Taiwan-listed suppliers sit in each slot — with English earnings memos for Delta, Lite-On, BizLink, Hon Hai and peers."
+description: "What NVIDIA's 800 VDC whitepaper actually specifies for AI data centers, and which Taiwan-listed suppliers sit in each slot — English earnings calls for Delta, Lite-On, BizLink, Hon Hai and 24 other names."
 ---
 
 NVIDIA is rebuilding data-center power around **800 VDC**. This hub does two things: it reads NVIDIA's own specification, then maps the Taiwan-listed companies that have to build against it. Every company below has an English memo page with briefings of its earnings calls.
@@ -82,13 +82,43 @@ Read the tier label before the thesis. Being on NVIDIA's list is a different fac
 
 These are not on NVIDIA's list. They are Taiwan-listed suppliers that discussed 800V or HVDC on their own earnings calls, sorted by where they sit in the stack.
 
+**Rack power, BBU, and protection**
+
 - **[Chang Wah Technology (6548)](/en/chang-wah)** — leadframes. The only name here with 800V already in the revenue mix: 6–8% of sales at a 30–50% ASP premium.
+- **[Jih Lin Technology (5285)](/en/jih-lin)** — power leadframes too: top-side cooling and Clipper parts transferred from auto modules into AI-server HVDC. No sales share disclosed.
+- **[Systems Electronics (5309)](/en/systems)** — BBUs. 11 kW and 5.5 kW mass-produce in 2026Q2; a 25 kW HVDC BBU is in development with two customers, volume 2027–28. Met NVIDIA; not a supplier.
+- **[Sitel (7740)](/en/sitel)** — 1500 V storage platform stepped down to an 800 V HVDC BBU for AIDC, beside facility BESS.
+- **[AcBel (6282)](/en/acbel)** — CRPS and data-center PSUs at about 20% of 2025 sales. The latest call never said 800V or HVDC.
+- **[Kinpo (2312)](/en/kinpo)** — one sentence: EV-charger power management extended into HVDC and high-end server racks. Not a business yet.
+- **[Voltronic Power (6409)](/en/voltronic)** — UPS DMS house with an HVDC PSU prototype, leaning on 400/800/1000 V EV-charger experience.
 - **[Polytronics (6642)](/en/polytronics)** — circuit protection at the AC/HVDC boundary; 277 V and 305 V AC PPTC into Amazon and Super Micro.
+- **[Song Chuan Precision (7788)](/en/song-chuan)** — HVDC DC relays and Super Seal liquid-cooled types, qualifying with Delta, Lite-On and AcBel. EV 400→800 V is a separate line.
+
+**Silicon, magnetics, and test**
+
 - **[Anstek (3528)](/en/anstek)** — distributes ADI's 800 V hot-swap controllers, already shipping to US CSP ODMs.
+- **[Episil-Precision (3016)](/en/episil-precision)** — GaN epitaxy is in 800 V HVDC systems at small-volume trial.
+- **[Episil Technologies (3707)](/en/episil)** — SiC/GaN foundry. 800 V is a 2027 600 kW-rack demand thesis; GaN already growing on AI servers, SiC still down.
+- **[Actron Technology (8255)](/en/actron)** — SiC modules 650–3300 V; custom HVDC modules exclusive to a domestic customer, sampling now. Dated roadmap: HVDC 2027–30, SST 2031–35.
+- **[GEM Services (6525)](/en/gem)** — power OSAT. HVDC rack architecture is a customer-drawing question; the 2025 AI beat is thermal packaging.
+- **[Acme Electronics (8121)](/en/acme)** — ferrite cores already shipping into HVDC 800 V PSUs; N-type SiC powder sampling for the same architecture.
+- **[UMEC (2413)](/en/umec)** — switch-side PSU. 800 V HBDC for 8 kW+ networking power, with Accton; explicitly not entering compute Power Rack.
+- **[GW Instek (2423)](/en/gw-instek)** — HVDC, SST and high-power PSU-module instruments in customer evaluation. What ships today is AI-server and liquid-cooling validation gear.
+
+**Mechanicals, interconnect, cooling**
+
 - **[Sunonwealth (2421)](/en/sunon)** — claims a unique 800 V EC fan for data-center infrastructure.
 - **[Chenming (3013)](/en/chenming)** — chassis and racks; studying both the OCP ±400 V and NVIDIA 0–800 V camps.
-- **[Voltronic Power (6409)](/en/voltronic)** — UPS DMS house with an HVDC PSU prototype, leaning on 400/800/1000 V EV-charger experience.
+- **[CviLux (8103)](/en/cvilux)** — connectors into 18.5 kW power shelves, sidecar BBU/CBU and 48 V DC-DC. Architecture read; the call never said 800 V.
 - **[JPC (6197)](/en/jpc)** — busbars, but on the OCP ±400 V rail rather than NVIDIA's single-ended 800 V.
+
+### Medium-voltage / facility power
+
+NVIDIA's diagram starts at 13.8–35 kV AC. These names electrify the building. They are not rack 800 VDC suppliers. **800 kW** on a Taiwan call is usually the large-user tariff threshold, not 800 V.
+
+- **[TECO (1504)](/en/teco)** — US data-center motors, transformers, switchgear; first busway order late July 2026; Thailand AIDC via Danasai.
+- **[Allis Electric (1514)](/en/allis)** — MV switchgear, transformers, substations and UPS into fabs and IDC rooms. About NT$1bn of IDC orders; not NVIDIA's MV rectifier / 5000 A DC board.
+- **[Chung-Hsin Electric (1513)](/en/chung-hsin)** — GIS, generators and HVAC. Semiconductor GIS qualification and AI/IDC hall demand; still AC-side facility gear.
 
 ## How to read these memos
 

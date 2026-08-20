@@ -144,7 +144,7 @@ export default function HomePageClient({
             >
               <span className="text-[10px] font-mono font-medium text-slate-300 tabular-nums">03</span>
               <span className="text-sm text-slate-400 group-hover:text-slate-500 transition-colors leading-snug">
-                English memos
+                English earnings calls
               </span>
             </Link>
           </nav>

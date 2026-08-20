@@ -1,13 +1,14 @@
 import Link from 'next/link'
+import { JsonLd } from '@/components/en/json-ld'
 import { getAllMemos, getAllTopics, formatQuarterLabel } from '@/lib/content/en-memos'
-import { generateEnHomeMetadata } from '@/lib/seo-en'
+import { generateEnHomeJsonLd, generateEnHomeMetadata } from '@/lib/seo-en'
 
 export const metadata = generateEnHomeMetadata()
 export const dynamic = 'force-static'
 
 export default function EnglishHomePage() {
   const memos = getAllMemos()
-  const topics = getAllTopics()
+  const topics = getAllTopics().filter((topic) => topic.description || topic.content)
   const companies = Array.from(
     memos.reduce((map, memo) => {
       if (!map.has(memo.companySlug)) {
@@ -21,12 +22,13 @@ export default function EnglishHomePage() {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
+      <JsonLd data={generateEnHomeJsonLd()} />
       <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">Overseas research desk</p>
       <h1 className="mt-3 font-[family-name:var(--font-en-serif)] text-4xl font-semibold tracking-tight text-slate-900 md:text-5xl">
         Taiwan Semiconductor Earnings Calls
       </h1>
       <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
-        Notes on Taiwan investor conferences, written in English for overseas investors. First collection: companies tied to NVIDIA&apos;s 800 VDC AI data-center architecture.
+        Notes on Taiwan investor conferences, written in English for overseas investors. First collection: {companies.length} companies and {memos.length} calls tied to NVIDIA&apos;s 800 VDC AI data-center architecture.
       </p>
 
       <section className="mt-12">
