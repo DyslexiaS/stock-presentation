@@ -28,7 +28,7 @@ export async function GET() {
     '- English index: https://finmoconf.diveinvest.net/en',
     '- NVIDIA 800V HVDC Taiwan supply chain: https://finmoconf.diveinvest.net/en/topics/nvidia-800v',
     '- Example memo: Lite-On Q2 2026 — https://finmoconf.diveinvest.net/en/liteon/2026-q2',
-    '- Topics covered first: NVIDIA 800V HVDC power racks, BBUs, leadframes, fans, connectors, circuit protection',
+    '- Topics covered first: NVIDIA 800V HVDC — power racks, BBUs, SiC/GaN, leadframes, magnetics, relays, connectors, test gear, facility MV',
     '',
     '## Key Features',
     '- Smart Search: Search by company ticker (e.g., 2330 for TSMC), company name, date ranges, and market categories',
