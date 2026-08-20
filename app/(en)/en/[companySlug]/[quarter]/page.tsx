@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { JsonLd } from '@/components/en/json-ld'
 import { MarkdownBody } from '@/components/en/markdown-body'
 import {
   formatQuarterLabel,
@@ -45,7 +46,7 @@ export default async function MemoPage({
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-14 md:px-10">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <JsonLd data={jsonLd} />
       <nav className="text-sm text-slate-500">
         <Link href="/en" className="hover:text-slate-800">English</Link>
         <span className="mx-2">/</span>

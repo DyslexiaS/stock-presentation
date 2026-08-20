@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { JsonLd } from '@/components/en/json-ld'
 import { MarkdownBody } from '@/components/en/markdown-body'
 import {
   formatQuarterLabel,
@@ -7,7 +8,7 @@ import {
   getCompanySlugs,
   getMemosByCompany,
 } from '@/lib/content/en-memos'
-import { generateEnCompanyMetadata } from '@/lib/seo-en'
+import { generateEnCompanyJsonLd, generateEnCompanyMetadata } from '@/lib/seo-en'
 
 export const dynamic = 'force-static'
 
@@ -19,7 +20,8 @@ export async function generateMetadata({ params }: { params: Promise<{ companySl
   const { companySlug } = await params
   const memos = getMemosByCompany(companySlug)
   if (memos.length === 0) return {}
-  return generateEnCompanyMetadata(companySlug, memos[0].companyName, memos[0].ticker, memos.length)
+  const profile = getCompanyProfile(companySlug)
+  return generateEnCompanyMetadata(companySlug, memos[0].companyName, memos[0].ticker, memos.length, profile)
 }
 
 export default async function CompanyArchivePage({ params }: { params: Promise<{ companySlug: string }> }) {
@@ -32,6 +34,7 @@ export default async function CompanyArchivePage({ params }: { params: Promise<{
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-14 md:px-10">
+      <JsonLd data={generateEnCompanyJsonLd(companySlug, companyName, ticker, memos, profile)} />
       <nav className="text-sm text-slate-500">
         <Link href="/en" className="hover:text-slate-800">English</Link>
         <span className="mx-2">/</span>
@@ -39,10 +42,10 @@ export default async function CompanyArchivePage({ params }: { params: Promise<{
       </nav>
       <header className="mt-8 border-b border-slate-300 pb-10">
         <h1 className="font-[family-name:var(--font-en-serif)] text-[2.5rem] font-semibold leading-[1.15] tracking-tight text-slate-900 md:text-[3rem]">
-          {companyName} ({ticker})
+          {companyName} ({ticker}) Earnings Calls
         </h1>
         <p className="mt-5 text-xl leading-relaxed text-slate-600">
-          English notes on {memos.length} earnings call{memos.length === 1 ? '' : 's'}.
+          English notes on {memos.length} Taiwan earnings call{memos.length === 1 ? '' : 's'}.
         </p>
         {profile && (
           <dl className="mt-7 grid gap-x-8 gap-y-3 text-sm sm:grid-cols-[max-content_1fr]">

@@ -1,10 +1,12 @@
 import dbConnect from '@/lib/mongodb'
 import PresentationModel from '@/lib/models/Presentation'
+import { collectEnSitemapUrls, toSitemapDate } from '@/lib/content/en-sitemap'
 
 const CHUNK_SIZE = 10000
 
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://finmoconf.diveinvest.net'
+  const enLatest = toSitemapDate(collectEnSitemapUrls().latest)
 
   try {
     await dbConnect()
@@ -14,7 +16,7 @@ export async function GET() {
     const sitemaps = [
       `  <sitemap>
     <loc>${baseUrl}/en-sitemap.xml</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
+    <lastmod>${enLatest}</lastmod>
   </sitemap>`,
       `  <sitemap>
     <loc>${baseUrl}/companies-sitemap.xml</loc>
