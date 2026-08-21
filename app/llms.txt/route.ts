@@ -35,6 +35,8 @@ export async function GET() {
     '## English Earnings Calls',
     `English briefings of Taiwan-listed company earnings calls, written for overseas investors. Chinese transcripts are not published. ${slugs.length} companies, ${memos.length} notes. First topic: NVIDIA 800V HVDC.`,
     `- English index: ${EN_BASE_URL}/en`,
+    `- Company directory: ${EN_BASE_URL}/en/companies`,
+    `- All English notes: ${EN_BASE_URL}/en/calls`,
     `- NVIDIA 800V HVDC Taiwan supply chain: ${EN_BASE_URL}/en/topics/nvidia-800v`,
     `- English sitemap: ${EN_BASE_URL}/en-sitemap.xml`,
     '- Topics covered: NVIDIA 800V HVDC — power racks, BBUs, SiC/GaN, leadframes, magnetics, relays, connectors, test gear, facility MV',

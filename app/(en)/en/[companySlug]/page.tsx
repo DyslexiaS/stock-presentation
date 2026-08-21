@@ -8,6 +8,7 @@ import { ShareLinks } from '@/components/en/share-links'
 import { EN_PAGE_WIDTH } from '@/components/en/site-chrome'
 import {
   EN_BASE_URL,
+  EN_RESERVED_SLUGS,
   formatQuarterLabel,
   formatTwTickerLabel,
   getCompanyProfile,
@@ -20,7 +21,9 @@ import { generateEnCompanyJsonLd, generateEnCompanyMetadata } from '@/lib/seo-en
 export const dynamic = 'force-static'
 
 export function generateStaticParams() {
-  return getCompanySlugs().map((companySlug) => ({ companySlug }))
+  return getCompanySlugs()
+    .filter((companySlug) => EN_RESERVED_SLUGS.indexOf(companySlug) === -1)
+    .map((companySlug) => ({ companySlug }))
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ companySlug: string }> }) {

@@ -14,11 +14,14 @@ export function EnHeader() {
             Taiwan Semiconductor Earnings
           </p>
         </Link>
-        <nav className="flex items-center gap-5 text-sm" aria-label="English site">
+        <nav className="flex flex-wrap items-center justify-end gap-x-5 gap-y-2 text-sm" aria-label="English site">
           <Link href="/en/topics/nvidia-800v" className="text-slate-300 hover:text-white">
             800V topic
           </Link>
-          <Link href="/en" className="text-slate-300 hover:text-white">
+          <Link href="/en/companies" className="text-slate-300 hover:text-white">
+            Companies
+          </Link>
+          <Link href="/en/calls" className="text-slate-300 hover:text-white">
             All calls
           </Link>
           <Link href="/" className="rounded border border-slate-600 px-2.5 py-1 text-xs uppercase tracking-wide text-slate-300 hover:border-slate-400 hover:text-white">
@@ -38,6 +41,10 @@ export function EnFooter() {
         <p className="mt-2">
           <Link href="/" className="underline decoration-slate-300 underline-offset-4 hover:text-slate-800">
             FinmoConf Chinese IR decks
+          </Link>
+          {' · '}
+          <Link href="/en/companies" className="underline decoration-slate-300 underline-offset-4 hover:text-slate-800">
+            Company directory
           </Link>
           {' · '}
           <Link href="/en/topics/nvidia-800v" className="underline decoration-slate-300 underline-offset-4 hover:text-slate-800">

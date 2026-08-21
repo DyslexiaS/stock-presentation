@@ -5,6 +5,7 @@ import {
   EN_SITE_NAME,
   getAllMemos,
   getCompanySlugs,
+  getCompanySummaries,
   type EnCompanyProfile,
   type EnMemo,
   type EnTopic,
@@ -151,6 +152,47 @@ export function generateEnHomeMetadata(): Metadata {
       'Lite-On earnings call',
       'Delta Electronics earnings call',
       'AI data center power Taiwan',
+    ],
+    alternates: englishHreflang(url),
+    robots: EN_ROBOTS,
+    ...englishSocial(title, description, url),
+  }
+}
+
+export function generateEnCompaniesMetadata(): Metadata {
+  const url = `${EN_BASE_URL}/en/companies`
+  const { memoCount, companyCount } = collectionCounts()
+  const title = 'Taiwan Companies with English Earnings Call Notes | FinmoConf'
+  const description = `Directory of ${companyCount} Taiwan-listed companies with English earnings-call notes (${memoCount} calls). First collection: NVIDIA 800V HVDC supply chain.`
+
+  return {
+    title,
+    description,
+    keywords: [
+      'Taiwan semiconductor companies',
+      'Taiwan earnings call companies',
+      'NVIDIA 800V supply chain Taiwan',
+      'Taiwan investor conference English',
+    ],
+    alternates: englishHreflang(url),
+    robots: EN_ROBOTS,
+    ...englishSocial(title, description, url),
+  }
+}
+
+export function generateEnCallsMetadata(): Metadata {
+  const url = `${EN_BASE_URL}/en/calls`
+  const { memoCount, companyCount } = collectionCounts()
+  const title = 'All Taiwan Semiconductor Earnings Calls in English | FinmoConf'
+  const description = `${memoCount} English earnings-call notes across ${companyCount} Taiwan-listed companies, newest first.`
+
+  return {
+    title,
+    description,
+    keywords: [
+      'Taiwan semiconductor earnings calls',
+      'Taiwan earnings call English',
+      'Taiwan investor conference notes',
     ],
     alternates: englishHreflang(url),
     robots: EN_ROBOTS,
@@ -318,15 +360,7 @@ export function generateEnMemoJsonLd(memo: EnMemo) {
 
 export function generateEnHomeJsonLd() {
   const url = `${EN_BASE_URL}/en`
-  const memos = getAllMemos()
-  const companies = Array.from(
-    memos.reduce((map, memo) => {
-      if (!map.has(memo.companySlug)) {
-        map.set(memo.companySlug, { name: memo.companyName, ticker: memo.ticker, slug: memo.companySlug })
-      }
-      return map
-    }, new Map<string, { name: string; ticker: string; slug: string }>())
-  ).map(([, company]) => company)
+  const companies = getCompanySummaries()
 
   return {
     '@context': 'https://schema.org',
@@ -453,6 +487,86 @@ export function generateEnTopicJsonLd(topic: EnTopic, memos: EnMemo[]) {
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: EN_BREADCRUMB_ROOT, item: `${EN_BASE_URL}/en` },
           { '@type': 'ListItem', position: 2, name: topic.title, item: url },
+        ],
+      },
+    ],
+  }
+}
+
+export function generateEnCompaniesJsonLd() {
+  const url = `${EN_BASE_URL}/en/companies`
+  const companies = getCompanySummaries()
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': `${url}#page`,
+        name: 'Taiwan companies with English earnings-call notes',
+        description: generateEnCompaniesMetadata().description,
+        url,
+        inLanguage: 'en',
+        publisher: PUBLISHER,
+      },
+      {
+        '@type': 'ItemList',
+        '@id': `${url}#companies`,
+        name: 'Taiwan companies with English earnings-call notes',
+        numberOfItems: companies.length,
+        itemListElement: companies.map((company, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: `${company.name} ${formatTwTickerLabel(company.ticker)}`,
+          url: `${EN_BASE_URL}/en/${company.slug}`,
+        })),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: EN_BREADCRUMB_ROOT, item: `${EN_BASE_URL}/en` },
+          { '@type': 'ListItem', position: 2, name: 'Companies', item: url },
+        ],
+      },
+    ],
+  }
+}
+
+export function generateEnCallsJsonLd() {
+  const url = `${EN_BASE_URL}/en/calls`
+  const memos = getAllMemos()
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': `${url}#page`,
+        name: 'All Taiwan semiconductor earnings calls in English',
+        description: generateEnCallsMetadata().description,
+        url,
+        inLanguage: 'en',
+        publisher: PUBLISHER,
+      },
+      {
+        '@type': 'ItemList',
+        '@id': `${url}#notes`,
+        name: 'English earnings-call notes',
+        numberOfItems: memos.length,
+        itemListElement: memos.map((memo, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: withTwTickers(memo.title),
+          url: memoUrl(memo),
+        })),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: EN_BREADCRUMB_ROOT, item: `${EN_BASE_URL}/en` },
+          { '@type': 'ListItem', position: 2, name: 'All calls', item: url },
         ],
       },
     ],
