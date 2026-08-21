@@ -123,6 +123,7 @@ flowchart TD
 - [x] 佳必琪那篇實際是 OCP ±400V，不是 NVIDIA 800V 單極；hub 已註明。
 - [x] 每篇有「NVIDIA 800V read-through」說明這家在架構的哪一格。
 - [ ] 選作：佳必琪可再加 `ocp-400v` tag 區隔。
+- [x] **Management Q&A 直翻加長**：正文其餘段落維持英文 briefing。Q&A 用 `**Q:**` / `**A:**` 一問一答，對照中文摘要每一題直翻，答案留原數字與但書。範本：`content/en/memos/episil-precision/2026-q1.md`。
 
 ### P4 — 資料管線
 
