@@ -1,8 +1,23 @@
+import { Children, isValidElement, type ReactNode } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { MermaidDiagram } from '@/components/en/mermaid-diagram'
 import { withTwTickers } from '@/lib/content/en-memos'
 
 const serif = 'font-[family-name:var(--font-en-serif)]'
+
+function mermaidChart(children: ReactNode): string | null {
+  for (const child of Children.toArray(children)) {
+    if (!isValidElement<{ className?: string; children?: ReactNode }>(child)) continue
+    const className = child.props.className ?? ''
+    if (!className.split(/\s+/).includes('language-mermaid')) continue
+    return Children.toArray(child.props.children)
+      .map((node) => (typeof node === 'string' ? node : ''))
+      .join('')
+      .replace(/\n$/, '')
+  }
+  return null
+}
 
 export function MarkdownBody({ content }: { content: string }) {
   return (
@@ -57,9 +72,15 @@ export function MarkdownBody({ content }: { content: string }) {
           code: (props) => (
             <code className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[0.85em] text-slate-800" {...props} />
           ),
-          pre: (props) => (
-            <pre className="my-10 overflow-x-auto rounded-lg bg-slate-900 p-6 text-[0.9rem] leading-relaxed text-slate-100" {...props} />
-          ),
+          pre: ({ children, ...props }) => {
+            const chart = mermaidChart(children)
+            if (chart) return <MermaidDiagram chart={chart} />
+            return (
+              <pre className="my-10 overflow-x-auto rounded-lg bg-slate-900 p-6 text-[0.9rem] leading-relaxed text-slate-100" {...props}>
+                {children}
+              </pre>
+            )
+          },
         }}
       >
         {withTwTickers(content)}
