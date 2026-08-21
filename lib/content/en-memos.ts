@@ -218,7 +218,7 @@ function escapeRegExp(value: string): string {
 
 /** Rewrite (2330), (TW:2330) or TW:2330 to (2330.TW) for known Taiwan tickers. */
 export function withTwTickers(text: string, tickers?: string[]): string {
-  const codes = [...new Set((tickers ?? loadMemos().map((memo) => memo.ticker)).filter(Boolean))]
+  const codes = Array.from(new Set((tickers ?? loadMemos().map((memo) => memo.ticker)).filter(Boolean)))
   return codes.reduce((out, code) => {
     const raw = code.replace(/\.(TW|TWO)$/i, '').trim()
     if (!raw) return out
