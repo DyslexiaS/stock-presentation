@@ -78,7 +78,7 @@ export default async function IndustrySlugPage({
     const countDocs: { _id: string; count: number }[] = await PresentationModel.aggregate([
       { $match: { companyCode: { $in: repCodes } } },
       { $group: { _id: '$companyCode', count: { $sum: 1 } } },
-    ])
+    ]).option({ maxTimeMS: 5000 })
     for (const doc of countDocs) presentationCounts[doc._id] = doc.count
   } catch {
     // DB unavailable — chips render without count badges

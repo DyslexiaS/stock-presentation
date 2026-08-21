@@ -41,6 +41,7 @@ async function getCompanyData(companyCode: string): Promise<CompanyData | null> 
     
     const presentations = await PresentationModel.find({ companyCode })
       .sort({ eventDate: -1 })
+      .maxTimeMS(5000)
       .lean()
       .exec()
 

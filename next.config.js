@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   turbopack: {},
-  transpilePackages: ['mermaid'],
   serverExternalPackages: ['gray-matter'],
   // Simplified redirect configuration to avoid regex issues
   async redirects() {

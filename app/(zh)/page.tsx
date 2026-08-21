@@ -36,10 +36,10 @@ async function getInitialPresentations(): Promise<{
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
 
     const [presentations, total, weekCount, monthCount] = await Promise.all([
-      PresentationModel.find({}).sort({ eventDate: -1, createdAt: -1 }).limit(limit).skip(skip).lean().exec(),
-      PresentationModel.countDocuments({}),
-      PresentationModel.countDocuments({ eventDate: { $gte: weekAgo } }),
-      PresentationModel.countDocuments({ eventDate: { $gte: monthStart } }),
+      PresentationModel.find({}).sort({ eventDate: -1, createdAt: -1 }).limit(limit).skip(skip).maxTimeMS(5000).lean().exec(),
+      PresentationModel.countDocuments({}).maxTimeMS(5000),
+      PresentationModel.countDocuments({ eventDate: { $gte: weekAgo } }).maxTimeMS(5000),
+      PresentationModel.countDocuments({ eventDate: { $gte: monthStart } }).maxTimeMS(5000),
     ])
 
     const pages = Math.ceil(total / limit)
