@@ -1,5 +1,6 @@
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { withTwTickers } from '@/lib/content/en-memos'
 
 const serif = 'font-[family-name:var(--font-en-serif)]'
 
@@ -9,27 +10,25 @@ export function MarkdownBody({ content }: { content: string }) {
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
-          // 大標 — top-level section. Rule above each one makes a long memo scannable.
+          // Major section: gray rule + left-aligned amber bar, then the heading.
           h2: (props) => (
             <h2
-              className={`${serif} mt-20 mb-7 border-t border-slate-300 pt-10 text-[2rem] font-semibold leading-[1.2] tracking-tight text-slate-900 first:mt-0 first:border-0 first:pt-0`}
+              className={`${serif} en-section-heading mb-7 text-[2rem] font-semibold leading-[1.2] tracking-tight text-slate-900`}
               {...props}
             />
           ),
-          // 中標
           h3: (props) => (
             <h3 className={`${serif} mt-14 mb-4 text-[1.45rem] font-semibold leading-snug tracking-tight text-slate-900`} {...props} />
           ),
-          // 小標
           h4: (props) => (
             <h4 className="mt-10 mb-3 text-[0.8125rem] font-semibold uppercase tracking-[0.14em] text-slate-500" {...props} />
           ),
           h1: (props) => (
             <h1 className={`${serif} mt-16 mb-7 text-[2.4rem] font-semibold leading-tight tracking-tight text-slate-900 first:mt-0`} {...props} />
           ),
-          p: (props) => <p className="my-7" {...props} />,
-          ul: (props) => <ul className="my-8 list-disc space-y-4 pl-6 marker:text-slate-400" {...props} />,
-          ol: (props) => <ol className="my-8 list-decimal space-y-4 pl-6 marker:text-slate-400" {...props} />,
+          p: (props) => <p className="my-8" {...props} />,
+          ul: (props) => <ul className="my-9 list-disc space-y-4 pl-6 marker:text-slate-400" {...props} />,
+          ol: (props) => <ol className="my-9 list-decimal space-y-4 pl-6 marker:text-slate-400" {...props} />,
           li: (props) => <li className="pl-2 leading-[1.75] [&>ul]:my-3 [&>ol]:my-3" {...props} />,
           strong: (props) => <strong className="font-semibold text-slate-900" {...props} />,
           em: (props) => <em className="italic" {...props} />,
@@ -45,7 +44,7 @@ export function MarkdownBody({ content }: { content: string }) {
               {...props}
             />
           ),
-          hr: () => <hr className="my-14 border-t border-slate-200" />,
+          hr: () => <div className="en-section-rule" role="presentation" />,
           table: (props) => (
             <div className="my-10 overflow-x-auto">
               <table className="w-full border-collapse text-[0.95rem] leading-relaxed" {...props} />
@@ -63,7 +62,7 @@ export function MarkdownBody({ content }: { content: string }) {
           ),
         }}
       >
-        {content}
+        {withTwTickers(content)}
       </ReactMarkdown>
     </article>
   )

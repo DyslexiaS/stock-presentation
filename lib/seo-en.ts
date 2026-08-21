@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import {
   EN_BASE_URL,
+  EN_BREADCRUMB_ROOT,
   EN_SITE_NAME,
   getAllMemos,
   getCompanySlugs,
@@ -8,6 +9,9 @@ import {
   type EnMemo,
   type EnTopic,
   formatQuarterLabel,
+  formatTwTicker,
+  formatTwTickerLabel,
+  withTwTickers,
 } from '@/lib/content/en-memos'
 
 const OG_IMAGE = {
@@ -156,28 +160,31 @@ export function generateEnHomeMetadata(): Metadata {
 
 export function generateEnMemoMetadata(memo: EnMemo): Metadata {
   const url = memoUrl(memo)
-  const title = `${memo.title} | FinmoConf`
+  const title = `${withTwTickers(memo.title)} | FinmoConf`
   const quarterLabel = formatQuarterLabel(memo.quarter)
   const keywords = [
     `${memo.companyName} earnings call`,
     `${memo.companyName} ${quarterLabel} earnings`,
     `${memo.companyName} ${quarterLabel} earnings call`,
     `${memo.ticker} earnings call`,
+    `${formatTwTicker(memo.ticker)} earnings call`,
     `${memo.companyName} investor conference`,
     'Taiwan investor conference',
     'NVIDIA 800V HVDC',
   ]
-  const social = englishSocial(memo.title, memo.description, url, 'article')
+  const displayTitle = withTwTickers(memo.title)
+  const displayDescription = withTwTickers(memo.description)
+  const social = englishSocial(displayTitle, displayDescription, url, 'article')
 
   return {
     title,
-    description: memo.description,
+    description: displayDescription,
     keywords,
     alternates: englishHreflang(url),
     robots: EN_ROBOTS,
     openGraph: {
-      title: memo.title,
-      description: memo.description,
+      title: displayTitle,
+      description: displayDescription,
       url,
       siteName: EN_SITE_NAME,
       type: 'article',
@@ -198,9 +205,10 @@ export function generateEnCompanyMetadata(
   profile?: EnCompanyProfile | null
 ): Metadata {
   const url = `${EN_BASE_URL}/en/${companySlug}`
-  const title = `${companyName} (${ticker}) Earnings Call Notes in English | FinmoConf`
+  const tickerLabel = formatTwTickerLabel(ticker)
+  const title = `${companyName} ${tickerLabel} Earnings Call Notes in English | FinmoConf`
   const role = profile?.role ? ` ${profile.role.replace(/\s+/g, ' ').trim()}.` : ''
-  const description = `${count} English note${count === 1 ? '' : 's'} on ${companyName} (${ticker}) Taiwan earnings calls.${role} Results, guidance, management Q&A and NVIDIA 800V HVDC read-through.`
+  const description = `${count} English note${count === 1 ? '' : 's'} on ${companyName} ${tickerLabel} Taiwan earnings calls.${role} Results, guidance, management Q&A and NVIDIA 800V HVDC read-through.`
 
   return {
     title,
@@ -209,6 +217,7 @@ export function generateEnCompanyMetadata(
       `${companyName} earnings call`,
       `${companyName} earnings`,
       `${ticker} earnings call`,
+      `${formatTwTicker(ticker)} earnings call`,
       `${companyName} investor conference`,
       'Taiwan investor conference',
       'NVIDIA 800V HVDC',
@@ -256,8 +265,8 @@ export function generateEnMemoJsonLd(memo: EnMemo) {
       {
         '@type': 'Article',
         '@id': `${url}#article`,
-        headline: memo.title,
-        description: memo.description,
+        headline: withTwTickers(memo.title),
+        description: withTwTickers(memo.description),
         datePublished: published,
         dateModified: published,
         inLanguage: 'en',
@@ -273,7 +282,7 @@ export function generateEnMemoJsonLd(memo: EnMemo) {
         about: {
           '@type': 'Organization',
           name: memo.companyName,
-          identifier: memo.ticker,
+          identifier: formatTwTicker(memo.ticker),
         },
         isPartOf: {
           '@type': 'CollectionPage',
@@ -286,17 +295,18 @@ export function generateEnMemoJsonLd(memo: EnMemo) {
           'NVIDIA 800V HVDC',
           'Taiwan investor conference',
           memo.ticker,
+          formatTwTicker(memo.ticker),
         ].join(', '),
       },
       {
         '@type': 'BreadcrumbList',
         '@id': `${url}#breadcrumb`,
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'English', item: `${EN_BASE_URL}/en` },
+          { '@type': 'ListItem', position: 1, name: EN_BREADCRUMB_ROOT, item: `${EN_BASE_URL}/en` },
           {
             '@type': 'ListItem',
             position: 2,
-            name: `${memo.companyName} (${memo.ticker})`,
+            name: `${memo.companyName} ${formatTwTickerLabel(memo.ticker)}`,
             item: `${EN_BASE_URL}/en/${memo.companySlug}`,
           },
           { '@type': 'ListItem', position: 3, name: memo.reportingPeriod || quarterLabel, item: url },
@@ -343,14 +353,14 @@ export function generateEnHomeJsonLd() {
         itemListElement: companies.map((company, index) => ({
           '@type': 'ListItem',
           position: index + 1,
-          name: `${company.name} (${company.ticker})`,
+          name: `${company.name} ${formatTwTickerLabel(company.ticker)}`,
           url: `${EN_BASE_URL}/en/${company.slug}`,
         })),
       },
       {
         '@type': 'BreadcrumbList',
         '@id': `${url}#breadcrumb`,
-        itemListElement: [{ '@type': 'ListItem', position: 1, name: 'English', item: url }],
+        itemListElement: [{ '@type': 'ListItem', position: 1, name: EN_BREADCRUMB_ROOT, item: url }],
       },
     ],
   }
@@ -371,14 +381,14 @@ export function generateEnCompanyJsonLd(
       {
         '@type': 'CollectionPage',
         '@id': `${url}#page`,
-        name: `${companyName} (${ticker}) earnings calls`,
+        name: `${companyName} ${formatTwTickerLabel(ticker)} earnings calls`,
         description: generateEnCompanyMetadata(companySlug, companyName, ticker, memos.length, profile).description,
         url,
         inLanguage: 'en',
         about: {
           '@type': 'Organization',
           name: companyName,
-          identifier: ticker,
+          identifier: formatTwTicker(ticker),
         },
         publisher: PUBLISHER,
       },
@@ -390,7 +400,7 @@ export function generateEnCompanyJsonLd(
         itemListElement: memos.map((memo, index) => ({
           '@type': 'ListItem',
           position: index + 1,
-          name: memo.title,
+          name: withTwTickers(memo.title),
           url: memoUrl(memo),
         })),
       },
@@ -398,8 +408,8 @@ export function generateEnCompanyJsonLd(
         '@type': 'BreadcrumbList',
         '@id': `${url}#breadcrumb`,
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'English', item: `${EN_BASE_URL}/en` },
-          { '@type': 'ListItem', position: 2, name: `${companyName} (${ticker})`, item: url },
+          { '@type': 'ListItem', position: 1, name: EN_BREADCRUMB_ROOT, item: `${EN_BASE_URL}/en` },
+          { '@type': 'ListItem', position: 2, name: `${companyName} ${formatTwTickerLabel(ticker)}`, item: url },
         ],
       },
     ],
@@ -433,7 +443,7 @@ export function generateEnTopicJsonLd(topic: EnTopic, memos: EnMemo[]) {
         itemListElement: memos.map((memo, index) => ({
           '@type': 'ListItem',
           position: index + 1,
-          name: memo.title,
+          name: withTwTickers(memo.title),
           url: memoUrl(memo),
         })),
       },
@@ -441,7 +451,7 @@ export function generateEnTopicJsonLd(topic: EnTopic, memos: EnMemo[]) {
         '@type': 'BreadcrumbList',
         '@id': `${url}#breadcrumb`,
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'English', item: `${EN_BASE_URL}/en` },
+          { '@type': 'ListItem', position: 1, name: EN_BREADCRUMB_ROOT, item: `${EN_BASE_URL}/en` },
           { '@type': 'ListItem', position: 2, name: topic.title, item: url },
         ],
       },

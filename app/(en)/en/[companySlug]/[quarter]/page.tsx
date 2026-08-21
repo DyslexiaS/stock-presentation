@@ -1,13 +1,20 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { EnBreadcrumb } from '@/components/en/breadcrumb'
 import { JsonLd } from '@/components/en/json-ld'
 import { MarkdownBody } from '@/components/en/markdown-body'
+import { EnSectionRule } from '@/components/en/section-rule'
+import { ShareLinks } from '@/components/en/share-links'
+import { EN_PAGE_WIDTH } from '@/components/en/site-chrome'
 import {
+  EN_BASE_URL,
   formatQuarterLabel,
+  formatTwTickerLabel,
   getAllMemos,
   getMemo,
   getMemosByCompany,
   getRelatedMemos,
+  withTwTickers,
 } from '@/lib/content/en-memos'
 import { generateEnMemoJsonLd, generateEnMemoMetadata } from '@/lib/seo-en'
 
@@ -43,26 +50,30 @@ export default async function MemoPage({
   const related = getRelatedMemos(memo)
   const archive = getMemosByCompany(companySlug).filter((m) => m.quarter !== quarter)
   const jsonLd = generateEnMemoJsonLd(memo)
+  const pageUrl = `${EN_BASE_URL}/en/${memo.companySlug}/${memo.quarter}`
+  const displayTitle = withTwTickers(memo.title)
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-14 md:px-10">
+    <div className={`${EN_PAGE_WIDTH} py-14`}>
       <JsonLd data={jsonLd} />
-      <nav className="text-sm text-slate-500">
-        <Link href="/en" className="hover:text-slate-800">English</Link>
-        <span className="mx-2">/</span>
-        <Link href={`/en/${memo.companySlug}`} className="hover:text-slate-800">{memo.companyName}</Link>
-        <span className="mx-2">/</span>
-        <span>{memo.reportingPeriod || formatQuarterLabel(memo.quarter)}</span>
-      </nav>
+      <EnBreadcrumb
+        items={[
+          { href: `/en/${memo.companySlug}`, label: memo.companyName },
+          { label: memo.reportingPeriod || formatQuarterLabel(memo.quarter) },
+        ]}
+      />
 
-      <header className="mt-8 border-b border-slate-300 pb-10">
+      <header className="mt-8">
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-slate-500">
-          {memo.companyName} ({memo.ticker}) · call date {memo.eventDate}
+          {memo.companyName} {formatTwTickerLabel(memo.ticker)} · call date {memo.eventDate}
         </p>
-        <h1 className="mt-4 font-[family-name:var(--font-en-serif)] text-[2.5rem] font-semibold leading-[1.15] tracking-tight text-slate-900 md:text-[3rem]">
-          {memo.title}
-        </h1>
-        <p className="mt-5 max-w-3xl text-xl leading-relaxed text-slate-600">{memo.description}</p>
+        <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <h1 className="font-[family-name:var(--font-en-serif)] text-[2.5rem] font-semibold leading-[1.15] tracking-tight text-slate-900 md:text-[3rem]">
+            {displayTitle}
+          </h1>
+          <ShareLinks title={displayTitle} url={pageUrl} />
+        </div>
+        <p className="mt-5 max-w-4xl text-xl leading-relaxed text-slate-600">{withTwTickers(memo.description)}</p>
         <div className="mt-6 flex flex-wrap gap-2">
           {memo.tags.map((tag) => (
             <Link
@@ -76,18 +87,21 @@ export default async function MemoPage({
         </div>
       </header>
 
-      <div className="mt-14">
+      <EnSectionRule />
+
+      <div>
         <MarkdownBody content={memo.content} />
       </div>
 
       {archive.length > 0 && (
-        <section className="mt-16 border-t border-slate-300 pt-8">
+        <section>
+          <EnSectionRule />
           <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">More {memo.companyName} earnings calls</h2>
           <ul className="mt-4 space-y-3">
             {archive.map((item) => (
               <li key={item.quarter}>
                 <Link href={`/en/${item.companySlug}/${item.quarter}`} className="text-slate-800 underline decoration-slate-300 underline-offset-4 hover:decoration-slate-800">
-                  {item.title}
+                  {withTwTickers(item.title)}
                 </Link>
               </li>
             ))}
@@ -96,13 +110,14 @@ export default async function MemoPage({
       )}
 
       {related.length > 0 && (
-        <section className="mt-10">
+        <section>
+          <EnSectionRule />
           <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Related 800V companies</h2>
           <ul className="mt-4 space-y-3">
             {related.map((item) => (
               <li key={`${item.companySlug}-${item.quarter}`}>
                 <Link href={`/en/${item.companySlug}/${item.quarter}`} className="text-slate-800 underline decoration-slate-300 underline-offset-4 hover:decoration-slate-800">
-                  {item.companyName}: {item.title}
+                  {item.companyName}: {withTwTickers(item.title)}
                 </Link>
               </li>
             ))}
