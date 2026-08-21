@@ -35,6 +35,18 @@ export interface EnCompanyProfile {
   content: string
 }
 
+export interface EnCompanySummary {
+  slug: string
+  name: string
+  ticker: string
+  count: number
+}
+
+/** Paths that must not collide with /en/[companySlug]. */
+export const EN_RESERVED_SLUGS: string[] = ['companies', 'calls', 'topics']
+
+export const EN_HOME_LATEST_COUNT = 10
+
 let memoCache: EnMemo[] | null = null
 let topicCache: EnTopic[] | null = null
 let profileCache: Map<string, EnCompanyProfile> | null = null
@@ -161,7 +173,28 @@ export function getMemosByTag(tag: string): EnMemo[] {
 }
 
 export function getCompanySlugs(): string[] {
-  return Array.from(new Set(loadMemos().map((m) => m.companySlug)))
+  return getCompanySummaries().map((company) => company.slug)
+}
+
+export function getCompanySummaries(): EnCompanySummary[] {
+  const map = new Map<string, EnCompanySummary>()
+  for (const memo of loadMemos()) {
+    const existing = map.get(memo.companySlug)
+    if (existing) {
+      existing.count += 1
+    } else {
+      map.set(memo.companySlug, {
+        slug: memo.companySlug,
+        name: memo.companyName,
+        ticker: memo.ticker,
+        count: 1,
+      })
+    }
+  }
+  const summaries: EnCompanySummary[] = []
+  map.forEach((company) => summaries.push(company))
+  summaries.sort((a, b) => a.name.localeCompare(b.name))
+  return summaries
 }
 
 export function getAllTags(): string[] {

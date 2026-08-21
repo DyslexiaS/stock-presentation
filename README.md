@@ -88,6 +88,8 @@ interface Presentation {
 |---|---|---|
 | `/` | 台股法說會、法說會查詢 | 1 |
 | `/en` | Taiwan semiconductor earnings call | 1 |
+| `/en/companies` | Taiwan earnings call companies | 1 |
+| `/en/calls` | Taiwan semiconductor earnings calls English | 1 |
 | `/en/topics/nvidia-800v` | NVIDIA 800V supply chain Taiwan | 1 |
 | `/en/[company]` | Lite-On earnings call English | 28 |
 | `/en/[company]/[quarter]` | Lite-On Q2 2026 earnings call | 39 |
@@ -97,7 +99,7 @@ interface Presentation {
 ### Sitemap 三層架構
 ```
 /sitemap-index.xml
-  ├── /en-sitemap.xml                 # /en + 主題 + 28 家公司 + 39 篇 memo
+  ├── /en-sitemap.xml                 # /en + 名錄 + 全部 calls + 主題 + 28 家公司 + 39 篇 memo
   ├── /companies-sitemap.xml          # 所有中文公司頁（~2,000）
   ├── /industry-sitemap.xml           # 產業分類頁
   └── /presentations-sitemap/[page]   # 分頁法說會（每頁 10,000）
@@ -136,7 +138,7 @@ interface Presentation {
 
 目前第一個主題是 NVIDIA 800 VDC：28 家公司、39 篇季度 memo，每家有獨立 company profile。Memo 用 reader-first 結構（At a glance / numbers / 800V read-through / Q&A），公司背景不重複寫進每季。
 
-英文閱讀頁：麵包屑第一段是 **FinmoConf**（不是 English）；股票代號顯示成 `(2330.TW)`；文章標題旁有分享（複製連結 / 系統分享 / X / LinkedIn）；大標之間用灰線加左側黃色短槓區隔；正文欄寬 `max-w-6xl`。
+英文閱讀頁：麵包屑第一段是 **FinmoConf**（不是 English）；股票代號顯示成 `(2330.TW)`；文章標題旁有分享（複製連結 / 系統分享 / X / LinkedIn）；大標之間用灰線加左側黃色短槓區隔；正文欄寬 `max-w-6xl`。英文首頁公司區是三欄密索引，最新法說會只列最近 10 篇；完整名錄在 `/en/companies`，全部筆記在 `/en/calls`。
 
 新增一篇：
 
