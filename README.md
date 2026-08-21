@@ -90,14 +90,14 @@ interface Presentation {
 | `/en` | Taiwan semiconductor earnings call | 1 |
 | `/en/topics/nvidia-800v` | NVIDIA 800V supply chain Taiwan | 1 |
 | `/en/[company]` | Lite-On earnings call English | 28 |
-| `/en/[company]/[quarter]` | Lite-On Q2 2026 earnings call | 39 |
+| `/en/[company]/[quarter]` | Lite-On Q2 2026 earnings call | 42 |
 | `/company/2330` | 台積電法說會、2330法說會簡報 | ~2,000 |
 | `/presentation/[id]` | 台積電2024Q3法說會、2330法人說明會PDF | ~10,000+ |
 
 ### Sitemap 三層架構
 ```
 /sitemap-index.xml
-  ├── /en-sitemap.xml                 # /en + 主題 + 28 家公司 + 39 篇 memo
+  ├── /en-sitemap.xml                 # /en + 主題 + 28 家公司 + 42 篇 memo
   ├── /companies-sitemap.xml          # 所有中文公司頁（~2,000）
   ├── /industry-sitemap.xml           # 產業分類頁
   └── /presentations-sitemap/[page]   # 分頁法說會（每頁 10,000）
@@ -134,7 +134,7 @@ interface Presentation {
 
 海外投資人專區。公開內容只有英文 briefing，中文逐字稿不上架。檔案放在 git，不進 MongoDB。
 
-目前第一個主題是 NVIDIA 800 VDC：28 家公司、39 篇季度 memo，每家有獨立 company profile。Memo 用 reader-first 結構（At a glance / numbers / 800V read-through / Q&A），公司背景不重複寫進每季。
+目前第一個主題是 NVIDIA 800 VDC：28 家公司、42 篇季度 memo，每家有獨立 company profile。Memo 用 reader-first 結構（At a glance / numbers / 800V read-through / Q&A），公司背景不重複寫進每季。鴻海已補到 2026Q2（Vera Rubin 出貨日曆、ASIC 市佔目標）；該三場法說會沒有點名 800V。
 
 新增一篇：
 

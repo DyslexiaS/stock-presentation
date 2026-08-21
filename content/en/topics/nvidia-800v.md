@@ -1,6 +1,6 @@
 ---
 title: "NVIDIA 800 VDC — Taiwan Supply Chain"
-description: "What NVIDIA's 800 VDC whitepaper actually specifies for AI data centers, and which Taiwan-listed suppliers sit in each slot — English earnings calls for Delta, Lite-On, BizLink, Hon Hai and 24 other names."
+description: "What NVIDIA's 800 VDC whitepaper actually specifies for AI data centers, and which Taiwan-listed suppliers sit in each slot — English earnings calls for Delta, Lite-On, BizLink, Hon Hai and 24 other names, including Foxconn through Q2 2026."
 ---
 
 NVIDIA is rebuilding data-center power around **800 VDC**. This hub does two things: it reads NVIDIA's own specification, then maps the Taiwan-listed companies that have to build against it. Every company below has an English memo page with briefings of its earnings calls.
@@ -76,7 +76,7 @@ Read the tier label before the thesis. Being on NVIDIA's list is a different fac
 
 ### Named by brokers as a Kyber build partner
 
-**[Hon Hai / Foxconn (2317)](/en/foxconn)** — rack-scale assembly, and already vertically integrating the pieces 800V touches: busbars, CDUs, cold plates, manifolds, quick disconnects, plus in-house SiC modules.
+**[Hon Hai / Foxconn (2317)](/en/foxconn)** — rack-scale assembly. Cloud and networking crossed **51%** of sales in Q2 2026. Self-made content is above 50%, chips excepted — busbars, CDUs, cold plates, manifolds, quick disconnects, plus in-house SiC. **Vera Rubin** is guided to Q3 2026 production readiness and Q4 shipments, with a 50% share target; that is the 2026 cabinet, not Kyber. The 2026 calls never named 800 V. Analysts asked about Google TPU; management answered with an ASIC share target of 40% or more.
 
 ### Second-tier reads with their own HVDC disclosure
 
