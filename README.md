@@ -136,7 +136,7 @@ interface Presentation {
 
 海外投資人專區。公開內容只有英文 briefing，中文逐字稿不上架。檔案放在 git，不進 MongoDB。
 
-目前第一個主題是 NVIDIA 800 VDC：30 家公司、45 篇季度 memo，每家有獨立 company profile。Memo 用 reader-first 結構（At a glance / numbers / 800V read-through / Q&A），公司背景不重複寫進每季。鴻海已補到 2026Q2；奇鋐（液冷）兩篇、良維（NVIDIA 官方名單）一篇。`/llms.txt` 與 `/en-sitemap.xml` 由 loader 動態列出全部英文 URL，新增 memo 不必手改。
+目前第一個主題是 NVIDIA 800 VDC：30 家公司、45 篇季度 memo，每家有獨立 company profile。Memo 用 reader-first 結構（At a glance / numbers / 800V read-through / Q&A），公司背景不重複寫進每季。**Management Q&A** 是 `**Q:**` / `**A:**` 一問一答，對照中文摘要直翻、留原數字與但書，不縮成短評。鴻海已補到 2026Q2；奇鋐（液冷）兩篇、良維（NVIDIA 官方名單）一篇。`/llms.txt` 與 `/en-sitemap.xml` 由 loader 動態列出全部英文 URL，新增 memo 不必手改。
 
 英文閱讀頁：麵包屑第一段是 **FinmoConf**（不是 English）；股票代號顯示成 `(2330.TW)`；文章標題旁有分享（複製連結 / 系統分享 / X / LinkedIn）；大標之間用灰線加左側黃色短槓區隔；正文欄寬 `max-w-6xl`。英文首頁公司區是三欄密索引，最新法說會只列最近 10 篇；完整名錄在 `/en/companies`，全部筆記在 `/en/calls`。
 
@@ -145,7 +145,8 @@ interface Presentation {
 1. 在 `content/en/memos/<company-slug>/<quarter>.md` 寫 Markdown（frontmatter：`title`, `description`, `companySlug`, `ticker`, `companyName`, `quarter`, `eventDate`, `reportingPeriod`, `tags`）
 2. 主題用 `tags`（例如 `nvidia-800v`），不要寫進網址
 3. 同一季兩場時，第二篇用 `2026-q1-jun` 這種後綴
-4. commit 後建置時 SSG 成 `/en/<company-slug>/<quarter>`
+4. `## Management Q&A` 用 `**Q:**` / `**A:**` 寫每一題，對照原文，1–3 句完整句，不要縮成短評
+5. commit 後建置時 SSG 成 `/en/<company-slug>/<quarter>`
 
 ---
 
