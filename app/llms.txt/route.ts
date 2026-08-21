@@ -1,4 +1,4 @@
-import { EN_BASE_URL, formatTwTickerLabel, getAllMemos, getCompanySlugs } from '@/lib/content/en-memos'
+import { EN_BASE_URL, formatTwTickerLabel, getAllMemos, getAllTags, getCompanySlugs } from '@/lib/content/en-memos'
 
 export async function GET() {
   const currentDate = new Date().toISOString().split('T')[0]
@@ -9,6 +9,18 @@ export async function GET() {
     const count = memos.filter((memo) => memo.companySlug === slug).length
     return `- ${latest.companyName} ${formatTwTickerLabel(latest.ticker)}: ${EN_BASE_URL}/en/${slug} — latest ${EN_BASE_URL}/en/${slug}/${latest.quarter} (${count} call${count === 1 ? '' : 's'})`
   })
+  const topics = getAllTags().map(
+    (tag) => `- ${tag}: ${EN_BASE_URL}/en/topics/${tag}`
+  )
+  const notes = [...memos]
+    .sort(
+      (a, b) =>
+        a.companySlug.localeCompare(b.companySlug) || b.eventDate.localeCompare(a.eventDate)
+    )
+    .map(
+      (memo) =>
+        `- ${memo.companyName} ${formatTwTickerLabel(memo.ticker)} ${memo.reportingPeriod || memo.quarter}: ${EN_BASE_URL}/en/${memo.companySlug}/${memo.quarter}`
+    )
 
   const content = [
     '# FinmoConf - Taiwan Stock Earnings Conference Search Platform',
@@ -39,10 +51,17 @@ export async function GET() {
     `- All English notes: ${EN_BASE_URL}/en/calls`,
     `- NVIDIA 800V HVDC Taiwan supply chain: ${EN_BASE_URL}/en/topics/nvidia-800v`,
     `- English sitemap: ${EN_BASE_URL}/en-sitemap.xml`,
-    '- Topics covered: NVIDIA 800V HVDC — power racks, BBUs, SiC/GaN, leadframes, magnetics, relays, connectors, test gear, facility MV',
+    `- Sitemap index: ${EN_BASE_URL}/sitemap-index.xml`,
+    '- Topics covered: NVIDIA 800V HVDC — power racks, BBUs, liquid cooling, rack ODMs, SiC/GaN, leadframes, magnetics, relays, connectors, test gear, facility MV',
+    '',
+    '### Topic pages',
+    ...topics,
     '',
     '### Companies with English notes',
     ...companies,
+    '',
+    '### Individual English notes',
+    ...notes,
     '',
     '## Key Features',
     '- Smart Search: Search by company ticker (e.g., 2330 for TSMC), company name, date ranges, and market categories',

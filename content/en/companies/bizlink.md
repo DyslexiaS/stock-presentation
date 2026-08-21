@@ -5,7 +5,7 @@ role: "Connectors and cable assemblies, the slot 800 VDC fills with touch-safe i
 
 ## Who BizLink is
 
-BizLink Holding (TW:3665) makes connectors, cable assemblies, and wire harnesses, built up over the last decade through acquisition as much as organic growth. It is one of three Taiwan-listed companies on **NVIDIA's published 800 VDC ecosystem list**, under power system components.
+BizLink Holding (TW:3665) makes connectors, cable assemblies, and wire harnesses, built up over the last decade through acquisition as much as organic growth. It is one of four Taiwan-listed companies on **NVIDIA's published 800 VDC ecosystem list**, under power system components, alongside Delta, Lite-On and Lead Wealth.
 
 ## Business mix
 

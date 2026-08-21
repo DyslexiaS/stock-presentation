@@ -112,6 +112,7 @@ export function generateEnLayoutMetadata(): Metadata {
       'NVIDIA 800V HVDC',
       'NVIDIA 800V supply chain Taiwan',
       'AI data center power',
+      'AI data center liquid cooling Taiwan',
     ],
     robots: EN_ROBOTS,
     authors: [{ name: 'FinmoAI' }],
@@ -138,7 +139,7 @@ export function generateEnHomeMetadata(): Metadata {
   const url = `${EN_BASE_URL}/en`
   const { memoCount, companyCount } = collectionCounts()
   const title = 'Taiwan Semiconductor Earnings Calls | FinmoConf English'
-  const description = `English notes on ${memoCount} Taiwan semiconductor earnings calls across ${companyCount} listed companies. First collection: NVIDIA 800V HVDC — Delta, Lite-On, BizLink, Foxconn, AcBel and the rest of the power, BBU and SiC/GaN stack.`
+  const description = `English notes on ${memoCount} Taiwan semiconductor earnings calls across ${companyCount} listed companies. First collection: NVIDIA 800V HVDC — Delta, Lite-On, BizLink, Lead Wealth, Foxconn, Auras and the rest of the power, cooling, BBU and SiC/GaN stack.`
 
   return {
     title,
@@ -151,6 +152,10 @@ export function generateEnHomeMetadata(): Metadata {
       'NVIDIA 800V supply chain',
       'Lite-On earnings call',
       'Delta Electronics earnings call',
+      'Foxconn earnings call',
+      'Auras Technology earnings call',
+      'Lead Wealth earnings call',
+      'AI data center liquid cooling Taiwan',
       'AI data center power Taiwan',
     ],
     alternates: englishHreflang(url),
@@ -286,6 +291,9 @@ export function generateEnTopicMetadata(topic: EnTopic, count: number): Metadata
       'NVIDIA 800V supply chain Taiwan',
       'Kyber rack power',
       'AI data center BBU',
+      'AI data center liquid cooling Taiwan',
+      'Auras Technology liquid cooling',
+      'Lead Wealth 800V',
       'Taiwan semiconductor earnings',
       'AI data center power Taiwan',
       topic.title,
@@ -361,6 +369,7 @@ export function generateEnMemoJsonLd(memo: EnMemo) {
 export function generateEnHomeJsonLd() {
   const url = `${EN_BASE_URL}/en`
   const companies = getCompanySummaries()
+  const memos = getAllMemos()
 
   return {
     '@context': 'https://schema.org',
@@ -389,6 +398,18 @@ export function generateEnHomeJsonLd() {
           position: index + 1,
           name: `${company.name} ${formatTwTickerLabel(company.ticker)}`,
           url: `${EN_BASE_URL}/en/${company.slug}`,
+        })),
+      },
+      {
+        '@type': 'ItemList',
+        '@id': `${url}#notes`,
+        name: 'English earnings-call notes',
+        numberOfItems: memos.length,
+        itemListElement: memos.map((memo, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: withTwTickers(memo.title),
+          url: memoUrl(memo),
         })),
       },
       {

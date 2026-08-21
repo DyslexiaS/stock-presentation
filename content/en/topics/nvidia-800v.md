@@ -1,6 +1,6 @@
 ---
 title: "NVIDIA 800 VDC — Taiwan Supply Chain"
-description: "What NVIDIA's 800 VDC whitepaper actually specifies for AI data centers, and which Taiwan-listed suppliers sit in each slot — English earnings calls for Delta, Lite-On, BizLink, Hon Hai and 24 other names."
+description: "What NVIDIA's 800 VDC whitepaper actually specifies for AI data centers, and which Taiwan-listed suppliers sit in each slot — English earnings calls for Delta, Lite-On, BizLink, Lead Wealth, Hon Hai, Auras and the rest of the power, cooling and rack stack."
 ---
 
 NVIDIA is rebuilding data-center power around **800 VDC**. This hub does two things: it reads NVIDIA's own specification, then maps the Taiwan-listed companies that have to build against it. Every company below has an English memo page with briefings of its earnings calls.
@@ -53,14 +53,14 @@ Full production lines up with **Kyber** in **2027** — the rack that holds **57
 
 ### Who NVIDIA named
 
-NVIDIA's published ecosystem list has three tiers. Four Taiwan-linked names appear on it:
+NVIDIA's published ecosystem list has three tiers. Five Taiwan-linked names appear on it:
 
 | Tier | Taiwan names |
 |---|---|
-| Power system components | **Delta (2308)**, **LITEON (2301)**, **BizLink (3665)** |
+| Power system components | **Delta (2308)**, **LITEON (2301)**, **BizLink (3665)**, **Lead Wealth (6290)** |
 | Silicon | **Richtek** — a MediaTek subsidiary, no separate listing, so no earnings page here |
 
-The rest of the list is non-Taiwan: ADI, Infineon, onsemi, TI, Navitas, Innoscience, MPS, Power Integrations, Renesas, ROHM, ST, AOS, EPC on silicon; Flex, Lead Wealth, Megmeet on components; ABB, Eaton, GE Vernova, Heron Power, Hitachi Energy, Mitsubishi Electric, Schneider, Siemens, Vertiv on data-center power systems.
+The rest of the list is non-Taiwan: ADI, Infineon, onsemi, TI, Navitas, Innoscience, MPS, Power Integrations, Renesas, ROHM, ST, AOS, EPC on silicon; Flex and Megmeet on components; ABB, Eaton, GE Vernova, Heron Power, Hitachi Energy, Mitsubishi Electric, Schneider, Siemens, Vertiv on data-center power systems.
 
 ## Part 2 — The Taiwan companies
 
@@ -74,9 +74,11 @@ Read the tier label before the thesis. Being on NVIDIA's list is a different fac
 
 **[BizLink (3665)](/en/bizlink)** — connectors and cable assemblies, the slot NVIDIA fills with touch-safe interlocked connectors and liquid-cooled cables. Coverage here is historical; see the memo for the data caveat.
 
+**[Lead Wealth (6290)](/en/lead-wealth)** — Hi-Amp AC power cords, 30–100 A, into racks and PDUs. On NVIDIA's list; the December 2025 call confirmed 800 V HVDC projects without customers or dates.
+
 ### Named by brokers as a Kyber build partner
 
-**[Hon Hai / Foxconn (2317)](/en/foxconn)** — rack-scale assembly, and already vertically integrating the pieces 800V touches: busbars, CDUs, cold plates, manifolds, quick disconnects, plus in-house SiC modules.
+**[Hon Hai / Foxconn (2317)](/en/foxconn)** — rack-scale assembly. Cloud and networking crossed **51%** of sales in Q2 2026. Self-made content is above 50%, chips excepted — busbars, CDUs, cold plates, manifolds, quick disconnects, plus in-house SiC. **Vera Rubin** is guided to Q3 2026 production readiness and Q4 shipments, with a 50% share target; that is the 2026 cabinet, not Kyber. The 2026 calls never named 800 V. Analysts asked about Google TPU; management answered with an ASIC share target of 40% or more.
 
 ### Second-tier reads with their own HVDC disclosure
 
@@ -107,6 +109,7 @@ These are not on NVIDIA's list. They are Taiwan-listed suppliers that discussed 
 
 **Mechanicals, interconnect, cooling**
 
+- **[Auras Technology (3017)](/en/auras)** — cold plates, manifolds, QDs and chassis. Not on NVIDIA's 800V list. 2026 is its "ASIC first year"; data-center water cooling is guided past 50% in 2027. Google TPU was asked; management would not name it. Two notes, Q1 and Q2 2026.
 - **[Sunonwealth (2421)](/en/sunon)** — claims a unique 800 V EC fan for data-center infrastructure.
 - **[Chenming (3013)](/en/chenming)** — chassis and racks; studying both the OCP ±400 V and NVIDIA 0–800 V camps.
 - **[CviLux (8103)](/en/cvilux)** — connectors into 18.5 kW power shelves, sidecar BBU/CBU and 48 V DC-DC. Architecture read; the call never said 800 V.
