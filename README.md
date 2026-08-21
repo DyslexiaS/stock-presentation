@@ -160,10 +160,14 @@ interface Presentation {
 
 ## 部署
 
-推薦使用 Vercel，連接 GitHub repo 後設定環境變數即可自動部署。
+本地建置：
 
 ```bash
 bun run build   # 建置
 bun start       # 啟動生產伺服器
 bun run lint    # 程式碼檢查
 ```
+
+**Zeabur**：repo 根目錄有 `Dockerfile`，會固定用 Bun **1.2.18** 跑 `bun install` 再 `next build`。不要讓 Zeabur 自己裝 `bun@latest`——2026-08-20 的 Bun 1.4 是重寫版，會把 `bun install` 弄到失敗。Bun 版本寫在 `package.json` 的 `engines.bun` 與 `packageManager`。環境變數（`MONGODB_URI`、`NEXT_PUBLIC_SITE_URL`）在 Zeabur 服務設定裡即可。
+
+**Vercel**：連接 GitHub 後設定同樣的環境變數即可；Vercel 不會用這份 Dockerfile。
