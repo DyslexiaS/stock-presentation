@@ -18,6 +18,9 @@ export function EnHeader() {
           <Link href="/en/topics/nvidia-800v" className="text-slate-300 hover:text-white">
             800V topic
           </Link>
+          <Link href="/en/topics/liquid-cooling" className="text-slate-300 hover:text-white">
+            Liquid cooling
+          </Link>
           <Link href="/en/companies" className="text-slate-300 hover:text-white">
             Companies
           </Link>
@@ -49,6 +52,10 @@ export function EnFooter() {
           {' · '}
           <Link href="/en/topics/nvidia-800v" className="underline decoration-slate-300 underline-offset-4 hover:text-slate-800">
             NVIDIA 800V hub
+          </Link>
+          {' · '}
+          <Link href="/en/topics/liquid-cooling" className="underline decoration-slate-300 underline-offset-4 hover:text-slate-800">
+            Liquid cooling hub
           </Link>
         </p>
       </div>

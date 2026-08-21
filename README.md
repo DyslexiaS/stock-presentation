@@ -50,7 +50,7 @@ app/
 
 content/en/
 ├── memos/[company]/[quarter].md      # 英文法說會 memo
-└── topics/nvidia-800v.md             # 主題 hub
+└── topics/                           # 主題 hub（nvidia-800v, liquid-cooling）
 
 lib/
 ├── seo.ts                            # 中文頁 metadata
@@ -91,15 +91,16 @@ interface Presentation {
 | `/en/companies` | Taiwan earnings call companies | 1 |
 | `/en/calls` | Taiwan semiconductor earnings calls English | 1 |
 | `/en/topics/nvidia-800v` | NVIDIA 800V supply chain Taiwan | 1 |
-| `/en/[company]` | Lite-On earnings call English | 30 |
-| `/en/[company]/[quarter]` | Lite-On Q2 2026 earnings call | 45 |
+| `/en/topics/liquid-cooling` | AI data center liquid cooling Taiwan | 1 |
+| `/en/[company]` | Lite-On earnings call English | 34 |
+| `/en/[company]/[quarter]` | Lite-On Q2 2026 earnings call | 50 |
 | `/company/2330` | 台積電法說會、2330法說會簡報 | ~2,000 |
 | `/presentation/[id]` | 台積電2024Q3法說會、2330法人說明會PDF | ~10,000+ |
 
 ### Sitemap 三層架構
 ```
 /sitemap-index.xml
-  ├── /en-sitemap.xml                 # /en + 名錄 + 全部 calls + 主題 + 32 家公司 + 48 篇 memo
+  ├── /en-sitemap.xml                 # /en + 名錄 + 全部 calls + 主題 + 34 家公司 + 50 篇 memo
   ├── /companies-sitemap.xml          # 所有中文公司頁（~2,000）
   ├── /industry-sitemap.xml           # 產業分類頁
   └── /presentations-sitemap/[page]   # 分頁法說會（每頁 10,000）
@@ -123,7 +124,7 @@ interface Presentation {
 
 ## SEO 成長路線圖
 
-- [x] **英文 memo 專區 `/en`** — Markdown SSG，NVIDIA 800V 供應鏈為第一個主題
+- [x] **英文 memo 專區 `/en`** — Markdown SSG，NVIDIA 800V 與液冷為前兩個主題
 - [ ] **AI 批次生成 `presentationContent`** — 將 10,000+ 薄頁面轉為有內容的頁面，最高優先
 - [x] **產業分類頁** `/industry/[sector]` — 承接「半導體業法說會」等高搜尋量關鍵字
 - [ ] **季度彙整頁** `/quarter/[year-q]` — 承接「2024 Q3 法說會」類查詢
@@ -136,14 +137,14 @@ interface Presentation {
 
 海外投資人專區。公開內容只有英文 briefing，中文逐字稿不上架。檔案放在 git，不進 MongoDB。
 
-目前第一個主題是 NVIDIA 800 VDC：32 家公司、48 篇季度 memo，每家有獨立 company profile。Memo 用 reader-first 結構（At a glance / numbers / 800V read-through / Q&A），公司背景不重複寫進每季。**Management Q&A** 是 `**Q:**` / `**A:**` 一問一答，對照中文摘要直翻、留原數字與但書，不縮成短評。鴻海已補到 2026Q2；液冷有奇鋐、雙鴻、健策、建準。`/llms.txt` 與 `/en-sitemap.xml` 由 loader 動態列出全部英文 URL，新增 memo 不必手改。
+目前兩個主題：NVIDIA 800 VDC 與 AI 機櫃液冷。34 家公司、50 篇季度 memo，每家有獨立 company profile。Memo 用 reader-first 結構（At a glance / numbers / 800V read-through / Q&A），公司背景不重複寫進每季。**Management Q&A** 是 `**Q:**` / `**A:**` 一問一答，對照中文摘要直翻、留原數字與但書，不縮成短評。鴻海已補到 2026Q2。液冷主題頁在 `/en/topics/liquid-cooling`，掛奇鋐、雙鴻、健策、建準、富世達、尼得科超眾（冷卻主線 dual-tag，不把全部 800V 筆記灌進去）。`/llms.txt` 與 `/en-sitemap.xml` 由 loader 動態列出全部英文 URL，新增 memo 不必手改。
 
 英文閱讀頁：麵包屑第一段是 **FinmoConf**（不是 English）；股票代號顯示成 `(2330.TW)`；文章標題旁有分享（複製連結 / 系統分享 / X / LinkedIn）；大標之間用灰線加左側黃色短槓區隔；正文欄寬 `max-w-6xl`。英文首頁公司區是三欄密索引，最新法說會只列最近 10 篇；完整名錄在 `/en/companies`，全部筆記在 `/en/calls`。
 
 新增一篇：
 
 1. 在 `content/en/memos/<company-slug>/<quarter>.md` 寫 Markdown（frontmatter：`title`, `description`, `companySlug`, `ticker`, `companyName`, `quarter`, `eventDate`, `reportingPeriod`, `tags`）
-2. 主題用 `tags`（例如 `nvidia-800v`），不要寫進網址
+2. 主題用 `tags`（例如 `nvidia-800v`、`liquid-cooling`），不要寫進網址。冷卻主線可雙掛；電源機櫃筆記不要灌進液冷主題。
 3. 同一季兩場時，第二篇用 `2026-q1-jun` 這種後綴
 4. `## Management Q&A` 用 `**Q:**` / `**A:**` 寫每一題，對照原文，1–3 句完整句，不要縮成短評
 5. commit 後建置時 SSG 成 `/en/<company-slug>/<quarter>`

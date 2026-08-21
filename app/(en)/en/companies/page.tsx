@@ -20,7 +20,7 @@ export default function EnglishCompaniesPage() {
           Companies
         </h1>
         <p className="mt-5 max-w-3xl text-xl leading-relaxed text-slate-600">
-          {companies.length} Taiwan-listed companies with English earnings-call notes. First collection: NVIDIA 800V HVDC supply chain.
+          {companies.length} Taiwan-listed companies with English earnings-call notes. Topics so far: NVIDIA 800V HVDC and AI-rack liquid cooling.
         </p>
       </header>
       <CompanyDirectoryList companies={companies} />
