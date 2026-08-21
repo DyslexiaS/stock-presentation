@@ -7,7 +7,7 @@ role: "AI server PSUs, power shelves, BBUs, rack-level power and liquid cooling"
 
 Lite-On Technology (TW:2301) is a Taiwanese power and optoelectronics maker that has spent the last five years converting itself from an ODM/OEM contract manufacturer into a supplier of high-value AI infrastructure hardware. Return on invested capital went from 28% in 2020 to 55% in 2023 on the back of that shift.
 
-It is one of three Taiwan-listed companies on **NVIDIA's published 800 VDC ecosystem list**, under power system components, alongside Delta and BizLink.
+It is one of four Taiwan-listed companies on **NVIDIA's published 800 VDC ecosystem list**, under power system components, alongside Delta, BizLink and Lead Wealth.
 
 ## Business mix
 

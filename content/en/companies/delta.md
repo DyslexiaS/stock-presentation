@@ -7,7 +7,7 @@ role: "Server PSUs, power shelves, rack power, BBUs, DC-DC, liquid cooling, and 
 
 Delta Electronics (TW:2308) is Taiwan's largest power electronics company and, by product breadth, the one Taiwan name that can sell almost every block of NVIDIA's 800 VDC diagram — from the medium-voltage conversion above the rack down to the DC-DC stage beside the GPU.
 
-It is one of three Taiwan-listed companies on **NVIDIA's published 800 VDC ecosystem list**, under power system components.
+It is one of four Taiwan-listed companies on **NVIDIA's published 800 VDC ecosystem list**, under power system components, alongside Lite-On, BizLink and Lead Wealth.
 
 ## Business mix
 
