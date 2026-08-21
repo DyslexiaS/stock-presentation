@@ -200,5 +200,35 @@ export function formatQuarterLabel(quarter: string): string {
   return `Q${match[2]} ${match[1]}${extra}`
 }
 
+/** Yahoo-style TWSE/TPEx code, e.g. 8255 → 8255.TW */
+export function formatTwTicker(ticker: string): string {
+  const trimmed = ticker.trim().toUpperCase()
+  if (!trimmed) return trimmed
+  if (trimmed.endsWith('.TW') || trimmed.endsWith('.TWO')) return trimmed
+  return `${trimmed}.TW`
+}
+
+export function formatTwTickerLabel(ticker: string): string {
+  return `(${formatTwTicker(ticker)})`
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+/** Rewrite (2330), (TW:2330) or TW:2330 to (2330.TW) for known Taiwan tickers. */
+export function withTwTickers(text: string, tickers?: string[]): string {
+  const codes = [...new Set((tickers ?? loadMemos().map((memo) => memo.ticker)).filter(Boolean))]
+  return codes.reduce((out, code) => {
+    const raw = code.replace(/\.(TW|TWO)$/i, '').trim()
+    if (!raw) return out
+    const formatted = `(${raw.toUpperCase()}.TW)`
+    return out
+      .replace(new RegExp(`\\(${escapeRegExp(raw)}(?:\\.TW|\\.TWO)?\\)`, 'gi'), formatted)
+      .replace(new RegExp(`\\(?TW:\\s*${escapeRegExp(raw)}\\)?`, 'gi'), formatted)
+  }, text)
+}
+
 export const EN_SITE_NAME = 'FinmoConf English'
+export const EN_BREADCRUMB_ROOT = 'FinmoConf'
 export const EN_BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://finmoconf.diveinvest.net'

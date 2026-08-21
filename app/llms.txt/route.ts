@@ -1,4 +1,4 @@
-import { EN_BASE_URL, getAllMemos, getCompanySlugs } from '@/lib/content/en-memos'
+import { EN_BASE_URL, formatTwTickerLabel, getAllMemos, getCompanySlugs } from '@/lib/content/en-memos'
 
 export async function GET() {
   const currentDate = new Date().toISOString().split('T')[0]
@@ -7,7 +7,7 @@ export async function GET() {
   const companies = slugs.map((slug) => {
     const latest = memos.find((memo) => memo.companySlug === slug)!
     const count = memos.filter((memo) => memo.companySlug === slug).length
-    return `- ${latest.companyName} (${latest.ticker}): ${EN_BASE_URL}/en/${slug} — latest ${EN_BASE_URL}/en/${slug}/${latest.quarter} (${count} call${count === 1 ? '' : 's'})`
+    return `- ${latest.companyName} ${formatTwTickerLabel(latest.ticker)}: ${EN_BASE_URL}/en/${slug} — latest ${EN_BASE_URL}/en/${slug}/${latest.quarter} (${count} call${count === 1 ? '' : 's'})`
   })
 
   const content = [
