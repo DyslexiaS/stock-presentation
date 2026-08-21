@@ -227,6 +227,8 @@ export function getRelatedMemos(memo: EnMemo, limit = 4): EnMemo[] {
 }
 
 export function formatQuarterLabel(quarter: string): string {
+  const half = quarter.match(/^(\d{4})-h([12])$/i)
+  if (half) return `H${half[2]} ${half[1]}`
   const match = quarter.match(/^(\d{4})-q(\d)(?:-(.+))?$/i)
   if (!match) return quarter
   const extra = match[3] ? ` (${match[3][0].toUpperCase()}${match[3].slice(1)})` : ''

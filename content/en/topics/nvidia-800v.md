@@ -1,6 +1,6 @@
 ---
 title: "NVIDIA 800 VDC — Taiwan Supply Chain"
-description: "What NVIDIA's 800 VDC whitepaper actually specifies for AI data centers, and which Taiwan-listed suppliers sit in each slot — English earnings calls for Delta, Lite-On, BizLink, Lead Wealth, Hon Hai, Auras, AVC, Jentech and the rest of the power, cooling and rack stack."
+description: "What NVIDIA's 800 VDC whitepaper actually specifies for AI data centers, and which Taiwan-listed suppliers sit in each slot — English earnings calls for Delta, Lite-On, BizLink, Lead Wealth, Hon Hai, Auras, AVC, Jentech, Fositek, Nidec Chaun-Choung and the rest of the power, cooling and rack stack."
 ---
 
 NVIDIA is rebuilding data-center power around **800 VDC**. This hub does two things: it reads NVIDIA's own specification, then maps the Taiwan-listed companies that have to build against it. Every company below has an English memo page with briefings of its earnings calls.
@@ -109,9 +109,13 @@ These are not on NVIDIA's list. They are Taiwan-listed suppliers that discussed 
 
 **Mechanicals, interconnect, cooling**
 
+Cooling is now a [topic of its own](/en/topics/liquid-cooling). The names below still belong on this 800V map because the same cabinet has to hold 45°C.
+
 - **[Auras Technology (3017)](/en/auras)** — cold plates, manifolds, QDs and chassis. Not on NVIDIA's 800V list. 2026 is its "ASIC first year"; data-center water cooling is guided past 50% in 2027. Google TPU was asked; management would not name it. Two notes, Q1 and Q2 2026.
 - **[Asia Vital Components (3324)](/en/avc)** — cold plates, rack and internal manifolds, QDs and CDUs. On NVIDIA and AMD recommended-vendor lists. Q3 2025 water mix **35%**, guided **above 55%** in 2026. Neither 2025 call said 800 V. Two notes, Q1 and Q3 2025.
 - **[Jentech Precision (3653)](/en/jentech)** — package lids / vapor chambers and GPU liquid-cooling modules, assembled in-house. A ten-year microchannel programme that removes TIM2 is the next-gen claim; that revenue is not in the 2025 outlook. The November 2025 call never said 800 V. One note, Q3 2025.
+- **[Fositek (6805)](/en/fositek)** — server slides and liquid-cooling QDs. Claims a main-supplier seat on NVIDIA GB200 / GB300 Switch QDs; Blackwell / Rubin cold-plate QDs are NVIDIA-decided. One note, Q4 / FY 2025. The March 2026 call never said 800 V.
+- **[Nidec Chaun-Choung (6230)](/en/chaun)** — listed window on Nidec's split: NCCI builds air cooling and LCM cold plates at Kunshan; CDUs and QDs stay at Nidec Thailand. Water guided at 2–5% of 2025 and about 10% in 2026. The August 2025 call never said 800 V.
 - **[Sunonwealth (2421)](/en/sunon)** — claims a unique 800 V EC fan for data-center infrastructure.
 - **[Chenming (3013)](/en/chenming)** — chassis and racks; studying both the OCP ±400 V and NVIDIA 0–800 V camps.
 - **[CviLux (8103)](/en/cvilux)** — connectors into 18.5 kW power shelves, sidecar BBU/CBU and 48 V DC-DC. Architecture read; the call never said 800 V.

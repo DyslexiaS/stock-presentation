@@ -28,7 +28,7 @@ export default function EnglishHomePage() {
         Taiwan Semiconductor Earnings Calls
       </h1>
       <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-600">
-        Notes on Taiwan investor conferences, written in English for overseas investors. First collection: {companies.length} companies and {memos.length} calls tied to NVIDIA&apos;s 800 VDC AI data-center architecture.
+        Notes on Taiwan investor conferences, written in English for overseas investors. {companies.length} companies and {memos.length} calls, starting with NVIDIA&apos;s 800 VDC architecture and the liquid-cooling loop in the same rack.
       </p>
 
       <section className="mt-12">
