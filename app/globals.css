@@ -56,6 +56,66 @@
   }
 }
 
+/* English memo section divider: full-width gray line + short amber accent */
+.en-section-rule {
+  position: relative;
+  height: 1px;
+  width: 100%;
+  margin: 3.5rem 0 2rem;
+  background: #d4d0c8;
+}
+
+.en-section-rule::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 12%;
+  min-width: 3.25rem;
+  height: 4px;
+  background: #e4b41a;
+  transform: translateY(-50%);
+}
+
+.en-section-heading {
+  position: relative;
+  margin-top: 4.5rem;
+  padding-top: 2.5rem;
+}
+
+.en-section-heading::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: #d4d0c8;
+}
+
+.en-section-heading::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 12%;
+  min-width: 3.25rem;
+  height: 4px;
+  background: #e4b41a;
+  transform: translateY(-50%);
+}
+
+article > .en-section-heading:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+article > .en-section-heading:first-child::before,
+article > .en-section-heading:first-child::after {
+  content: none;
+  display: none;
+}
+
 /* PDF viewer specific styles */
 @layer utilities {
   .pdf-viewer-modal {

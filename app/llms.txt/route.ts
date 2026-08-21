@@ -1,4 +1,4 @@
-import { EN_BASE_URL, getAllMemos, getAllTags, getCompanySlugs } from '@/lib/content/en-memos'
+import { EN_BASE_URL, formatTwTickerLabel, getAllMemos, getAllTags, getCompanySlugs } from '@/lib/content/en-memos'
 
 export async function GET() {
   const currentDate = new Date().toISOString().split('T')[0]
@@ -7,7 +7,7 @@ export async function GET() {
   const companies = slugs.map((slug) => {
     const latest = memos.find((memo) => memo.companySlug === slug)!
     const count = memos.filter((memo) => memo.companySlug === slug).length
-    return `- ${latest.companyName} (${latest.ticker}): ${EN_BASE_URL}/en/${slug} — latest ${EN_BASE_URL}/en/${slug}/${latest.quarter} (${count} call${count === 1 ? '' : 's'})`
+    return `- ${latest.companyName} ${formatTwTickerLabel(latest.ticker)}: ${EN_BASE_URL}/en/${slug} — latest ${EN_BASE_URL}/en/${slug}/${latest.quarter} (${count} call${count === 1 ? '' : 's'})`
   })
   const topics = getAllTags().map(
     (tag) => `- ${tag}: ${EN_BASE_URL}/en/topics/${tag}`
@@ -19,7 +19,7 @@ export async function GET() {
     )
     .map(
       (memo) =>
-        `- ${memo.companyName} (${memo.ticker}) ${memo.reportingPeriod || memo.quarter}: ${EN_BASE_URL}/en/${memo.companySlug}/${memo.quarter}`
+        `- ${memo.companyName} ${formatTwTickerLabel(memo.ticker)} ${memo.reportingPeriod || memo.quarter}: ${EN_BASE_URL}/en/${memo.companySlug}/${memo.quarter}`
     )
 
   const content = [
@@ -47,6 +47,9 @@ export async function GET() {
     '## English Earnings Calls',
     `English briefings of Taiwan-listed company earnings calls, written for overseas investors. Chinese transcripts are not published. ${slugs.length} companies, ${memos.length} notes. First topic: NVIDIA 800V HVDC.`,
     `- English index: ${EN_BASE_URL}/en`,
+    `- Company directory: ${EN_BASE_URL}/en/companies`,
+    `- All English notes: ${EN_BASE_URL}/en/calls`,
+    `- NVIDIA 800V HVDC Taiwan supply chain: ${EN_BASE_URL}/en/topics/nvidia-800v`,
     `- English sitemap: ${EN_BASE_URL}/en-sitemap.xml`,
     `- Sitemap index: ${EN_BASE_URL}/sitemap-index.xml`,
     '- Topics covered: NVIDIA 800V HVDC — power racks, BBUs, liquid cooling, rack ODMs, SiC/GaN, leadframes, magnetics, relays, connectors, test gear, facility MV',

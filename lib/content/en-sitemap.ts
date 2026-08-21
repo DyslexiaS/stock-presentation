@@ -42,6 +42,8 @@ export function collectEnSitemapUrls() {
     latest,
     urls: [
       urlEntry(`${EN_BASE_URL}/en`, latest, 'weekly', '0.9'),
+      urlEntry(`${EN_BASE_URL}/en/companies`, latest, 'weekly', '0.8'),
+      urlEntry(`${EN_BASE_URL}/en/calls`, latest, 'weekly', '0.8'),
       ...tags.map((tag) => urlEntry(`${EN_BASE_URL}/en/topics/${tag}`, latest, 'weekly', '0.8')),
       ...slugs.map((slug) =>
         urlEntry(`${EN_BASE_URL}/en/${slug}`, latestByCompany.get(slug) ?? latest, 'monthly', '0.7')

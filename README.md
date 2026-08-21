@@ -88,6 +88,8 @@ interface Presentation {
 |---|---|---|
 | `/` | 台股法說會、法說會查詢 | 1 |
 | `/en` | Taiwan semiconductor earnings call | 1 |
+| `/en/companies` | Taiwan earnings call companies | 1 |
+| `/en/calls` | Taiwan semiconductor earnings calls English | 1 |
 | `/en/topics/nvidia-800v` | NVIDIA 800V supply chain Taiwan | 1 |
 | `/en/[company]` | Lite-On earnings call English | 30 |
 | `/en/[company]/[quarter]` | Lite-On Q2 2026 earnings call | 45 |
@@ -97,7 +99,7 @@ interface Presentation {
 ### Sitemap 三層架構
 ```
 /sitemap-index.xml
-  ├── /en-sitemap.xml                 # /en + 主題 + 30 家公司 + 45 篇 memo
+  ├── /en-sitemap.xml                 # /en + 名錄 + 全部 calls + 主題 + 30 家公司 + 45 篇 memo
   ├── /companies-sitemap.xml          # 所有中文公司頁（~2,000）
   ├── /industry-sitemap.xml           # 產業分類頁
   └── /presentations-sitemap/[page]   # 分頁法說會（每頁 10,000）
@@ -136,6 +138,8 @@ interface Presentation {
 
 目前第一個主題是 NVIDIA 800 VDC：30 家公司、45 篇季度 memo，每家有獨立 company profile。Memo 用 reader-first 結構（At a glance / numbers / 800V read-through / Q&A），公司背景不重複寫進每季。鴻海已補到 2026Q2；奇鋐（液冷）兩篇、良維（NVIDIA 官方名單）一篇。`/llms.txt` 與 `/en-sitemap.xml` 由 loader 動態列出全部英文 URL，新增 memo 不必手改。
 
+英文閱讀頁：麵包屑第一段是 **FinmoConf**（不是 English）；股票代號顯示成 `(2330.TW)`；文章標題旁有分享（複製連結 / 系統分享 / X / LinkedIn）；大標之間用灰線加左側黃色短槓區隔；正文欄寬 `max-w-6xl`。英文首頁公司區是三欄密索引，最新法說會只列最近 10 篇；完整名錄在 `/en/companies`，全部筆記在 `/en/calls`。
+
 新增一篇：
 
 1. 在 `content/en/memos/<company-slug>/<quarter>.md` 寫 Markdown（frontmatter：`title`, `description`, `companySlug`, `ticker`, `companyName`, `quarter`, `eventDate`, `reportingPeriod`, `tags`）
@@ -158,10 +162,14 @@ interface Presentation {
 
 ## 部署
 
-推薦使用 Vercel，連接 GitHub repo 後設定環境變數即可自動部署。
+本地建置：
 
 ```bash
 bun run build   # 建置
 bun start       # 啟動生產伺服器
 bun run lint    # 程式碼檢查
 ```
+
+**Zeabur**：repo 根目錄有 `Dockerfile`，會固定用 Bun **1.2.18** 跑 `bun install` 再 `next build`。不要讓 Zeabur 自己裝 `bun@latest`——2026-08-20 的 Bun 1.4 是重寫版，會把 `bun install` 弄到失敗。Bun 版本寫在 `package.json` 的 `engines.bun` 與 `packageManager`。環境變數（`MONGODB_URI`、`NEXT_PUBLIC_SITE_URL`）在 Zeabur 服務設定裡即可。
+
+**Vercel**：連接 GitHub 後設定同樣的環境變數即可；Vercel 不會用這份 Dockerfile。

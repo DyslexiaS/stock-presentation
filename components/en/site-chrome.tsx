@@ -1,9 +1,11 @@
 import Link from 'next/link'
 
+export const EN_PAGE_WIDTH = 'mx-auto max-w-6xl px-6 md:px-10'
+
 export function EnHeader() {
   return (
     <header className="border-b border-slate-800 bg-slate-950 text-slate-100">
-      <div className="mx-auto flex max-w-5xl items-center justify-between gap-6 px-6 py-4">
+      <div className={`flex items-center justify-between gap-6 py-4 ${EN_PAGE_WIDTH}`}>
         <Link href="/en" className="group">
           <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-slate-400">
             FinmoConf
@@ -12,11 +14,14 @@ export function EnHeader() {
             Taiwan Semiconductor Earnings
           </p>
         </Link>
-        <nav className="flex items-center gap-5 text-sm" aria-label="English site">
+        <nav className="flex flex-wrap items-center justify-end gap-x-5 gap-y-2 text-sm" aria-label="English site">
           <Link href="/en/topics/nvidia-800v" className="text-slate-300 hover:text-white">
             800V topic
           </Link>
-          <Link href="/en" className="text-slate-300 hover:text-white">
+          <Link href="/en/companies" className="text-slate-300 hover:text-white">
+            Companies
+          </Link>
+          <Link href="/en/calls" className="text-slate-300 hover:text-white">
             All calls
           </Link>
           <Link href="/" className="rounded border border-slate-600 px-2.5 py-1 text-xs uppercase tracking-wide text-slate-300 hover:border-slate-400 hover:text-white">
@@ -31,11 +36,15 @@ export function EnHeader() {
 export function EnFooter() {
   return (
     <footer className="mt-16 border-t border-slate-200 bg-white">
-      <div className="mx-auto max-w-5xl px-6 py-8 text-sm text-slate-500">
+      <div className={`py-8 text-sm text-slate-500 ${EN_PAGE_WIDTH}`}>
         <p>English notes on Taiwan-listed company earnings calls, known locally as investor conferences. Not investment advice.</p>
         <p className="mt-2">
           <Link href="/" className="underline decoration-slate-300 underline-offset-4 hover:text-slate-800">
             FinmoConf Chinese IR decks
+          </Link>
+          {' · '}
+          <Link href="/en/companies" className="underline decoration-slate-300 underline-offset-4 hover:text-slate-800">
+            Company directory
           </Link>
           {' · '}
           <Link href="/en/topics/nvidia-800v" className="underline decoration-slate-300 underline-offset-4 hover:text-slate-800">
