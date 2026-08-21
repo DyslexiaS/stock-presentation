@@ -20,9 +20,11 @@ export async function GET(
     await dbConnect()
     const presentations = await PresentationModel
       .find({})
+      .select('_id createdAt eventDate')
       .sort({ createdAt: -1 })
       .skip(page * CHUNK_SIZE)
       .limit(CHUNK_SIZE)
+      .maxTimeMS(8000)
       .lean()
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>

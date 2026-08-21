@@ -10,7 +10,7 @@ export async function GET() {
 
   try {
     await dbConnect()
-    const totalPresentations = await PresentationModel.countDocuments()
+    const totalPresentations = await PresentationModel.countDocuments({}).maxTimeMS(5000)
     const totalPages = Math.ceil(totalPresentations / CHUNK_SIZE)
 
     const sitemaps = [

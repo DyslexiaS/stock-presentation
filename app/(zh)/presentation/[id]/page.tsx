@@ -17,7 +17,7 @@ interface Props {
 async function getPresentation(id: string): Promise<Presentation | null> {
   try {
     await dbConnect()
-    const result = await PresentationModel.findById(id).lean()
+    const result = await PresentationModel.findById(id).maxTimeMS(5000).lean()
 
     // Handle the case where result could be null
     if (!result || Array.isArray(result)) return null

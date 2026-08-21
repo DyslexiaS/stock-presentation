@@ -75,8 +75,9 @@ export async function GET(request: NextRequest) {
         .sort({ eventDate: -1, createdAt: -1 })
         .skip(skip)
         .limit(limit)
+        .maxTimeMS(5000)
         .lean(),
-      Presentation.countDocuments(query)
+      Presentation.countDocuments(query).maxTimeMS(5000)
     ])
 
     const totalPages = Math.ceil(total / limit)

@@ -1,7 +1,7 @@
 import { Children, isValidElement, type ReactNode } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { MermaidDiagram } from '@/components/en/mermaid-diagram'
+import { FlowchartDiagram } from '@/components/en/flowchart-diagram'
 import { withTwTickers } from '@/lib/content/en-memos'
 
 const serif = 'font-[family-name:var(--font-en-serif)]'
@@ -74,7 +74,7 @@ export function MarkdownBody({ content }: { content: string }) {
           ),
           pre: ({ children, ...props }) => {
             const chart = mermaidChart(children)
-            if (chart) return <MermaidDiagram chart={chart} />
+            if (chart) return <FlowchartDiagram chart={chart} />
             return (
               <pre className="my-10 overflow-x-auto rounded-lg bg-slate-900 p-6 text-[0.9rem] leading-relaxed text-slate-100" {...props}>
                 {children}

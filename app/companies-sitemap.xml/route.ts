@@ -6,32 +6,22 @@ export async function GET() {
 
   try {
     await dbConnect()
-    const presentations = await PresentationModel.find({}).lean()
-
-    const companies = new Map()
-    presentations.forEach((p: any) => {
-      if (!companies.has(p.companyCode)) {
-        companies.set(p.companyCode, {
-          companyCode: p.companyCode,
-          lastUpdate: p.createdAt || p.eventDate
-        })
-      } else {
-        const existing = companies.get(p.companyCode)
-        const currentDate = new Date(p.createdAt || p.eventDate)
-        const existingDate = new Date(existing.lastUpdate)
-        if (currentDate > existingDate) {
-          companies.set(p.companyCode, {
-            ...existing,
-            lastUpdate: p.createdAt || p.eventDate
-          })
-        }
-      }
-    })
+    const companies = await PresentationModel.aggregate<{
+      _id: string
+      lastUpdate: Date
+    }>([
+      {
+        $group: {
+          _id: '$companyCode',
+          lastUpdate: { $max: { $ifNull: ['$createdAt', '$eventDate'] } },
+        },
+      },
+    ]).option({ maxTimeMS: 8000 })
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${Array.from(companies.values()).map(company => `  <url>
-    <loc>${baseUrl}/company/${company.companyCode}</loc>
+${companies.map((company) => `  <url>
+    <loc>${baseUrl}/company/${company._id}</loc>
     <lastmod>${new Date(company.lastUpdate).toISOString()}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
