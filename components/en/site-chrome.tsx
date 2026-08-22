@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { GooglePreferredSource } from '@/components/google-preferred-source'
 
 export const EN_PAGE_WIDTH = 'mx-auto max-w-6xl px-6 md:px-10'
 
@@ -40,6 +41,9 @@ export function EnFooter() {
   return (
     <footer className="mt-16 border-t border-slate-200 bg-white">
       <div className={`py-8 text-sm text-slate-500 ${EN_PAGE_WIDTH}`}>
+        <div className="mb-4">
+          <GooglePreferredSource lang="en" />
+        </div>
         <p>English notes on Taiwan-listed company earnings calls, known locally as investor conferences. Not investment advice.</p>
         <p className="mt-2">
           <Link href="/" className="underline decoration-slate-300 underline-offset-4 hover:text-slate-800">
