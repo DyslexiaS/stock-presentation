@@ -205,6 +205,19 @@ export function getTopic(slug: string): EnTopic | null {
   return loadTopics().find((t) => t.slug === slug) ?? null
 }
 
+const TOPIC_DISPLAY_ORDER = ['nvidia-800v', 'liquid-cooling', 'sic-gan']
+
+function sortTopics(topics: EnTopic[]): EnTopic[] {
+  return [...topics].sort((a, b) => {
+    const ai = TOPIC_DISPLAY_ORDER.indexOf(a.slug)
+    const bi = TOPIC_DISPLAY_ORDER.indexOf(b.slug)
+    if (ai === -1 && bi === -1) return a.slug.localeCompare(b.slug)
+    if (ai === -1) return 1
+    if (bi === -1) return -1
+    return ai - bi
+  })
+}
+
 export function getAllTopics(): EnTopic[] {
   const fromFiles = loadTopics()
   const fileSlugs = new Set(fromFiles.map((t) => t.slug))
@@ -216,7 +229,7 @@ export function getAllTopics(): EnTopic[] {
       description: '',
       content: '',
     }))
-  return [...fromFiles, ...extra]
+  return sortTopics([...fromFiles, ...extra])
 }
 
 export function getRelatedMemos(memo: EnMemo, limit = 4): EnMemo[] {
