@@ -313,6 +313,7 @@ function topicKeywords(topic: EnTopic): string[] {
     return [
       'SiC GaN Taiwan',
       'silicon carbide gallium nitride Taiwan',
+      'GlobalWafers SiC GaN',
       'Episil earnings call',
       'Episil-Precision GaN epitaxy',
       'Actron SiC module',

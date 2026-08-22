@@ -1,6 +1,6 @@
 ---
 title: "SiC / GaN — Taiwan Power Semiconductors"
-description: "What NVIDIA actually said about silicon carbide and gallium nitride in the 800 VDC architecture — device maturity, the EV 800 V precedent — and which Taiwan-listed epi, foundry, module and OSAT names sit one layer below the official silicon list. English earnings-call notes for Episil, Episil-Precision, Actron and GEM."
+description: "What NVIDIA actually said about silicon carbide and gallium nitride in the 800 VDC architecture — device maturity, the EV 800 V precedent — and which Taiwan-listed substrate, epi, foundry, module and OSAT names sit one layer below the official silicon list. English earnings-call notes for GlobalWafers, Episil, Episil-Precision, Actron and GEM."
 ---
 
 NVIDIA's 800 VDC architecture **needs wide-bandgap switches**. This hub does two things: it reads what NVIDIA has actually published about SiC and GaN, then maps the Taiwan-listed companies that grow, foundry, module or package those devices. Power racks and the water loop are separate topics — see the [NVIDIA 800 VDC hub](/en/topics/nvidia-800v) and the [liquid-cooling hub](/en/topics/liquid-cooling). Every company below has an English memo page with briefings of its earnings calls.
@@ -41,7 +41,13 @@ Taiwan's official names on the 800 VDC page sit one layer up, in power-system co
 
 ## Part 2 — The Taiwan companies
 
-Read the slot before the thesis. Growing an epi wafer is a different fact from running a foundry lot, and both are different from shipping an auto-grade module or assembling someone else's die.
+Read the slot before the thesis. Growing a substrate is a different fact from growing an epi layer, and both are different from running a foundry lot, shipping an auto-grade module or assembling someone else's die.
+
+### Substrates
+
+The starting disc. Most of the money at a listed wafer house is still silicon.
+
+**[GlobalWafers (6488)](/en/globalwafers)** — a nine-country silicon-wafer house with SiC and GaN as a side book. On the August 2025 call the chair named **800-volt power supplies** and AI-server racks among the AI pockets carrying semiconductor demand — a market list, not a wafer SKU. **GaN** orders were full and capacity was guided **+30%** by year-end; **SiC** was in a price collapse and the company said it was not exiting. Most of the P&L is 12-inch silicon, US/European depreciation and FX. One note, Q2 2025. Later public calls (November 2025 and 4 August 2026) are **not** in this archive.
 
 ### Epitaxy
 
@@ -51,7 +57,7 @@ Every SiC or GaN switch starts as a crystalline layer. The device maker is usual
 
 ### Device foundry
 
-**[Episil Technologies (3707)](/en/episil)** — one of the few pure-play foundries with volume SiC, and an 8-inch SiC/GaN pilot of **1,500 wafers a month** going into **Vanguard** for trial in the first half of 2026. Compound was **41%** of H1 2025 sales, down from 49%, because **SiC was −33%** while **GaN was +11%** on AI servers. Management's demand chain is explicit: racks heading for **600 kW in 2027** → 800V HVDC → SiC and GaN. That is a thesis, not a design win. There is no named hyperscaler and no 800V wafer start. One note, H1 2025. The latest completed dump in this archive is older than the rest of the cohort.
+**[Episil Technologies (3707)](/en/episil)** — one of the few pure-play foundries with volume SiC, and an 8-inch SiC/GaN pilot of **1,500 wafers a month** going into **Vanguard** for trial in the first half of 2026. Compound was **41%** of H1 2025 sales, down from 49%, because **SiC was −33%** while **GaN was +11%** on AI servers. Management's demand chain is explicit: racks heading for **600 kW in 2027** → 800V HVDC → SiC and GaN. That is a thesis, not a design win. There is no named hyperscaler and no 800V wafer start. One note, H1 2025. Episil's own IR page still lists **17 September 2025** as the latest investor conference; there is no 2026 dump to write from.
 
 ### Power modules
 
@@ -71,7 +77,7 @@ These names discuss SiC, GaN or the materials around them, but they are not comp
 - **[Hon Hai / Foxconn (2317)](/en/foxconn)** — in-house SiC, still on an **EV** clock: final validation targeted for 2026Q4. The 2026 calls never named 800 V.
 - **[Polytronics (6642)](/en/polytronics)** — circuit protection plus a stated position in SiC power semiconductors. The 800V print on that call is PPTC at the AC front end.
 
-**Not on this page yet.** GlobalWafers and other substrate names, Vanguard as a listed foundry host, and mainland-listed GaN IDMs are either not in this English collection or not Taiwan-listed with a usable recent dump. Missing a memo is not the same as missing a slot.
+**Blocked for now.** Wafer Works (6182) has a 6 August 2026 dump still `pending`. Taisil (3532) and Kinik (1560) have completed dumps; they are 12-inch silicon / HBM / CoWoS and CMP reclaim, not SiC or GaN substrates, so they stay off this list. Sino-American Silicon (5483) is the listed parent of GlobalWafers and is a holding-company call, not a second substrate note. Vanguard, as Episil's 8-inch host, has no recent completed dump in this archive.
 
 ## How to read these memos
 

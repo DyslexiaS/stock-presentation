@@ -38,3 +38,7 @@ One layer below the names NVIDIA listed. The silicon partners on that list — I
 The 800V argument, as management made it, is a **demand thesis rather than a design win**. AI server racks are expected to break **600 kW in 2027**, the industry is moving to **800V HVDC**, and that architecture pulls in SiC and GaN. Applications already named on the foundry line include data-center **DC-to-DC converters**, EV on-board chargers, solar, a push into EV **main inverters**, industrial equipment, and products above **3300 V**.
 
 What this is not: a named hyperscaler, a rack date, or 800V revenue. GaN is already growing on AI servers; SiC is not. Treat Episil as a capacity option on compound power, not as evidence it is on NVIDIA's bill of materials.
+
+## Coverage note
+
+The latest completed dump in this archive is **17 September 2025** (H1 2025). Episil's own IR page still lists that date as the most recent investor conference. There is **no 2026 earnings-call dump** to write from — the company typically holds one autumn conference, and the 2026 date had not been posted as of August 2026. A June 2026 shareholders' meeting produced press comments on utilisation and the 8-inch SiC line; those remarks are not a transcript and are not written up as a memo.
