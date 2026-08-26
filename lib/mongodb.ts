@@ -1,5 +1,12 @@
 import mongoose from 'mongoose'
-import { withTimeout } from '@/lib/with-timeout'
+
+const MONGODB_URI = process.env.MONGODB_URI!
+
+if (!MONGODB_URI) {
+  throw new Error(
+    'Please define the MONGODB_URI environment variable inside .env.local'
+  )
+}
 
 const CONNECT_TIMEOUT_MS = 4000
 
@@ -18,16 +25,6 @@ if (!global.mongoose) {
   global.mongoose = cached
 }
 
-function mongoUri(): string {
-  const uri = process.env.MONGODB_URI
-  if (!uri) {
-    throw new Error(
-      'Please define the MONGODB_URI environment variable inside .env.local'
-    )
-  }
-  return uri
-}
-
 async function dbConnect() {
   if (cached.conn) {
     return cached.conn
@@ -40,24 +37,31 @@ async function dbConnect() {
       connectTimeoutMS: CONNECT_TIMEOUT_MS,
       socketTimeoutMS: 10000,
       maxPoolSize: 8,
-      // Atlas SRV can return unreachable IPv6; IPv4 fails in 4s instead of hanging.
-      family: 4 as const,
+      family: 4 as const, // Atlas SRV IPv6 can hang past serverSelectionTimeoutMS
     }
 
-    cached.promise = mongoose
-      .connect(mongoUri(), opts)
-      .then((connection) => {
-        cached.conn = connection
-        return connection
-      })
-      .catch((error) => {
-        cached.promise = null
-        cached.conn = null
-        throw error
-      })
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+      return mongoose
+    })
   }
 
-  return withTimeout(cached.promise, CONNECT_TIMEOUT_MS + 500, 'MongoDB connect')
+  try {
+    cached.conn = await Promise.race([
+      cached.promise,
+      new Promise<never>((_, reject) => {
+        const timer = setTimeout(
+          () => reject(new Error(`MongoDB connect timed out after ${CONNECT_TIMEOUT_MS}ms`)),
+          CONNECT_TIMEOUT_MS
+        )
+        cached.promise!.finally(() => clearTimeout(timer))
+      }),
+    ])
+  } catch (e) {
+    cached.promise = null
+    throw e
+  }
+
+  return cached.conn
 }
 
 export default dbConnect

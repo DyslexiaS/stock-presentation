@@ -203,8 +203,7 @@ async function updatePresentations() {
    - 確保內容品質
 
 5. **網站打不開 / took too long to respond**
-   - 英文 `/en` 若正常、中文 `/` 卡住，多半是 Mongo 連線在等（首頁 SSR 會等資料庫）
-   - 首頁與 sitemap 有 2.5 秒逾時；`robots.txt` 改為靜態檔，不再走 Next metadata
+   - 英文 `/en` 正常、中文 `/` 卡住：Mongo 連線在拖，`dbConnect` 應在 4 秒內失敗並走首頁 fallback
    - 不要把 mermaid 函式庫加回來
 
 聯絡方式：如有問題請開啟 GitHub Issue。

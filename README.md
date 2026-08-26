@@ -174,8 +174,6 @@ bun start       # 啟動生產伺服器
 bun run lint    # 程式碼檢查
 ```
 
-**Zeabur**：repo 根目錄有 `Dockerfile`，會固定用 Bun **1.2.18** 跑 `bun install` 再 `next build`。不要讓 Zeabur 自己裝 `bun@latest`——2026-08-20 的 Bun 1.4 是重寫版，會把 `bun install` 弄到失敗。Bun 版本寫在 `package.json` 的 `engines.bun` 與 `packageManager`。環境變數（`MONGODB_URI`、`NEXT_PUBLIC_SITE_URL`）在 Zeabur 服務設定裡即可。
-
-中文首頁與 sitemap 連 Mongo 有 **2.5 秒硬上限**；連線本身最多約 4 秒。逾時就先吐頁面／英文 sitemap，不要讓瀏覽器等到「This site can’t be reached」。`robots.txt` 是 `public/` 靜態檔，冷啟動也不該再卡住。英文 `/en` 本來就是 SSG，不碰資料庫。
+**Zeabur**：repo 根目錄有 `Dockerfile`，會固定用 Bun **1.2.18** 跑 `bun install` 再 `next build`。不要讓 Zeabur 自己裝 `bun@latest`——2026-08-20 的 Bun 1.4 是重寫版，會把 `bun install` 弄到失敗。Bun 版本寫在 `package.json` 的 `engines.bun` 與 `packageManager`。環境變數（`MONGODB_URI`、`NEXT_PUBLIC_SITE_URL`）在 Zeabur 服務設定裡即可。Mongo 連線 4 秒沒好就放棄，避免中文首頁把整個站卡住；`robots.txt` 放在 `public/`，不經過 SSR。
 
 **Vercel**：連接 GitHub 後設定同樣的環境變數即可；Vercel 不會用這份 Dockerfile。

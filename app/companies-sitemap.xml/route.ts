@@ -1,12 +1,11 @@
 import dbConnect from '@/lib/mongodb'
 import PresentationModel from '@/lib/models/Presentation'
-import { withTimeout } from '@/lib/with-timeout'
 
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://finmoconf.diveinvest.net'
 
   try {
-    await withTimeout(dbConnect(), 2500, 'Companies sitemap connect')
+    await dbConnect()
     const companies = await PresentationModel.aggregate<{
       _id: string
       lastUpdate: Date

@@ -56,11 +56,6 @@ export default function HomePageClient({
   useEffect(() => {
     if (initialQ) {
       fetchPresentations(1, { q: initialQ })
-      return
-    }
-    // SSR skipped Mongo (timeout / cold start) — fill the list from the API.
-    if (initialPresentations.length === 0) {
-      fetchPresentations(1, {})
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
