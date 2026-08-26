@@ -3,7 +3,7 @@ title: "Liquid Cooling — Taiwan Supply Chain"
 description: "What NVIDIA actually specifies for AI-rack liquid cooling — NVL72, the 45°C loop, CDUs — and which Taiwan-listed suppliers sit on the cold plate, manifold, quick disconnect, CDU and fan. English earnings-call notes for Auras, AVC, Jentech, Fositek, Nidec Chaun-Choung and Sunon."
 ---
 
-NVIDIA's high-density AI rack is a **liquid-cooled** rack. This hub does two things: it reads what NVIDIA has actually published about that loop, then maps the Taiwan-listed companies that have to build against it. Power and the wide-bandgap switches inside that power chain are separate topics — see the [NVIDIA 800 VDC hub](/en/topics/nvidia-800v) and the [SiC / GaN hub](/en/topics/sic-gan). Every company below has an English memo page with briefings of its earnings calls.
+NVIDIA's high-density AI rack is a **liquid-cooled** rack. This hub does two things: it reads what NVIDIA has actually published about that loop, then maps the Taiwan-listed companies that have to build against it. Power, the wide-bandgap switches, the ODMs that assemble the cabinet and the CoWoS package under the GPU are separate topics — [800 VDC](/en/topics/nvidia-800v), [SiC / GaN](/en/topics/sic-gan), [rack ODM](/en/topics/rack-odm) and [CoWoS](/en/topics/cowos). Every company below has an English memo page with briefings of its earnings calls.
 
 ## Part 1 — What NVIDIA actually specified
 

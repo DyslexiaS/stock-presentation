@@ -3,7 +3,7 @@ title: "AI Rack ODM — Taiwan Assemblers"
 description: "What NVIDIA actually specified for the AI cabinet — NVL72, MGX, Kyber — and which Taiwan-listed ODMs assemble that rack. English earnings-call notes for Hon Hai / Foxconn, Quanta and Wiwynn."
 ---
 
-NVIDIA's high-density AI product is a **rack**, not a server in a random chassis. This hub does two things: it reads what NVIDIA has actually published about that cabinet, then maps the Taiwan-listed ODMs that bolt it together. Power, water and the wide-bandgap switches inside the same box are separate topics — [800 VDC](/en/topics/nvidia-800v), [liquid cooling](/en/topics/liquid-cooling) and [SiC / GaN](/en/topics/sic-gan). Every company below has an English memo page with briefings of its earnings calls.
+NVIDIA's high-density AI product is a **rack**, not a server in a random chassis. This hub does two things: it reads what NVIDIA has actually published about that cabinet, then maps the Taiwan-listed ODMs that bolt it together. Power, water, wide-bandgap switches and the CoWoS package under the GPU are separate topics — [800 VDC](/en/topics/nvidia-800v), [liquid cooling](/en/topics/liquid-cooling), [SiC / GaN](/en/topics/sic-gan) and [CoWoS](/en/topics/cowos). Every company below has an English memo page with briefings of its earnings calls.
 
 ## Part 1 — What NVIDIA actually specified
 

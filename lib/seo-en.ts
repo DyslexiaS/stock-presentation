@@ -141,7 +141,7 @@ export function generateEnHomeMetadata(): Metadata {
   const url = `${EN_BASE_URL}/en`
   const { memoCount, companyCount } = collectionCounts()
   const title = 'Taiwan Semiconductor Earnings Calls | FinmoConf English'
-  const description = `English notes on ${memoCount} Taiwan semiconductor earnings calls across ${companyCount} listed companies. Topics: NVIDIA 800V HVDC, AI-rack liquid cooling, SiC/GaN and rack ODM — Delta, Lite-On, Auras, Episil, Foxconn, Quanta, Wiwynn and the rest of the power, cooling, compound and assembly stack.`
+  const description = `English notes on ${memoCount} Taiwan semiconductor earnings calls across ${companyCount} listed companies. Topics: NVIDIA 800V HVDC, AI-rack liquid cooling, SiC/GaN, rack ODM and CoWoS — Delta, Lite-On, Auras, Episil, Foxconn, Quanta, TSMC, ASE and the rest of the power, cooling, compound, assembly and packaging stack.`
 
   return {
     title,
@@ -161,6 +161,8 @@ export function generateEnHomeMetadata(): Metadata {
       'SiC GaN Taiwan earnings call',
       'AI rack ODM Taiwan',
       'Quanta Wiwynn Foxconn earnings call',
+      'TSMC CoWoS',
+      'ASE KYEC CoWoS Taiwan',
       'AI data center power Taiwan',
     ],
     alternates: englishHreflang(url),
@@ -173,7 +175,7 @@ export function generateEnCompaniesMetadata(): Metadata {
   const url = `${EN_BASE_URL}/en/companies`
   const { memoCount, companyCount } = collectionCounts()
   const title = 'Taiwan Companies with English Earnings Call Notes | FinmoConf'
-  const description = `Directory of ${companyCount} Taiwan-listed companies with English earnings-call notes (${memoCount} calls). Topics: NVIDIA 800V HVDC, AI-rack liquid cooling and SiC/GaN.`
+  const description = `Directory of ${companyCount} Taiwan-listed companies with English earnings-call notes (${memoCount} calls). Topics: NVIDIA 800V HVDC, AI-rack liquid cooling, SiC/GaN, rack ODM and CoWoS.`
 
   return {
     title,
@@ -327,6 +329,20 @@ function topicKeywords(topic: EnTopic): string[] {
       topic.title,
     ]
   }
+  if (topic.slug === 'cowos') {
+    return [
+      'TSMC CoWoS',
+      'CoWoS advanced packaging Taiwan',
+      'Chip-on-Wafer-on-Substrate',
+      'TSMC earnings call CoWoS',
+      'ASE FOCoS LEAP',
+      'KYEC AI GPU test',
+      'Grand Process CoWoS equipment',
+      'Taiwan semiconductor packaging earnings',
+      'Taiwan semiconductor earnings',
+      topic.title,
+    ]
+  }
   if (topic.slug === 'rack-odm') {
     return [
       'AI rack ODM Taiwan',
@@ -386,6 +402,13 @@ function topicCollections(tags: string[]) {
       name: 'AI Rack ODM — Taiwan Assemblers',
     })
   }
+  if (tags.includes('cowos')) {
+    collections.push({
+      '@type': 'CollectionPage',
+      '@id': `${EN_BASE_URL}/en/topics/cowos`,
+      name: 'CoWoS — TSMC Advanced Packaging',
+    })
+  }
   if (collections.length === 0) {
     collections.push({
       '@type': 'CollectionPage',
@@ -434,6 +457,7 @@ export function generateEnMemoJsonLd(memo: EnMemo) {
           ...(memo.tags.includes('liquid-cooling') ? ['AI data center liquid cooling Taiwan'] : []),
           ...(memo.tags.includes('sic-gan') ? ['SiC GaN Taiwan'] : []),
           ...(memo.tags.includes('rack-odm') ? ['AI rack ODM Taiwan'] : []),
+          ...(memo.tags.includes('cowos') ? ['TSMC CoWoS'] : []),
           'Taiwan investor conference',
           memo.ticker,
           formatTwTicker(memo.ticker),
@@ -475,7 +499,7 @@ export function generateEnHomeJsonLd() {
         isPartOf: { '@type': 'WebSite', name: EN_SITE_NAME, url },
         about: {
           '@type': 'Thing',
-          name: 'NVIDIA 800 VDC, liquid cooling, SiC/GaN and rack ODM Taiwan supply chain',
+          name: 'NVIDIA 800 VDC, liquid cooling, SiC/GaN, rack ODM and CoWoS Taiwan supply chain',
         },
         publisher: PUBLISHER,
       },
@@ -584,7 +608,9 @@ export function generateEnTopicJsonLd(topic: EnTopic, memos: EnMemo[]) {
                 ? 'AI data center liquid cooling Taiwan'
                 : topic.slug === 'rack-odm'
                   ? 'AI rack ODM Taiwan'
-                  : 'NVIDIA 800 VDC',
+                  : topic.slug === 'cowos'
+                    ? 'TSMC CoWoS advanced packaging Taiwan'
+                    : 'NVIDIA 800 VDC',
         },
         publisher: PUBLISHER,
       },

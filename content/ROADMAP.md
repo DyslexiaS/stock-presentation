@@ -70,6 +70,7 @@ flowchart TD
 | 液冷 | CDU、sidecar、冷板、45°C 迴路、液冷匯流排、快接頭 | 奇鋐(3017)、雙鴻(3324)、健策(3653)、泰碩(3338)、建準(2421)、富世達(6805)、尼得科超眾(6230) | 奇鋐 2、雙鴻 2、健策 1、建準 1、富世達 1（2025Q4 / 2026-03-05）、超眾 1（2025H1）。主題 hub：`/en/topics/liquid-cooling` |
 | 測試驗證 | HVDC 測試設備、電源分析儀 | 固緯(2423)、美達科技(6735) | 固緯 1 篇 |
 | 機櫃組裝 ODM | Kyber / NVL144 整櫃 | 鴻海(2317)、廣達(2382)、緯穎(6669) | 鴻海 6 篇（至 2026Q2）、廣達 1 篇（2026Q2）、緯穎 1 篇（2025Q4）。主題 hub：`/en/topics/rack-odm` |
+| CoWoS 先進封裝 | TSMC 製程藍圖 | 台積電(2330)、日月光(3711)、京元電(2449)、弘塑(3131) | 台積電、日月光、京元電、弘塑各 1 篇。主題 hub：`/en/topics/cowos`。ABF / HBM 不 dual-tag |
 
 ---
 
@@ -131,6 +132,17 @@ flowchart TD
 - [ ] 環球晶 2025-11-04 / 2026-08-04 — 公開有開、不在 `earnings_call` 完成檔。12 吋 SiC 送樣是 11 月那場的內容，不能回填進 8 月筆記。
 - [ ] 世界先進（漢磊 8 吋合作對象）— 最新完成檔停在 2024-07-04。越峰 SiC 粉體留在 800V hub adjacent，不 dual-tag。台勝科、中砂有完成檔，但是矽晶圓 / CMP 再生，不是化合物基板。
 
+### P2c — CoWoS（TSMC 2.5D，GPU 在進機櫃之前的封裝）
+
+- [x] **主題 hub** `content/en/topics/cowos.md` — 官方規格（TSMC CoWoS 產品頁：S / L / R、3.3× 光罩、2012 量產）在前，台廠地圖在後。製程主線 dual-tag `cowos`，不把 ABF 載板或 HBM 封測灌進主題列表。NVIDIA 800V 名單沒有台積電 / 日月光 / 京元電 / 弘塑。
+- [x] 台積電 2330 — 英文 1 篇（2026-07-16 Q2）。CoWoS 仍是主流；玻璃載板約再一年才能量產；先進封裝產能緊到限制客戶成長；歡迎 EMIB-T 當 overflow。該場沒說 800V。
+- [x] 日月光 3711 — 英文 1 篇（2026-07-30 Q2）。LEAP 2026 超過 35 億美元、2027 翻倍；純 OSAT，不做台積電 CoWoS 品牌產線；CoWoS 與 EMIB 不是零和。該場沒說 800V。
+- [x] 京元電 2449 — 英文 1 篇（2026-03-19 Q4/FY2025）。下一代 AI 測試時間 +70% 以上；2026 資本支出當場是 393.72 億（Rubin + CSP ASIC）。4 月董事會再修到 500 億，不回填。該場沒說 800V。8 月 28 日那場當時還沒開。
+- [x] 弘塑 3131 — 英文 1 篇（2026-05-26 Q1 櫃買業績發表）。應用名單有 2.5D CoWoS；稼動 100–120%；明後年產能每年約 +50%。該場沒說 800V。
+- [ ] 欣興 / 景碩 / 南電 — ABF 下一主題，不 dual-tag CoWoS。
+- [ ] 力成 — HBM 封測，留給 HBM 主題。
+- [ ] 旺矽、帆宣 — 2026 場次沒有可用 Q&A dump。
+
 ### P3 — 內容品質
 
 - [x] 主題 hub 加「官方 vs 自述」分層標示。
@@ -162,6 +174,6 @@ flowchart TD
 | 矽光子 / CPO | OIF、NVIDIA CPO switch | 85 | 58 |
 | HBM 供應鏈 | JEDEC HBM4 | 65 | 40 |
 
-建議順序：**液冷已上**（`/en/topics/liquid-cooling`）。**SiC/GaN 已上**（`/en/topics/sic-gan`，化合物主線 dual-tag）。**rack ODM 已上**（`/en/topics/rack-odm`，鴻海 / 廣達 / 緯穎）。再來 **CoWoS**（美國人搜尋量最大但競爭也最激烈）。
+建議順序：**液冷已上**（`/en/topics/liquid-cooling`）。**SiC/GaN 已上**（`/en/topics/sic-gan`，化合物主線 dual-tag）。**rack ODM 已上**（`/en/topics/rack-odm`，鴻海 / 廣達 / 緯穎）。**CoWoS 已上**（`/en/topics/cowos`，台積電 / 日月光 / 京元電 / 弘塑；OSAT 寫互補，ABF / HBM 不灌）。再來 **ABF 載板 / 高速 PCB**。
 
-每個主題一個 `content/en/topics/<slug>.md`，memo 用 `tags` 掛，網址結構不變。冷卻主線或化合物主線 dual-tag；不要把電源機櫃筆記灌進液冷或 SiC/GaN 列表。
+每個主題一個 `content/en/topics/<slug>.md`，memo 用 `tags` 掛，網址結構不變。冷卻、化合物、組裝或 CoWoS 主線 dual-tag；不要把電源機櫃筆記灌進液冷或 SiC/GaN 列表，也不要把 ABF / HBM 灌進 CoWoS。
