@@ -3,7 +3,7 @@ title: "SiC / GaN — Taiwan Power Semiconductors"
 description: "What NVIDIA actually said about silicon carbide and gallium nitride in the 800 VDC architecture — device maturity, the EV 800 V precedent — and which Taiwan-listed substrate, epi, foundry, module and OSAT names sit one layer below the official silicon list. English earnings-call notes for GlobalWafers, Episil, Episil-Precision, Actron and GEM."
 ---
 
-NVIDIA's 800 VDC architecture **needs wide-bandgap switches**. This hub does two things: it reads what NVIDIA has actually published about SiC and GaN, then maps the Taiwan-listed companies that grow, foundry, module or package those devices. Power racks and the water loop are separate topics — see the [NVIDIA 800 VDC hub](/en/topics/nvidia-800v) and the [liquid-cooling hub](/en/topics/liquid-cooling). Every company below has an English memo page with briefings of its earnings calls.
+NVIDIA's 800 VDC architecture **needs wide-bandgap switches**. This hub does two things: it reads what NVIDIA has actually published about SiC and GaN, then maps the Taiwan-listed companies that grow, foundry, module or package those devices. Power racks, the water loop and the companies that assemble the cabinet are separate topics — see the [NVIDIA 800 VDC hub](/en/topics/nvidia-800v), the [liquid-cooling hub](/en/topics/liquid-cooling) and the [rack ODM hub](/en/topics/rack-odm). Every company below has an English memo page with briefings of its earnings calls.
 
 ## Part 1 — What NVIDIA actually specified
 

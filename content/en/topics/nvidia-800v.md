@@ -3,7 +3,7 @@ title: "NVIDIA 800 VDC — Taiwan Supply Chain"
 description: "What NVIDIA's 800 VDC whitepaper actually specifies for AI data centers, and which Taiwan-listed suppliers sit in each slot — English earnings calls for Delta, Lite-On, BizLink, Lead Wealth, Hon Hai, GlobalWafers, Auras, AVC and the rest of the power, cooling, compound and rack stack."
 ---
 
-NVIDIA is rebuilding data-center power around **800 VDC**. This hub does two things: it reads NVIDIA's own specification, then maps the Taiwan-listed companies that have to build against it. The water loop and the wide-bandgap switches are now topics of their own — [liquid cooling](/en/topics/liquid-cooling) and [SiC / GaN](/en/topics/sic-gan). Every company below has an English memo page with briefings of its earnings calls.
+NVIDIA is rebuilding data-center power around **800 VDC**. This hub does two things: it reads NVIDIA's own specification, then maps the Taiwan-listed companies that have to build against it. The water loop, the wide-bandgap switches and the companies that assemble the cabinet are now topics of their own — [liquid cooling](/en/topics/liquid-cooling), [SiC / GaN](/en/topics/sic-gan) and [rack ODM](/en/topics/rack-odm). Every company below has an English memo page with briefings of its earnings calls.
 
 ## Part 1 — What NVIDIA actually specified
 
@@ -78,7 +78,13 @@ Read the tier label before the thesis. Being on NVIDIA's list is a different fac
 
 ### Named by brokers as a Kyber build partner
 
+Rack assembly is now a [topic of its own](/en/topics/rack-odm). The names below still belong on this 800V map because Kyber is the cabinet 800 VDC is written to feed.
+
 **[Hon Hai / Foxconn (2317)](/en/foxconn)** — rack-scale assembly. Cloud and networking crossed **51%** of sales in Q2 2026. Self-made content is above 50%, chips excepted — busbars, CDUs, cold plates, manifolds, quick disconnects, plus in-house SiC. **Vera Rubin** is guided to Q3 2026 production readiness and Q4 shipments, with a 50% share target; that is the 2026 cabinet, not Kyber. The 2026 calls never named 800 V. Analysts asked about Google TPU; management answered with an ASIC share target of 40% or more.
+
+**[Quanta (2382)](/en/quanta)** — servers above 80% of sales; AI 75–80% of that line. Q2 2026 revenue NT$1.04tn. Capacity guided to double by end-2026 and again in Taiwan in 2028 (AUO Huaya). The August 2026 call never said 800 V.
+
+**[Wiwynn (6669)](/en/wiwynn)** — CSP rack specialist. 2025 AI mix 50%, about 90% ASIC. New NVIDIA/AMD GPU platforms guided to 2H 2026. Factory power planned to 2028. The February 2026 call never said 800 V.
 
 ### Second-tier reads with their own HVDC disclosure
 

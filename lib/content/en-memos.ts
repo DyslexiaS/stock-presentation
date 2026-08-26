@@ -205,7 +205,7 @@ export function getTopic(slug: string): EnTopic | null {
   return loadTopics().find((t) => t.slug === slug) ?? null
 }
 
-const TOPIC_DISPLAY_ORDER = ['nvidia-800v', 'liquid-cooling', 'sic-gan']
+const TOPIC_DISPLAY_ORDER = ['nvidia-800v', 'liquid-cooling', 'sic-gan', 'rack-odm']
 
 function sortTopics(topics: EnTopic[]): EnTopic[] {
   return [...topics].sort((a, b) => {
