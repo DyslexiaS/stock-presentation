@@ -202,4 +202,8 @@ async function updatePresentations() {
    - 驗證 sitemap.xml
    - 確保內容品質
 
+5. **網站打不開 / took too long to respond**
+   - 英文 `/en` 正常、中文 `/` 卡住：Mongo 連線在拖，`dbConnect` 應在 4 秒內失敗並走首頁 fallback
+   - 不要把 mermaid 函式庫加回來
+
 聯絡方式：如有問題請開啟 GitHub Issue。

@@ -8,6 +8,8 @@ if (!MONGODB_URI) {
   )
 }
 
+const CONNECT_TIMEOUT_MS = 4000
+
 interface MongooseCache {
   conn: typeof mongoose | null
   promise: Promise<typeof mongoose> | null
@@ -31,10 +33,11 @@ async function dbConnect() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
-      serverSelectionTimeoutMS: 4000,
-      connectTimeoutMS: 4000,
+      serverSelectionTimeoutMS: CONNECT_TIMEOUT_MS,
+      connectTimeoutMS: CONNECT_TIMEOUT_MS,
       socketTimeoutMS: 10000,
       maxPoolSize: 8,
+      family: 4 as const, // Atlas SRV IPv6 can hang past serverSelectionTimeoutMS
     }
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
@@ -43,7 +46,16 @@ async function dbConnect() {
   }
 
   try {
-    cached.conn = await cached.promise
+    cached.conn = await Promise.race([
+      cached.promise,
+      new Promise<never>((_, reject) => {
+        const timer = setTimeout(
+          () => reject(new Error(`MongoDB connect timed out after ${CONNECT_TIMEOUT_MS}ms`)),
+          CONNECT_TIMEOUT_MS
+        )
+        cached.promise!.finally(() => clearTimeout(timer))
+      }),
+    ])
   } catch (e) {
     cached.promise = null
     throw e
