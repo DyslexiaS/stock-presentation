@@ -96,7 +96,7 @@ function collectionCounts() {
 export function generateEnLayoutMetadata(): Metadata {
   const url = `${EN_BASE_URL}/en`
   const { memoCount, companyCount } = collectionCounts()
-  const description = `English notes on ${memoCount} Taiwan semiconductor earnings calls across ${companyCount} companies in NVIDIA's 800V HVDC and liquid-cooling AI data-center supply chain.`
+  const description = `English notes on ${memoCount} Taiwan semiconductor earnings calls across ${companyCount} companies in NVIDIA's 800V HVDC, liquid-cooling and SiC/GaN AI data-center supply chain.`
 
   return {
     metadataBase: new URL(EN_BASE_URL),
@@ -113,6 +113,7 @@ export function generateEnLayoutMetadata(): Metadata {
       'NVIDIA 800V supply chain Taiwan',
       'AI data center power',
       'AI data center liquid cooling Taiwan',
+      'SiC GaN Taiwan',
     ],
     robots: EN_ROBOTS,
     authors: [{ name: 'FinmoAI' }],
@@ -139,7 +140,7 @@ export function generateEnHomeMetadata(): Metadata {
   const url = `${EN_BASE_URL}/en`
   const { memoCount, companyCount } = collectionCounts()
   const title = 'Taiwan Semiconductor Earnings Calls | FinmoConf English'
-  const description = `English notes on ${memoCount} Taiwan semiconductor earnings calls across ${companyCount} listed companies. Topics: NVIDIA 800V HVDC and AI-rack liquid cooling — Delta, Lite-On, Auras, AVC, Fositek, Nidec Chaun-Choung and the rest of the power, cooling, BBU and SiC/GaN stack.`
+  const description = `English notes on ${memoCount} Taiwan semiconductor earnings calls across ${companyCount} listed companies. Topics: NVIDIA 800V HVDC, AI-rack liquid cooling and SiC/GaN — Delta, Lite-On, Auras, Episil, Actron and the rest of the power, cooling and compound stack.`
 
   return {
     title,
@@ -156,6 +157,7 @@ export function generateEnHomeMetadata(): Metadata {
       'Auras Technology earnings call',
       'Lead Wealth earnings call',
       'AI data center liquid cooling Taiwan',
+      'SiC GaN Taiwan earnings call',
       'AI data center power Taiwan',
     ],
     alternates: englishHreflang(url),
@@ -168,7 +170,7 @@ export function generateEnCompaniesMetadata(): Metadata {
   const url = `${EN_BASE_URL}/en/companies`
   const { memoCount, companyCount } = collectionCounts()
   const title = 'Taiwan Companies with English Earnings Call Notes | FinmoConf'
-  const description = `Directory of ${companyCount} Taiwan-listed companies with English earnings-call notes (${memoCount} calls). Topics: NVIDIA 800V HVDC and AI-rack liquid cooling.`
+  const description = `Directory of ${companyCount} Taiwan-listed companies with English earnings-call notes (${memoCount} calls). Topics: NVIDIA 800V HVDC, AI-rack liquid cooling and SiC/GaN.`
 
   return {
     title,
@@ -285,37 +287,56 @@ export function generateEnTopicMetadata(topic: EnTopic, count: number): Metadata
   return {
     title,
     description,
-    keywords:
-      topic.slug === 'liquid-cooling'
-        ? [
-            'AI data center liquid cooling Taiwan',
-            'NVIDIA GB200 NVL72 liquid cooling',
-            'Auras Technology liquid cooling',
-            'AVC liquid cooling',
-            'Jentech Precision liquid cooling',
-            'Fositek quick disconnect',
-            'Nidec Chaun-Choung liquid cooling',
-            'CDU cold plate manifold QD Taiwan',
-            'Taiwan semiconductor earnings',
-            topic.title,
-          ]
-        : [
-            'NVIDIA 800V HVDC',
-            'NVIDIA 800 VDC',
-            'NVIDIA 800V supply chain Taiwan',
-            'Kyber rack power',
-            'AI data center BBU',
-            'AI data center liquid cooling Taiwan',
-            'Auras Technology liquid cooling',
-            'Lead Wealth 800V',
-            'Taiwan semiconductor earnings',
-            'AI data center power Taiwan',
-            topic.title,
-          ],
+    keywords: topicKeywords(topic),
     alternates: englishHreflang(url),
     robots: EN_ROBOTS,
     ...englishSocial(title, description, url),
   }
+}
+
+function topicKeywords(topic: EnTopic): string[] {
+  if (topic.slug === 'liquid-cooling') {
+    return [
+      'AI data center liquid cooling Taiwan',
+      'NVIDIA GB200 NVL72 liquid cooling',
+      'Auras Technology liquid cooling',
+      'AVC liquid cooling',
+      'Jentech Precision liquid cooling',
+      'Fositek quick disconnect',
+      'Nidec Chaun-Choung liquid cooling',
+      'CDU cold plate manifold QD Taiwan',
+      'Taiwan semiconductor earnings',
+      topic.title,
+    ]
+  }
+  if (topic.slug === 'sic-gan') {
+    return [
+      'SiC GaN Taiwan',
+      'silicon carbide gallium nitride Taiwan',
+      'GlobalWafers SiC GaN',
+      'Episil earnings call',
+      'Episil-Precision GaN epitaxy',
+      'Actron SiC module',
+      'GEM Services power OSAT',
+      'NVIDIA 800V SiC GaN',
+      'Taiwan compound semiconductor earnings',
+      'Taiwan semiconductor earnings',
+      topic.title,
+    ]
+  }
+  return [
+    'NVIDIA 800V HVDC',
+    'NVIDIA 800 VDC',
+    'NVIDIA 800V supply chain Taiwan',
+    'Kyber rack power',
+    'AI data center BBU',
+    'AI data center liquid cooling Taiwan',
+    'Auras Technology liquid cooling',
+    'Lead Wealth 800V',
+    'Taiwan semiconductor earnings',
+    'AI data center power Taiwan',
+    topic.title,
+  ]
 }
 
 function topicCollections(tags: string[]) {
@@ -332,6 +353,13 @@ function topicCollections(tags: string[]) {
       '@type': 'CollectionPage',
       '@id': `${EN_BASE_URL}/en/topics/liquid-cooling`,
       name: 'Liquid Cooling — Taiwan Supply Chain',
+    })
+  }
+  if (tags.includes('sic-gan')) {
+    collections.push({
+      '@type': 'CollectionPage',
+      '@id': `${EN_BASE_URL}/en/topics/sic-gan`,
+      name: 'SiC / GaN — Taiwan Power Semiconductors',
     })
   }
   if (collections.length === 0) {
@@ -380,6 +408,7 @@ export function generateEnMemoJsonLd(memo: EnMemo) {
           `${memo.companyName} ${quarterLabel} earnings`,
           'NVIDIA 800V HVDC',
           ...(memo.tags.includes('liquid-cooling') ? ['AI data center liquid cooling Taiwan'] : []),
+          ...(memo.tags.includes('sic-gan') ? ['SiC GaN Taiwan'] : []),
           'Taiwan investor conference',
           memo.ticker,
           formatTwTicker(memo.ticker),
@@ -421,7 +450,7 @@ export function generateEnHomeJsonLd() {
         isPartOf: { '@type': 'WebSite', name: EN_SITE_NAME, url },
         about: {
           '@type': 'Thing',
-          name: 'NVIDIA 800 VDC and liquid cooling Taiwan supply chain',
+          name: 'NVIDIA 800 VDC, liquid cooling and SiC/GaN Taiwan supply chain',
         },
         publisher: PUBLISHER,
       },
@@ -523,7 +552,12 @@ export function generateEnTopicJsonLd(topic: EnTopic, memos: EnMemo[]) {
         inLanguage: 'en',
         about: {
           '@type': 'Thing',
-          name: 'NVIDIA 800 VDC',
+          name:
+            topic.slug === 'sic-gan'
+              ? 'SiC and GaN power semiconductors Taiwan'
+              : topic.slug === 'liquid-cooling'
+                ? 'AI data center liquid cooling Taiwan'
+                : 'NVIDIA 800 VDC',
         },
         publisher: PUBLISHER,
       },

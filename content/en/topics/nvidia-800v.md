@@ -1,9 +1,9 @@
 ---
 title: "NVIDIA 800 VDC — Taiwan Supply Chain"
-description: "What NVIDIA's 800 VDC whitepaper actually specifies for AI data centers, and which Taiwan-listed suppliers sit in each slot — English earnings calls for Delta, Lite-On, BizLink, Lead Wealth, Hon Hai, Auras, AVC, Jentech, Fositek, Nidec Chaun-Choung and the rest of the power, cooling and rack stack."
+description: "What NVIDIA's 800 VDC whitepaper actually specifies for AI data centers, and which Taiwan-listed suppliers sit in each slot — English earnings calls for Delta, Lite-On, BizLink, Lead Wealth, Hon Hai, GlobalWafers, Auras, AVC and the rest of the power, cooling, compound and rack stack."
 ---
 
-NVIDIA is rebuilding data-center power around **800 VDC**. This hub does two things: it reads NVIDIA's own specification, then maps the Taiwan-listed companies that have to build against it. Every company below has an English memo page with briefings of its earnings calls.
+NVIDIA is rebuilding data-center power around **800 VDC**. This hub does two things: it reads NVIDIA's own specification, then maps the Taiwan-listed companies that have to build against it. The water loop and the wide-bandgap switches are now topics of their own — [liquid cooling](/en/topics/liquid-cooling) and [SiC / GaN](/en/topics/sic-gan). Every company below has an English memo page with briefings of its earnings calls.
 
 ## Part 1 — What NVIDIA actually specified
 
@@ -98,9 +98,12 @@ These are not on NVIDIA's list. They are Taiwan-listed suppliers that discussed 
 
 **Silicon, magnetics, and test**
 
+Compound semiconductors are now a [topic of their own](/en/topics/sic-gan). The names below still belong on this 800V map because the same conversion stages have to switch 800 V.
+
 - **[Anstek (3528)](/en/anstek)** — distributes ADI's 800 V hot-swap controllers, already shipping to US CSP ODMs.
+- **[GlobalWafers (6488)](/en/globalwafers)** — silicon wafers plus SiC/GaN substrates. The chair named 800-volt AI power supplies as a demand pocket; GaN was full, SiC in a price collapse. Latest dump in this archive is Q2 2025.
 - **[Episil-Precision (3016)](/en/episil-precision)** — GaN epitaxy is in 800 V HVDC systems at small-volume trial.
-- **[Episil Technologies (3707)](/en/episil)** — SiC/GaN foundry. 800 V is a 2027 600 kW-rack demand thesis; GaN already growing on AI servers, SiC still down.
+- **[Episil Technologies (3707)](/en/episil)** — SiC/GaN foundry. 800 V is a 2027 600 kW-rack demand thesis; GaN already growing on AI servers, SiC still down. No 2026 call in the archive.
 - **[Actron Technology (8255)](/en/actron)** — SiC modules 650–3300 V; custom HVDC modules exclusive to a domestic customer, sampling now. Dated roadmap: HVDC 2027–30, SST 2031–35.
 - **[GEM Services (6525)](/en/gem)** — power OSAT. HVDC rack architecture is a customer-drawing question; the 2025 AI beat is thermal packaging.
 - **[Acme Electronics (8121)](/en/acme)** — ferrite cores already shipping into HVDC 800 V PSUs; N-type SiC powder sampling for the same architecture.
