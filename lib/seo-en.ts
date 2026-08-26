@@ -96,7 +96,7 @@ function collectionCounts() {
 export function generateEnLayoutMetadata(): Metadata {
   const url = `${EN_BASE_URL}/en`
   const { memoCount, companyCount } = collectionCounts()
-  const description = `English notes on ${memoCount} Taiwan semiconductor earnings calls across ${companyCount} companies in NVIDIA's 800V HVDC, liquid-cooling and SiC/GaN AI data-center supply chain.`
+  const description = `English notes on ${memoCount} Taiwan semiconductor earnings calls across ${companyCount} companies in NVIDIA's 800V HVDC, liquid-cooling, SiC/GaN and rack-ODM AI data-center supply chain.`
 
   return {
     metadataBase: new URL(EN_BASE_URL),
@@ -114,6 +114,7 @@ export function generateEnLayoutMetadata(): Metadata {
       'AI data center power',
       'AI data center liquid cooling Taiwan',
       'SiC GaN Taiwan',
+      'AI rack ODM Taiwan',
     ],
     robots: EN_ROBOTS,
     authors: [{ name: 'FinmoAI' }],
@@ -140,7 +141,7 @@ export function generateEnHomeMetadata(): Metadata {
   const url = `${EN_BASE_URL}/en`
   const { memoCount, companyCount } = collectionCounts()
   const title = 'Taiwan Semiconductor Earnings Calls | FinmoConf English'
-  const description = `English notes on ${memoCount} Taiwan semiconductor earnings calls across ${companyCount} listed companies. Topics: NVIDIA 800V HVDC, AI-rack liquid cooling and SiC/GaN — Delta, Lite-On, Auras, Episil, Actron and the rest of the power, cooling and compound stack.`
+  const description = `English notes on ${memoCount} Taiwan semiconductor earnings calls across ${companyCount} listed companies. Topics: NVIDIA 800V HVDC, AI-rack liquid cooling, SiC/GaN and rack ODM — Delta, Lite-On, Auras, Episil, Foxconn, Quanta, Wiwynn and the rest of the power, cooling, compound and assembly stack.`
 
   return {
     title,
@@ -158,6 +159,8 @@ export function generateEnHomeMetadata(): Metadata {
       'Lead Wealth earnings call',
       'AI data center liquid cooling Taiwan',
       'SiC GaN Taiwan earnings call',
+      'AI rack ODM Taiwan',
+      'Quanta Wiwynn Foxconn earnings call',
       'AI data center power Taiwan',
     ],
     alternates: englishHreflang(url),
@@ -324,6 +327,20 @@ function topicKeywords(topic: EnTopic): string[] {
       topic.title,
     ]
   }
+  if (topic.slug === 'rack-odm') {
+    return [
+      'AI rack ODM Taiwan',
+      'NVIDIA GB200 NVL72 ODM',
+      'Quanta AI server',
+      'Wiwynn earnings call',
+      'Foxconn Kyber rack',
+      'Hon Hai AI server',
+      'Taiwan server ODM',
+      'NVIDIA MGX rack Taiwan',
+      'Taiwan semiconductor earnings',
+      topic.title,
+    ]
+  }
   return [
     'NVIDIA 800V HVDC',
     'NVIDIA 800 VDC',
@@ -360,6 +377,13 @@ function topicCollections(tags: string[]) {
       '@type': 'CollectionPage',
       '@id': `${EN_BASE_URL}/en/topics/sic-gan`,
       name: 'SiC / GaN — Taiwan Power Semiconductors',
+    })
+  }
+  if (tags.includes('rack-odm')) {
+    collections.push({
+      '@type': 'CollectionPage',
+      '@id': `${EN_BASE_URL}/en/topics/rack-odm`,
+      name: 'AI Rack ODM — Taiwan Assemblers',
     })
   }
   if (collections.length === 0) {
@@ -409,6 +433,7 @@ export function generateEnMemoJsonLd(memo: EnMemo) {
           'NVIDIA 800V HVDC',
           ...(memo.tags.includes('liquid-cooling') ? ['AI data center liquid cooling Taiwan'] : []),
           ...(memo.tags.includes('sic-gan') ? ['SiC GaN Taiwan'] : []),
+          ...(memo.tags.includes('rack-odm') ? ['AI rack ODM Taiwan'] : []),
           'Taiwan investor conference',
           memo.ticker,
           formatTwTicker(memo.ticker),
@@ -450,7 +475,7 @@ export function generateEnHomeJsonLd() {
         isPartOf: { '@type': 'WebSite', name: EN_SITE_NAME, url },
         about: {
           '@type': 'Thing',
-          name: 'NVIDIA 800 VDC, liquid cooling and SiC/GaN Taiwan supply chain',
+          name: 'NVIDIA 800 VDC, liquid cooling, SiC/GaN and rack ODM Taiwan supply chain',
         },
         publisher: PUBLISHER,
       },
@@ -557,7 +582,9 @@ export function generateEnTopicJsonLd(topic: EnTopic, memos: EnMemo[]) {
               ? 'SiC and GaN power semiconductors Taiwan'
               : topic.slug === 'liquid-cooling'
                 ? 'AI data center liquid cooling Taiwan'
-                : 'NVIDIA 800 VDC',
+                : topic.slug === 'rack-odm'
+                  ? 'AI rack ODM Taiwan'
+                  : 'NVIDIA 800 VDC',
         },
         publisher: PUBLISHER,
       },

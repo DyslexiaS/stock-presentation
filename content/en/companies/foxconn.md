@@ -34,4 +34,4 @@ For Taiwan component vendors this cuts both ways: Foxconn racks need parts, and 
 
 ## Coverage note
 
-Six notes, from Q3 2023 through Q2 2026. The 2026 calls restored the missing year; they still do not discuss 800 V.
+Six notes, from Q3 2023 through Q2 2026. The 2026 calls restored the missing year; they still do not discuss 800 V. Dual-tagged on the [rack ODM hub](/en/topics/rack-odm).

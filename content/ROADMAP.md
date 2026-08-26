@@ -69,7 +69,7 @@ flowchart TD
 | 儲能（機櫃側） | 電解電容 <100ms、超級電容、BBU >10s | 系統電(5309)、金山電(8042)、愛普*(6531)、熙特爾-創(7740) | 系統電 1、熙特爾 1 |
 | 液冷 | CDU、sidecar、冷板、45°C 迴路、液冷匯流排、快接頭 | 奇鋐(3017)、雙鴻(3324)、健策(3653)、泰碩(3338)、建準(2421)、富世達(6805)、尼得科超眾(6230) | 奇鋐 2、雙鴻 2、健策 1、建準 1、富世達 1（2025Q4 / 2026-03-05）、超眾 1（2025H1）。主題 hub：`/en/topics/liquid-cooling` |
 | 測試驗證 | HVDC 測試設備、電源分析儀 | 固緯(2423)、美達科技(6735) | 固緯 1 篇 |
-| 機櫃組裝 ODM | Kyber / NVL144 整櫃 | 鴻海(2317)、廣達(2382)、緯穎(6669) | 鴻海 6 篇（至 2026Q2） |
+| 機櫃組裝 ODM | Kyber / NVL144 整櫃 | 鴻海(2317)、廣達(2382)、緯穎(6669) | 鴻海 6 篇（至 2026Q2）、廣達 1 篇（2026Q2）、緯穎 1 篇（2025Q4）。主題 hub：`/en/topics/rack-odm` |
 
 ---
 
@@ -162,6 +162,6 @@ flowchart TD
 | 矽光子 / CPO | OIF、NVIDIA CPO switch | 85 | 58 |
 | HBM 供應鏈 | JEDEC HBM4 | 65 | 40 |
 
-建議順序：**液冷已上**（`/en/topics/liquid-cooling`）。**SiC/GaN 已上**（`/en/topics/sic-gan`，化合物主線 dual-tag）。再來 **rack ODM**（廣達 / 緯穎，跟同一個機櫃），然後 **CoWoS**（美國人搜尋量最大但競爭也最激烈）。
+建議順序：**液冷已上**（`/en/topics/liquid-cooling`）。**SiC/GaN 已上**（`/en/topics/sic-gan`，化合物主線 dual-tag）。**rack ODM 已上**（`/en/topics/rack-odm`，鴻海 / 廣達 / 緯穎）。再來 **CoWoS**（美國人搜尋量最大但競爭也最激烈）。
 
 每個主題一個 `content/en/topics/<slug>.md`，memo 用 `tags` 掛，網址結構不變。冷卻主線或化合物主線 dual-tag；不要把電源機櫃筆記灌進液冷或 SiC/GaN 列表。

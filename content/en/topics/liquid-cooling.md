@@ -90,7 +90,7 @@ Treat Chaun as a listed window on Nidec's cooling split, not as a Taiwan CDU ven
 These names discuss cooling on earnings calls but are not cooling-primary in this collection. Their notes stay on the [800V hub](/en/topics/nvidia-800v).
 
 - **[Delta (2308)](/en/delta)** and **[Lite-On (2301)](/en/liteon)** — CDUs and liquid cooling as part of a power-and-thermal stack, next to 800V racks.
-- **[Hon Hai / Foxconn (2317)](/en/foxconn)** — self-made CDUs, cold plates, manifolds and QDs inside rack-scale assembly. Self-made content is above 50%, chips excepted.
+- **[Hon Hai / Foxconn (2317)](/en/foxconn)** — self-made CDUs, cold plates, manifolds and QDs inside rack-scale assembly. Self-made content is above 50%, chips excepted. Full ODM notes: [rack ODM hub](/en/topics/rack-odm).
 - **[Chenming (3013)](/en/chenming)** — chassis and racks, including liquid-cooling lines.
 - **[CviLux (8103)](/en/cvilux)** — connectors into sidecar CBU / BBU.
 - **[JPC (6197)](/en/jpc)** — busbars on the OCP ±400 V rail.

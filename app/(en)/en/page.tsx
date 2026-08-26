@@ -28,7 +28,7 @@ export default function EnglishHomePage() {
         Taiwan Semiconductor Earnings Calls
       </h1>
       <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-600">
-        Notes on Taiwan investor conferences, written in English for overseas investors. {companies.length} companies and {memos.length} calls, starting with NVIDIA&apos;s 800 VDC architecture, the liquid-cooling loop in the same rack, and the SiC/GaN devices that have to switch that voltage.
+        Notes on Taiwan investor conferences, written in English for overseas investors. {companies.length} companies and {memos.length} calls, starting with NVIDIA&apos;s 800 VDC architecture, the liquid-cooling loop in the same rack, the SiC/GaN devices that have to switch that voltage, and the ODMs that assemble the cabinet.
       </p>
 
       <section className="mt-12">
