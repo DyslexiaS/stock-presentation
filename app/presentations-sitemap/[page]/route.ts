@@ -1,11 +1,9 @@
 import { NextRequest } from 'next/server'
 import dbConnect from '@/lib/mongodb'
 import PresentationModel from '@/lib/models/Presentation'
+import { withTimeout } from '@/lib/with-timeout'
 
 const CHUNK_SIZE = 10000
-
-// Tell Next.js about the dynamic segment
-export const dynamic = 'force-dynamic'
 
 export async function GET(
   _request: NextRequest,
@@ -17,7 +15,7 @@ export async function GET(
   const page = parseInt(params.page)
 
   try {
-    await dbConnect()
+    await withTimeout(dbConnect(), 2500, 'Presentations sitemap connect')
     const presentations = await PresentationModel
       .find({})
       .select('_id createdAt eventDate')

@@ -2,6 +2,7 @@
 import PresentationModel from '@/lib/models/Presentation'
 import dbConnect from '@/lib/mongodb'
 import { generateHomeMetadata } from '@/lib/seo'
+import { withTimeout } from '@/lib/with-timeout'
 import { Presentation as PresentationType } from '@/types'
 import { Suspense } from 'react'
 import HomePageClient from './homepage-client'
@@ -10,7 +11,16 @@ import HomePageClient from './homepage-client'
 export const metadata = generateHomeMetadata()
 export const revalidate = 86400
 
-// Fetch initial presentations data on server
+const HOME_MONGO_BUDGET_MS = 2500
+
+const EMPTY_HOME = {
+  presentations: [] as PresentationType[],
+  pagination: { page: 1, limit: 20, total: 0, pages: 0, hasNext: false, hasPrev: false },
+  weekCount: 0,
+  monthCount: 0,
+}
+
+// Fetch initial presentations data on server. Hard-cap Mongo so `/` never holds the first byte.
 async function getInitialPresentations(): Promise<{
   presentations: PresentationType[]
   pagination: {
@@ -25,77 +35,77 @@ async function getInitialPresentations(): Promise<{
   monthCount: number
 }> {
   try {
-    await dbConnect()
+    return await withTimeout(
+      (async () => {
+        await dbConnect()
 
-    const limit = 20
-    const page = 1
-    const skip = (page - 1) * limit
+        const limit = 20
+        const page = 1
+        const skip = (page - 1) * limit
 
-    const now = new Date()
-    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
-    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
+        const now = new Date()
+        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
 
-    const [presentations, total, weekCount, monthCount] = await Promise.all([
-      PresentationModel.find({}).sort({ eventDate: -1, createdAt: -1 }).limit(limit).skip(skip).maxTimeMS(5000).lean().exec(),
-      PresentationModel.countDocuments({}).maxTimeMS(5000),
-      PresentationModel.countDocuments({ eventDate: { $gte: weekAgo } }).maxTimeMS(5000),
-      PresentationModel.countDocuments({ eventDate: { $gte: monthStart } }).maxTimeMS(5000),
-    ])
+        const [presentations, total, weekCount, monthCount] = await Promise.all([
+          PresentationModel.find({}).sort({ eventDate: -1, createdAt: -1 }).limit(limit).skip(skip).maxTimeMS(HOME_MONGO_BUDGET_MS).lean().exec(),
+          PresentationModel.countDocuments({}).maxTimeMS(HOME_MONGO_BUDGET_MS),
+          PresentationModel.countDocuments({ eventDate: { $gte: weekAgo } }).maxTimeMS(HOME_MONGO_BUDGET_MS),
+          PresentationModel.countDocuments({ eventDate: { $gte: monthStart } }).maxTimeMS(HOME_MONGO_BUDGET_MS),
+        ])
 
-    const pages = Math.ceil(total / limit)
+        const pages = Math.ceil(total / limit)
 
-    return {
-      presentations: presentations.map((p: any) => ({
-        ...p,
-        _id: p._id.toString(),
-        eventDate: p.eventDate.toISOString(),
-        createdAt: p.createdAt?.toISOString() || p.eventDate.toISOString(),
-        updatedAt: p.updatedAt?.toISOString()
-      })),
-      pagination: { page, limit, total, pages, hasNext: page < pages, hasPrev: page > 1 },
-      weekCount,
-      monthCount,
-    }
+        return {
+          presentations: presentations.map((p: any) => ({
+            ...p,
+            _id: p._id.toString(),
+            eventDate: p.eventDate.toISOString(),
+            createdAt: p.createdAt?.toISOString() || p.eventDate.toISOString(),
+            updatedAt: p.updatedAt?.toISOString()
+          })),
+          pagination: { page, limit, total, pages, hasNext: page < pages, hasPrev: page > 1 },
+          weekCount,
+          monthCount,
+        }
+      })(),
+      HOME_MONGO_BUDGET_MS,
+      'Homepage Mongo'
+    )
   } catch (error) {
     console.error('Error fetching presentations:', error)
-    return {
-      presentations: [{
-        _id: '687b18f1a2ef6df0427f27e4',
-        companyCode: '1101',
-        companyName: '台泥',
-        eventDate: '2025-05-19T00:00:00.000Z',
-        presentationTWUrl: 'https://mopsov.twse.com.tw/nas/STR/110120250519M001.pdf',
-        presentationEnUrl: 'https://mopsov.twse.com.tw/nas/STR/110120250519E001.pdf',
-        typek: 'sii',
-        createdAt: '2025-07-19T12:02:57.055Z'
-      }],
-      pagination: { page: 1, limit: 20, total: 1, pages: 1, hasNext: false, hasPrev: false },
-      weekCount: 0,
-      monthCount: 0,
-    }
+    return EMPTY_HOME
   }
 }
 
-// Server-side rendered homepage
-export default async function HomePage() {
-  // Fetch initial data on the server
+async function HomePageWithData() {
   const { presentations, pagination, weekCount, monthCount } = await getInitialPresentations()
 
   return (
+    <HomePageClient
+      initialPresentations={presentations}
+      initialPagination={pagination}
+      weekCount={weekCount}
+      monthCount={monthCount}
+    />
+  )
+}
+
+function HomePageShell() {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="text-center text-slate-500">載入中...</div>
+    </div>
+  )
+}
+
+// Stream the chrome immediately; Mongo is capped at 2.5s so this cannot hold the response open.
+export default function HomePage() {
+  return (
     <div className="min-h-screen bg-slate-50">
 
-      {/* Client-side interactive components */}
-      <Suspense fallback={
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center">載入中...</div>
-        </div>
-      }>
-        <HomePageClient
-          initialPresentations={presentations}
-          initialPagination={pagination}
-          weekCount={weekCount}
-          monthCount={monthCount}
-        />
+      <Suspense fallback={<HomePageShell />}>
+        <HomePageWithData />
       </Suspense>
 
       {/* Structured Data for Homepage */}

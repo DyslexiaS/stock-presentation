@@ -24,6 +24,7 @@ export async function GET(request: NextRequest) {
     const presentations = await Presentation.find(query)
       .sort({ eventDate: -1, createdAt: -1 })
       .limit(limit)
+      .maxTimeMS(5000)
       .lean()
 
     return NextResponse.json({

@@ -1,12 +1,7 @@
 import mongoose from 'mongoose'
+import { withTimeout } from '@/lib/with-timeout'
 
-const MONGODB_URI = process.env.MONGODB_URI!
-
-if (!MONGODB_URI) {
-  throw new Error(
-    'Please define the MONGODB_URI environment variable inside .env.local'
-  )
-}
+const CONNECT_TIMEOUT_MS = 4000
 
 interface MongooseCache {
   conn: typeof mongoose | null
@@ -23,6 +18,16 @@ if (!global.mongoose) {
   global.mongoose = cached
 }
 
+function mongoUri(): string {
+  const uri = process.env.MONGODB_URI
+  if (!uri) {
+    throw new Error(
+      'Please define the MONGODB_URI environment variable inside .env.local'
+    )
+  }
+  return uri
+}
+
 async function dbConnect() {
   if (cached.conn) {
     return cached.conn
@@ -31,25 +36,28 @@ async function dbConnect() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
-      serverSelectionTimeoutMS: 4000,
-      connectTimeoutMS: 4000,
+      serverSelectionTimeoutMS: CONNECT_TIMEOUT_MS,
+      connectTimeoutMS: CONNECT_TIMEOUT_MS,
       socketTimeoutMS: 10000,
       maxPoolSize: 8,
+      // Atlas SRV can return unreachable IPv6; IPv4 fails in 4s instead of hanging.
+      family: 4 as const,
     }
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      return mongoose
-    })
+    cached.promise = mongoose
+      .connect(mongoUri(), opts)
+      .then((connection) => {
+        cached.conn = connection
+        return connection
+      })
+      .catch((error) => {
+        cached.promise = null
+        cached.conn = null
+        throw error
+      })
   }
 
-  try {
-    cached.conn = await cached.promise
-  } catch (e) {
-    cached.promise = null
-    throw e
-  }
-
-  return cached.conn
+  return withTimeout(cached.promise, CONNECT_TIMEOUT_MS + 500, 'MongoDB connect')
 }
 
 export default dbConnect
