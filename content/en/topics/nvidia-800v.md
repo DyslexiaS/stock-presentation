@@ -3,7 +3,7 @@ title: "NVIDIA 800 VDC — Taiwan Supply Chain"
 description: "What NVIDIA's 800 VDC whitepaper actually specifies for AI data centers, and which Taiwan-listed suppliers sit in each slot — English earnings calls for Delta, Lite-On, BizLink, Lead Wealth, Hon Hai, GlobalWafers, Auras, AVC and the rest of the power, cooling, compound and rack stack."
 ---
 
-NVIDIA is rebuilding data-center power around **800 VDC**. This hub does two things: it reads NVIDIA's own specification, then maps the Taiwan-listed companies that have to build against it. The water loop, the wide-bandgap switches and the companies that assemble the cabinet are now topics of their own — [liquid cooling](/en/topics/liquid-cooling), [SiC / GaN](/en/topics/sic-gan) and [rack ODM](/en/topics/rack-odm). Every company below has an English memo page with briefings of its earnings calls.
+NVIDIA is rebuilding data-center power around **800 VDC**. This hub does two things: it reads NVIDIA's own specification, then maps the Taiwan-listed companies that have to build against it. The water loop, the wide-bandgap switches, the companies that assemble the cabinet and the CoWoS package under the GPU are now topics of their own — [liquid cooling](/en/topics/liquid-cooling), [SiC / GaN](/en/topics/sic-gan), [rack ODM](/en/topics/rack-odm) and [CoWoS](/en/topics/cowos). Every company below has an English memo page with briefings of its earnings calls.
 
 ## Part 1 — What NVIDIA actually specified
 

@@ -28,6 +28,9 @@ export function EnHeader() {
           <Link href="/en/topics/rack-odm" className="text-slate-300 hover:text-white">
             Rack ODM
           </Link>
+          <Link href="/en/topics/cowos" className="text-slate-300 hover:text-white">
+            CoWoS
+          </Link>
           <Link href="/en/companies" className="text-slate-300 hover:text-white">
             Companies
           </Link>
@@ -74,6 +77,10 @@ export function EnFooter() {
           {' · '}
           <Link href="/en/topics/rack-odm" className="underline decoration-slate-300 underline-offset-4 hover:text-slate-800">
             Rack ODM hub
+          </Link>
+          {' · '}
+          <Link href="/en/topics/cowos" className="underline decoration-slate-300 underline-offset-4 hover:text-slate-800">
+            CoWoS hub
           </Link>
         </p>
       </div>
