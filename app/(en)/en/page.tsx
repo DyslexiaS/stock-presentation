@@ -3,6 +3,7 @@ import { CompanyIndexGrid } from '@/components/en/company-index'
 import { JsonLd } from '@/components/en/json-ld'
 import { MemoCard } from '@/components/en/memo-card'
 import { EN_PAGE_WIDTH } from '@/components/en/site-chrome'
+import { TopicIndex } from '@/components/en/topic-index'
 import {
   EN_HOME_LATEST_COUNT,
   getAllMemos,
@@ -31,36 +32,31 @@ export default function EnglishHomePage() {
         Notes on Taiwan investor conferences, written in English for overseas investors. {companies.length} companies and {memos.length} calls, starting with NVIDIA&apos;s 800 VDC architecture, the liquid-cooling loop in the same rack, the SiC/GaN devices that have to switch that voltage, the ODMs that assemble the cabinet, and TSMC CoWoS under the GPU.
       </p>
 
-      <section className="mt-12">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">Topics</h2>
-        <div className="mt-4 grid gap-4 md:grid-cols-3">
-          {topics.map((topic) => (
-            <Link
-              key={topic.slug}
-              href={`/en/topics/${topic.slug}`}
-              className="border-l-4 border-slate-900 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-            >
-              <h3 className="font-[family-name:var(--font-en-serif)] text-xl text-slate-900">{topic.title}</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-600">{topic.description}</p>
-            </Link>
-          ))}
-        </div>
-      </section>
-
       <section className="mt-14">
         <div className="flex items-baseline justify-between gap-4">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">Companies</h2>
-          <Link href="/en/companies" className="text-sm text-slate-500 underline decoration-slate-300 underline-offset-4 hover:text-slate-800 hover:decoration-slate-800">
-            View directory
+          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Topics</h2>
+          <p className="text-xs tabular-nums text-slate-400">{topics.length} hubs</p>
+        </div>
+        <TopicIndex topics={topics} />
+      </section>
+
+      <section className="mt-16">
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Companies</h2>
+          <Link href="/en/companies" className="text-xs uppercase tracking-[0.14em] text-slate-500 underline decoration-slate-300 underline-offset-4 hover:text-slate-800 hover:decoration-slate-800">
+            Full directory
           </Link>
         </div>
+        <p className="mt-2 text-sm text-slate-500">
+          Ticker first, A–Z by name. The number is how many English notes we have.
+        </p>
         <CompanyIndexGrid companies={companies} />
       </section>
 
       <section className="mt-14">
         <div className="flex items-baseline justify-between gap-4">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">Latest earnings calls</h2>
-          <Link href="/en/calls" className="text-sm text-slate-500 underline decoration-slate-300 underline-offset-4 hover:text-slate-800 hover:decoration-slate-800">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Latest earnings calls</h2>
+          <Link href="/en/calls" className="text-xs uppercase tracking-[0.14em] text-slate-500 underline decoration-slate-300 underline-offset-4 hover:text-slate-800 hover:decoration-slate-800">
             Browse all {memos.length} calls
           </Link>
         </div>
