@@ -68,6 +68,8 @@ const PresentationSchema = new mongoose.Schema<IPresentation>(
   }
 )
 
+PresentationSchema.index({ eventDate: -1 })
+
 // Generate slug before saving
 PresentationSchema.pre('save', function (next) {
   if (!this.slug) {

@@ -75,6 +75,12 @@ export default function IndustryPage() {
               <span className="text-slate-300">/</span>
               <span className="text-slate-800 font-semibold text-sm">產業地圖</span>
             </nav>
+            <Link
+              href="/calendar"
+              className="text-sm text-slate-400 hover:text-slate-600 transition-colors shrink-0"
+            >
+              本週時程
+            </Link>
 
             {/* Sector quick-jump */}
             <nav className="hidden md:flex items-center gap-1 ml-auto" aria-label="產業分類">

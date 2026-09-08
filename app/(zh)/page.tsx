@@ -1,4 +1,5 @@
 // import { AdBanner } from '@/components/ads/ad-banner'
+import { getCalendarWeek } from '@/lib/calendar'
 import PresentationModel from '@/lib/models/Presentation'
 import dbConnect from '@/lib/mongodb'
 import { generateHomeMetadata } from '@/lib/seo'
@@ -23,6 +24,7 @@ async function getInitialPresentations(): Promise<{
   }
   weekCount: number
   monthCount: number
+  calendarWeekCount: number
 }> {
   try {
     await dbConnect()
@@ -34,12 +36,14 @@ async function getInitialPresentations(): Promise<{
     const now = new Date()
     const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
+    const calendarWeek = getCalendarWeek(now)
 
-    const [presentations, total, weekCount, monthCount] = await Promise.all([
+    const [presentations, total, weekCount, monthCount, calendarWeekCount] = await Promise.all([
       PresentationModel.find({}).sort({ eventDate: -1, createdAt: -1 }).limit(limit).skip(skip).maxTimeMS(5000).lean().exec(),
       PresentationModel.countDocuments({}).maxTimeMS(5000),
       PresentationModel.countDocuments({ eventDate: { $gte: weekAgo } }).maxTimeMS(5000),
       PresentationModel.countDocuments({ eventDate: { $gte: monthStart } }).maxTimeMS(5000),
+      PresentationModel.countDocuments({ eventDate: { $gte: calendarWeek.start, $lt: calendarWeek.end } }).maxTimeMS(5000),
     ])
 
     const pages = Math.ceil(total / limit)
@@ -55,6 +59,7 @@ async function getInitialPresentations(): Promise<{
       pagination: { page, limit, total, pages, hasNext: page < pages, hasPrev: page > 1 },
       weekCount,
       monthCount,
+      calendarWeekCount,
     }
   } catch (error) {
     console.error('Error fetching presentations:', error)
@@ -72,6 +77,7 @@ async function getInitialPresentations(): Promise<{
       pagination: { page: 1, limit: 20, total: 1, pages: 1, hasNext: false, hasPrev: false },
       weekCount: 0,
       monthCount: 0,
+      calendarWeekCount: 0,
     }
   }
 }
@@ -79,7 +85,7 @@ async function getInitialPresentations(): Promise<{
 // Server-side rendered homepage
 export default async function HomePage() {
   // Fetch initial data on the server
-  const { presentations, pagination, weekCount, monthCount } = await getInitialPresentations()
+  const { presentations, pagination, weekCount, monthCount, calendarWeekCount } = await getInitialPresentations()
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -95,6 +101,7 @@ export default async function HomePage() {
           initialPagination={pagination}
           weekCount={weekCount}
           monthCount={monthCount}
+          calendarWeekCount={calendarWeekCount}
         />
       </Suspense>
 
@@ -187,7 +194,7 @@ export default async function HomePage() {
                 "name": "哪裡可以看法說會行事曆？",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "FinmoConf 會即時收錄最新活動日期，您可透過搜尋條件（日期與公司）查看近期法說會時間表與歷史紀錄。"
+                  "text": "本週法說會時程請見 FinmoConf 法說會行事曆 https://finmoconf.diveinvest.net/calendar，依週一至週日列出已收錄的上市櫃場次與簡報。"
                 }
               },
               {

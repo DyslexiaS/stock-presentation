@@ -41,6 +41,7 @@ NEXT_PUBLIC_SITE_URL=https://finmoconf.diveinvest.net
 ```
 app/
 ├── page.tsx                          # 首頁 (SSR + ISR 24h)
+├── calendar/page.tsx                 # 本週法說會時程 (ISR 1h)
 ├── en/                               # 英文 memo 專區 (SSG)
 ├── company/[companyCode]/page.tsx    # 公司專頁 (ISR 7d)
 ├── presentation/[id]/page.tsx        # 法說會詳情頁 (ISR 7d)
@@ -56,6 +57,8 @@ content/en/
 
 lib/
 ├── seo.ts                            # 中文頁 metadata
+├── calendar.ts                       # 台灣時間週次（/calendar 用）
+├── seo-en.ts                         # 英文 memo metadata
 ├── seo-en.ts                         # 英文 memo metadata
 ├── content/en-memos.ts               # Markdown loader
 ├── models/Presentation.ts            # Mongoose schema
@@ -89,6 +92,7 @@ interface Presentation {
 | 頁面 | 目標關鍵字範例 | 數量 |
 |---|---|---|
 | `/` | 台股法說會、法說會查詢 | 1 |
+| `/calendar` | 本週法說會、法說會時程、法說會行事曆 | 1 |
 | `/en` | Taiwan semiconductor earnings call | 1 |
 | `/en/companies` | Taiwan earnings call companies | 1 |
 | `/en/calls` | Taiwan semiconductor earnings calls English | 1 |
@@ -106,6 +110,7 @@ interface Presentation {
 ```
 /sitemap-index.xml
   ├── /en-sitemap.xml                 # /en + 名錄 + 全部 calls + 主題 + 41 家公司 + 57 篇 memo
+  ├── /pages-sitemap.xml              # 首頁 + /calendar 本週時程
   ├── /companies-sitemap.xml          # 所有中文公司頁（~2,000）
   ├── /industry-sitemap.xml           # 產業分類頁
   └── /presentations-sitemap/[page]   # 分頁法說會（每頁 10,000）
@@ -113,6 +118,7 @@ interface Presentation {
 
 ### 結構化資料（JSON-LD）
 - 首頁：`WebSite` + `Organization` + `Dataset` + `FAQPage`
+- `/calendar`：`CollectionPage` + `ItemList` + `BreadcrumbList` + `FAQPage`
 - 法說會頁：`Event` + `Organization` + `BreadcrumbList`
 - 公司頁：`Organization` + `Event[]` + `BreadcrumbList`
 - 英文 `/en`：`CollectionPage` + `ItemList`（公司）
@@ -122,6 +128,7 @@ interface Presentation {
 
 ### ISR 快取策略
 - 首頁：每 24 小時重新生成
+- 本週時程 `/calendar`：每 1 小時重新生成
 - 公司頁 / 法說會頁：每 7 天重新生成
 - Sitemap：每 24 小時重新生成
 
@@ -132,9 +139,12 @@ interface Presentation {
 - [x] **英文 memo 專區 `/en`** — Markdown SSG，NVIDIA 800V、液冷、SiC/GaN、rack ODM 與 CoWoS 為前五個主題
 - [ ] **AI 批次生成 `presentationContent`** — 將 10,000+ 薄頁面轉為有內容的頁面，最高優先
 - [x] **產業分類頁** `/industry/[sector]` — 承接「半導體業法說會」等高搜尋量關鍵字
+- [x] **本週時程頁** `/calendar` — 依 `eventDate` 查當週場次，承接「本週法說會、法說會時程、法說會行事曆」
 - [ ] **季度彙整頁** `/quarter/[year-q]` — 承接「2024 Q3 法說會」類查詢
 - [ ] **公司頁加 AI 簡介段落** — 增加文字密度，強化公司頁排名
 - [ ] **詳情頁同公司相關列表** — 強化內部連結，降低跳出率
+
+`/calendar` 依 Mongo `eventDate` 即時查出當週（台灣時間週一至週日），不必另存週曆表。尚未入庫 PDF 的預告場次不會出現。
 
 ---
 

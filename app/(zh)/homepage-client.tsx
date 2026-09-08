@@ -32,6 +32,7 @@ interface HomePageClientProps {
   initialPagination: PaginationData
   weekCount: number
   monthCount: number
+  calendarWeekCount: number
 }
 
 export default function HomePageClient({
@@ -39,6 +40,7 @@ export default function HomePageClient({
   initialPagination,
   weekCount,
   monthCount,
+  calendarWeekCount,
 }: HomePageClientProps) {
   const urlSearchParams = useSearchParams()
   const initialQ = urlSearchParams.get('q') ?? ''
@@ -119,7 +121,7 @@ export default function HomePageClient({
         <div className="container mx-auto px-6">
 
           {/* Service nav */}
-          <nav className="flex items-center gap-8 pt-6 max-w-2xl mx-auto" aria-label="服務選單">
+          <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-6 max-w-3xl mx-auto" aria-label="服務選單">
             <span className="inline-flex items-center gap-2.5" aria-current="page">
               <span className="text-[10px] font-mono font-medium text-slate-400 tabular-nums">01</span>
               <span className="text-sm font-semibold text-slate-900 border-b border-slate-900 pb-px leading-snug">
@@ -127,10 +129,19 @@ export default function HomePageClient({
               </span>
             </span>
             <Link
-              href="/industry"
+              href="/calendar"
               className="inline-flex items-center gap-2.5 group transition-opacity hover:opacity-70"
             >
               <span className="text-[10px] font-mono font-medium text-slate-300 tabular-nums">02</span>
+              <span className="text-sm text-slate-400 group-hover:text-slate-500 transition-colors leading-snug">
+                本週時程
+              </span>
+            </Link>
+            <Link
+              href="/industry"
+              className="inline-flex items-center gap-2.5 group transition-opacity hover:opacity-70"
+            >
+              <span className="text-[10px] font-mono font-medium text-slate-300 tabular-nums">03</span>
               <span className="text-sm text-slate-400 group-hover:text-slate-500 transition-colors leading-snug">
                 產業地圖
               </span>
@@ -142,7 +153,7 @@ export default function HomePageClient({
               href="/en"
               className="inline-flex items-center gap-2.5 group transition-opacity hover:opacity-70"
             >
-              <span className="text-[10px] font-mono font-medium text-slate-300 tabular-nums">03</span>
+              <span className="text-[10px] font-mono font-medium text-slate-300 tabular-nums">04</span>
               <span className="text-sm text-slate-400 group-hover:text-slate-500 transition-colors leading-snug">
                 English earnings calls
               </span>
@@ -236,17 +247,28 @@ export default function HomePageClient({
             </div>
 
             {/* Activity stats — shown only before any search */}
-            {!hasSearched && (weekCount > 0 || monthCount > 0) && (
-              <div className="mb-6 rounded-xl border border-slate-200 bg-white px-5 py-4 flex items-center gap-8">
+            {!hasSearched && (weekCount > 0 || monthCount > 0 || calendarWeekCount > 0) && (
+              <div className="mb-6 rounded-xl border border-slate-200 bg-white px-5 py-4 flex flex-wrap items-center gap-8">
+                <Link href="/calendar" className="hover:opacity-80 transition-opacity">
+                  <p className="text-2xl font-bold font-mono tabular-nums text-slate-900">{calendarWeekCount}</p>
+                  <p className="text-xs text-slate-500 mt-0.5">本週時程場次</p>
+                </Link>
+                <div className="w-px bg-slate-200 self-stretch hidden sm:block" />
                 <div>
                   <p className="text-2xl font-bold font-mono tabular-nums text-slate-900">{weekCount}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">本週新增場次</p>
+                  <p className="text-xs text-slate-500 mt-0.5">近七日新增</p>
                 </div>
-                <div className="w-px bg-slate-200 self-stretch" />
+                <div className="w-px bg-slate-200 self-stretch hidden sm:block" />
                 <div>
                   <p className="text-2xl font-bold font-mono tabular-nums text-slate-900">{monthCount}</p>
                   <p className="text-xs text-slate-500 mt-0.5">本月新增場次</p>
                 </div>
+                <Link
+                  href="/calendar"
+                  className="ml-auto text-sm text-slate-500 hover:text-slate-800 transition-colors"
+                >
+                  看法說會行事曆 →
+                </Link>
               </div>
             )}
 
