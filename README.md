@@ -180,3 +180,17 @@ bun run lint    # 程式碼檢查
 **Zeabur**：repo 根目錄有 `Dockerfile`，會固定用 Bun **1.2.18** 跑 `bun install` 再 `next build`。不要讓 Zeabur 自己裝 `bun@latest`——2026-08-20 的 Bun 1.4 是重寫版，會把 `bun install` 弄到失敗。Bun 版本寫在 `package.json` 的 `engines.bun` 與 `packageManager`。環境變數（`MONGODB_URI`、`NEXT_PUBLIC_SITE_URL`）在 Zeabur 服務設定裡即可。Mongo 連線 4 秒沒好就放棄，避免中文首頁把整個站卡住；`robots.txt` 放在 `public/`，不經過 SSR。
 
 **Vercel**：連接 GitHub 後設定同樣的環境變數即可；Vercel 不會用這份 Dockerfile。
+
+### 生產環境錯誤：Failed to find Server Action
+
+這個專案**沒有**使用 Next.js Server Actions（沒有 `"use server"`）。Zeabur 上若出現：
+
+```text
+Failed to find Server Action "x"
+Failed to find Server Action "y"
+TypeError: controller[kState].transformAlgorithm is not a function
+```
+
+通常是掃描機器人對頁面送出帶 `next-action` 標頭的 POST，不是真實使用者操作失敗。`proxy.ts` 只在有該標頭時執行，並直接回 404，避免寫進錯誤日誌、也避免串流中途被中斷。不會跑在一般 GET 頁面上，所以靜態生成不受影響。
+
+如果之後真的要加 Server Action，請先拿掉 `proxy.ts` 裡對 `next-action` 的攔截，並在建置時設定 `NEXT_SERVER_ACTIONS_ENCRYPTION_KEY`（所有機器用同一把金鑰）。

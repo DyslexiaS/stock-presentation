@@ -2,6 +2,16 @@
 const nextConfig = {
   turbopack: {},
   serverExternalPackages: ['gray-matter'],
+  // Behind a reverse proxy, Origin (public domain) may not match Host
+  // (internal). Allow the public host so POSTs are not CSRF-blocked.
+  experimental: {
+    serverActions: {
+      allowedOrigins: [
+        'finmoconf.diveinvest.net',
+        '*.diveinvest.net',
+      ],
+    },
+  },
   // Simplified redirect configuration to avoid regex issues
   async redirects() {
     return [
