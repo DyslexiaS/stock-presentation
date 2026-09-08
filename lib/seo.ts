@@ -349,6 +349,130 @@ export function generateHomeMetadata(): Metadata {
   }
 }
 
+export function generateCalendarMetadata(opts: {
+  rangeLabel: string
+  mondayYmd: string
+  count: number
+  isCurrentWeek: boolean
+  companyPreview: string[]
+}): Metadata {
+  const { rangeLabel, mondayYmd, count, isCurrentWeek, companyPreview } = opts
+  const year = mondayYmd.slice(0, 4)
+  const names = companyPreview.slice(0, 8).join('、')
+  const namesClause = names ? `本週場次含${names}。` : ''
+  const title = isCurrentWeek
+    ? `本週法說會時程（${rangeLabel}）｜台股法說會行事曆 | ${seoConfig.siteName}`
+    : `${year}年${rangeLabel} 法說會時程 | ${seoConfig.siteName}`
+  const description = isCurrentWeek
+    ? `本週台股法說會時程（${rangeLabel}）共 ${count} 場已收錄簡報。${namesClause}依日期查看上市櫃法人說明會 PDF 與公司頁。`
+    : `${year}年${rangeLabel} 台股法說會時程，共 ${count} 場已收錄簡報。${namesClause}`
+  const url = `${seoConfig.baseUrl}/calendar`
+
+  return {
+    title,
+    description,
+    keywords: [
+      '本週法說會',
+      '本週法說會時程',
+      '法說會時程',
+      '法說會行事曆',
+      '法說會時間表',
+      '今日法說會',
+      '台股法說會時程',
+      '法人說明會時程',
+      '本週法人說明會',
+    ].join(', '),
+    alternates: {
+      canonical: url,
+      languages: {
+        'zh-TW': url,
+        'x-default': url,
+      },
+    },
+    robots: isCurrentWeek
+      ? {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+          },
+        }
+      : { index: false, follow: true },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: seoConfig.siteName,
+      type: 'website',
+      locale: 'zh_TW',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
+  }
+}
+
+export function generateCalendarJsonLd(opts: {
+  rangeLabel: string
+  mondayYmd: string
+  count: number
+  presentations: Presentation[]
+}) {
+  const { rangeLabel, count, presentations } = opts
+  const pageUrl = `${seoConfig.baseUrl}/calendar`
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': `${pageUrl}#page`,
+        url: pageUrl,
+        name: `本週台股法說會時程（${rangeLabel}）`,
+        description: `本週台股法說會時程共 ${count} 場已收錄簡報，依日期排列。`,
+        inLanguage: 'zh-TW',
+        isPartOf: { '@id': `${seoConfig.baseUrl}/#website` },
+      },
+      {
+        '@type': 'ItemList',
+        '@id': `${pageUrl}#events`,
+        name: `本週法說會（${rangeLabel}）`,
+        numberOfItems: presentations.length,
+        itemListElement: presentations.slice(0, 50).map((presentation, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          url: `${seoConfig.baseUrl}/presentation/${presentation._id}`,
+          name: `${presentation.companyName}(${presentation.companyCode}) 法說會`,
+        })),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${pageUrl}#breadcrumb`,
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: seoConfig.siteName,
+            item: seoConfig.baseUrl,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: '本週法說會時程',
+            item: pageUrl,
+          },
+        ],
+      },
+    ],
+  }
+}
+
 // 生成結構化數據 JSON-LD
 export function generatePresentationJsonLd(presentation: Presentation) {
   const eventDate = new Date(presentation.eventDate)
