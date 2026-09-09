@@ -361,31 +361,30 @@ export function generateCalendarMetadata(opts: {
   const names = companyPreview.slice(0, 8).join('、')
   const namesClause = names ? `本週場次含${names}。` : ''
   const title = isCurrentWeek
-    ? `台股行事曆法說會（${rangeLabel}）｜國內法說會時間表 | ${seoConfig.siteName}`
-    : `${year} 年${rangeLabel} 台股行事曆法說會 | ${seoConfig.siteName}`
+    ? `法說會行事曆（${rangeLabel}）｜法說會時間表、近期法說會一覽表 | ${seoConfig.siteName}`
+    : `${year} 年${rangeLabel} 法說會行事曆 | ${seoConfig.siteName}`
   const description = isCurrentWeek
-    ? `台股行事曆法說會（${rangeLabel}）共 ${count} 場。國內法說會時間表與股市行事曆、法人說明會一覽表，含中英文簡報 PDF。${namesClause}`
-    : `${year} 年${rangeLabel} 台股行事曆法說會，共 ${count} 場已收錄簡報。國內法說會時間表。${namesClause}`
+    ? `台股行事曆 ${year} 近期法說會一覽表（${rangeLabel}）共 ${count} 場。法說會行事曆與法說會時間表，可對照公開資訊觀測站法說會一覽表，並直接開啟中英文簡報。${namesClause}`
+    : `${year} 年${rangeLabel} 法說會行事曆，共 ${count} 場已收錄簡報。法說會時間表與近期法說會一覽表。${namesClause}`
   const url = `${seoConfig.baseUrl}/calendar`
 
   return {
     title,
     description,
     keywords: [
+      '法說會行事曆',
+      '法說會時間表',
+      '近期法說會一覽表',
+      `台股行事曆 ${year}`,
+      '公開資訊觀測站法說會一覽表',
       '台股行事曆法說會',
       '國內法說會時間表',
       '股市行事曆',
       '法人說明會一覽表',
-      '股市行事曆- 法人說明會一覽表',
       '本週法說會',
       '本週法說會時程',
       '法說會時程',
-      '法說會行事曆',
-      '法說會時間表',
       '今日法說會',
-      '台股法說會時程',
-      '法人說明會時程',
-      '本週法人說明會',
     ].join(', '),
     alternates: {
       canonical: url,
@@ -429,8 +428,9 @@ export function generateCalendarJsonLd(opts: {
   count: number
   presentations: Presentation[]
 }) {
-  const { rangeLabel, count, presentations } = opts
+  const { rangeLabel, count, presentations, mondayYmd } = opts
   const pageUrl = `${seoConfig.baseUrl}/calendar`
+  const year = mondayYmd.slice(0, 4)
 
   return {
     '@context': 'https://schema.org',
@@ -439,15 +439,15 @@ export function generateCalendarJsonLd(opts: {
         '@type': 'CollectionPage',
         '@id': `${pageUrl}#page`,
         url: pageUrl,
-        name: `台股行事曆法說會（${rangeLabel}）`,
-        description: `國內法說會時間表（${rangeLabel}）共 ${count} 場。股市行事曆與法人說明會一覽表，含中英文簡報。`,
+        name: `法說會行事曆（${rangeLabel}）`,
+        description: `台股行事曆 ${year} 近期法說會一覽表（${rangeLabel}）共 ${count} 場。法說會時間表，可對照公開資訊觀測站法說會一覽表，含中英文簡報。`,
         inLanguage: 'zh-TW',
         isPartOf: { '@id': `${seoConfig.baseUrl}/#website` },
       },
       {
         '@type': 'ItemList',
         '@id': `${pageUrl}#events`,
-        name: `國內法說會時間表（${rangeLabel}）`,
+        name: `法說會時間表（${rangeLabel}）`,
         numberOfItems: presentations.length,
         itemListElement: presentations.slice(0, 50).map((presentation, index) => ({
           '@type': 'ListItem',
@@ -469,7 +469,7 @@ export function generateCalendarJsonLd(opts: {
           {
             '@type': 'ListItem',
             position: 2,
-            name: '台股行事曆法說會',
+            name: '法說會行事曆',
             item: pageUrl,
           },
         ],

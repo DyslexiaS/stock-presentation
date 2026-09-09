@@ -9,24 +9,24 @@ export const revalidate = 3600
 
 const CALENDAR_FAQS = [
   {
-    question: '台股行事曆法說會在哪裡看？',
+    question: '法說會行事曆在哪裡看？',
     answer:
-      'FinmoConf 的 /calendar 是台股行事曆法說會與國內法說會時間表。依週一至週日列出已收錄場次，可下載中英文簡報，有影片或錄音也會附上。',
+      'FinmoConf 的 /calendar 就是法說會行事曆與法說會時間表。依週一至週日列出已收錄場次，可下載中英文簡報，有影片或錄音也會附上。',
   },
   {
-    question: '股市行事曆和法人說明會一覽表有什麼差別？',
+    question: '近期法說會一覽表怎麼查？',
     answer:
-      '這裡的股市行事曆就是法人說明會一覽表：同一週的上市櫃法說會，依日期排列，並連到該場中英文 PDF。',
+      '打開本頁即可看本週近期法說會一覽表。電腦版一週五天並排，手機點上方日期。場次在簡報入庫後才會出現。',
+  },
+  {
+    question: '台股行事曆和公開資訊觀測站法說會一覽表有什麼不同？',
+    answer:
+      '公開資訊觀測站法說會一覽表是官方公告。這裡的台股行事曆只列已有簡報可查的場次，同一頁就能開中英文 PDF，不必再到觀測站另找檔案。',
   },
   {
     question: '今日法說會怎麼查？',
     answer:
-      '電腦版一週五天並排，標示「今天」的那一欄就是今日場次。手機先看上方日期列，再點「跳到今天」或「今天」那格。場次在簡報入庫後才會出現。',
-  },
-  {
-    question: '為什麼有些場次還沒出現？',
-    answer:
-      '這裡列出的是已有簡報可查的場次。公司尚未公告 PDF 的預告場次不會顯示，開完並入庫後就會出現在對應日期。',
+      '電腦版看標示「今天」的那一欄。手機先看上方日期列，再點「跳到今天」或「今天」那格。',
   },
 ]
 
@@ -55,6 +55,7 @@ export default async function CalendarPage({ searchParams }: PageProps) {
     events: grouped.get(day.ymd) ?? [],
   }))
   const weekRangeZh = formatWeekRangeZh(week.mondayYmd, week.sundayYmd)
+  const year = week.mondayYmd.slice(0, 4)
   const prevFrom = addCalendarDays(week.mondayYmd, -7)
   const nextFrom = addCalendarDays(week.mondayYmd, 7)
   const jsonLd = generateCalendarJsonLd({
@@ -91,7 +92,7 @@ export default async function CalendarPage({ searchParams }: PageProps) {
               FinmoConf
             </Link>
             <span className="text-slate-300">/</span>
-            <span className="text-slate-900 font-semibold">台股行事曆法說會</span>
+            <span className="text-slate-900 font-semibold">法說會行事曆</span>
             <div className="ml-auto hidden sm:flex items-center gap-5">
               <Link href="/" className="text-slate-500 hover:text-slate-800 transition-colors">
                 搜尋簡報
@@ -108,15 +109,15 @@ export default async function CalendarPage({ searchParams }: PageProps) {
         <div className="container mx-auto px-6 py-6 max-w-6xl">
           <div className="flex flex-col sm:flex-row sm:items-end gap-4">
             <div className="flex-1">
-              <p className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 tracking-widest uppercase mb-2">
+              <p className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 mb-2">
                 <span className="w-2 h-2 rounded-full bg-slate-400 inline-block" />
-                國內法說會時間表
+                台股行事曆 {year}
               </p>
               <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight leading-tight">
-                {week.isCurrentWeek ? '台股行事曆法說會' : `${week.mondayYmd.slice(0, 4)} 年台股行事曆法說會`}
+                {week.isCurrentWeek ? '法說會行事曆' : `${year} 年法說會行事曆`}
               </h1>
               <p className="text-slate-600 text-sm mt-2 leading-relaxed max-w-2xl">
-                股市行事曆 · 法人說明會一覽表。台灣時間 {weekRangeZh}，一週五天並排，今天會標出來。
+                法說會時間表 · 近期法說會一覽表。台灣時間 {weekRangeZh}。公開資訊觀測站法說會一覽表是官方公告；這裡列出已有簡報的場次，可直接開啟。
               </p>
             </div>
 
