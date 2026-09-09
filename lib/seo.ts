@@ -362,10 +362,10 @@ export function generateCalendarMetadata(opts: {
   const namesClause = names ? `本週場次含${names}。` : ''
   const title = isCurrentWeek
     ? `台股行事曆法說會（${rangeLabel}）｜國內法說會時間表 | ${seoConfig.siteName}`
-    : `${year}年${rangeLabel} 台股行事曆法說會 | ${seoConfig.siteName}`
+    : `${year} 年${rangeLabel} 台股行事曆法說會 | ${seoConfig.siteName}`
   const description = isCurrentWeek
     ? `台股行事曆法說會（${rangeLabel}）共 ${count} 場。國內法說會時間表與股市行事曆、法人說明會一覽表，含中英文簡報 PDF。${namesClause}`
-    : `${year}年${rangeLabel} 台股行事曆法說會，共 ${count} 場已收錄簡報。國內法說會時間表。${namesClause}`
+    : `${year} 年${rangeLabel} 台股行事曆法說會，共 ${count} 場已收錄簡報。國內法說會時間表。${namesClause}`
   const url = `${seoConfig.baseUrl}/calendar`
 
   return {

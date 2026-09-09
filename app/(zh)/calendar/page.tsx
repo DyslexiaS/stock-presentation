@@ -125,7 +125,7 @@ export default async function CalendarPage({ searchParams }: PageProps) {
                 國內法說會時間表
               </p>
               <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight">
-                {week.isCurrentWeek ? '台股行事曆法說會' : `${week.mondayYmd.slice(0, 4)}年台股行事曆法說會`}
+                {week.isCurrentWeek ? '台股行事曆法說會' : `${week.mondayYmd.slice(0, 4)} 年台股行事曆法說會`}
               </h1>
               <p className="text-slate-500 text-base mt-3 leading-relaxed max-w-2xl">
                 股市行事曆 · 法人說明會一覽表。台灣時間 {week.rangeLabel}，列出已收錄場次，中英文簡報與影片可直接開啟。
