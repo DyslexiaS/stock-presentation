@@ -106,6 +106,15 @@ export function getCalendarWeek(anchor: Date = new Date(), now: Date = new Date(
   }
 }
 
+/** 9月7–13日；跨月時寫成 8月31日–9月6日 */
+export function formatWeekRangeZh(mondayYmd: string, sundayYmd: string): string {
+  const [y1, m1, d1] = mondayYmd.split('-').map(Number)
+  const [y2, m2, d2] = sundayYmd.split('-').map(Number)
+  if (y1 !== y2) return `${y1}年${m1}月${d1}日–${y2}年${m2}月${d2}日`
+  if (m1 !== m2) return `${m1}月${d1}日–${m2}月${d2}日`
+  return `${m1}月${d1}–${d2}日`
+}
+
 export function groupByTaipeiDay<T extends { eventDate: string | Date }>(items: T[]): Map<string, T[]> {
   const grouped = new Map<string, T[]>()
   for (const item of items) {

@@ -2,6 +2,7 @@ import { describe, expect, test } from 'bun:test'
 import {
   addCalendarDays,
   formatTaipeiYmd,
+  formatWeekRangeZh,
   getCalendarWeek,
   getWeekMondayYmd,
   parseWeekAnchor,
@@ -53,5 +54,11 @@ describe('Taipei calendar week', () => {
     expect(parseWeekAnchor('09-08')).toBeNull()
     expect(parseWeekAnchor('1999-01-01')).toBeNull()
     expect(parseWeekAnchor('2026-09-08')?.toISOString()).toBe('2026-09-08T04:00:00.000Z')
+  })
+
+  test('formatWeekRangeZh keeps one month compact and spells out a month break', () => {
+    expect(formatWeekRangeZh('2026-09-07', '2026-09-13')).toBe('9月7–13日')
+    expect(formatWeekRangeZh('2026-08-31', '2026-09-06')).toBe('8月31日–9月6日')
+    expect(formatWeekRangeZh('2026-12-28', '2027-01-03')).toBe('2026年12月28日–2027年1月3日')
   })
 })
