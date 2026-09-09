@@ -1,17 +1,11 @@
+import { WeekGlance } from '@/components/calendar/week-glance'
+import { addCalendarDays, formatWeekRangeZh, groupByTaipeiDay } from '@/lib/calendar'
 import { loadCalendarWeek } from '@/lib/data/calendar-week'
-import { addCalendarDays, groupByTaipeiDay, type CalendarDay } from '@/lib/calendar'
 import { generateCalendarJsonLd, generateCalendarMetadata } from '@/lib/seo'
-import type { Presentation } from '@/types'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const revalidate = 3600
-
-const TYPE_LABEL: Record<Presentation['typek'], string> = {
-  sii: '上市',
-  otc: '上櫃',
-  rotc: '興櫃',
-}
 
 const CALENDAR_FAQS = [
   {
@@ -27,7 +21,7 @@ const CALENDAR_FAQS = [
   {
     question: '今日法說會怎麼查？',
     answer:
-      '打開本頁後點「跳到今天」，或直接看標示「今天」的那一段。場次在簡報入庫後才會出現。',
+      '電腦版一週五天並排，標示「今天」的那一欄就是今日場次。手機先看上方日期列，再點「跳到今天」或「今天」那格。場次在簡報入庫後才會出現。',
   },
   {
     question: '為什麼有些場次還沒出現？',
@@ -39,19 +33,6 @@ const CALENDAR_FAQS = [
 type PageProps = {
   searchParams: Promise<{ from?: string }>
 }
-
-function hasLink(url?: string): boolean {
-  return Boolean(url && url.trim())
-}
-
-function mediaLabel(url: string): '影片' | '錄音' {
-  const lower = url.toLowerCase()
-  if (/(youtube|youtu\.be|vimeo|\.mp4|webcast|livest)/.test(lower)) return '影片'
-  return '錄音'
-}
-
-const chipClass =
-  'inline-flex items-center h-7 px-2.5 rounded-md border border-slate-300 bg-white text-xs font-medium text-slate-800 hover:border-slate-900 hover:bg-slate-900 hover:text-white transition-colors'
 
 export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
   const { from } = await searchParams
@@ -69,7 +50,11 @@ export default async function CalendarPage({ searchParams }: PageProps) {
   const { from } = await searchParams
   const { week, presentations } = await loadCalendarWeek(from)
   const grouped = groupByTaipeiDay(presentations)
-  const days = week.days.filter((day) => !day.isWeekend || (grouped.get(day.ymd)?.length ?? 0) > 0)
+  const days = week.days.map((day) => ({
+    ...day,
+    events: grouped.get(day.ymd) ?? [],
+  }))
+  const weekRangeZh = formatWeekRangeZh(week.mondayYmd, week.sundayYmd)
   const prevFrom = addCalendarDays(week.mondayYmd, -7)
   const nextFrom = addCalendarDays(week.mondayYmd, 7)
   const jsonLd = generateCalendarJsonLd({
@@ -99,9 +84,9 @@ export default async function CalendarPage({ searchParams }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, '\\u003c') }}
       />
 
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-20">
         <div className="container mx-auto px-6">
-          <nav className="flex items-center gap-2 text-sm py-4 max-w-5xl mx-auto">
+          <nav className="flex items-center gap-2 text-sm py-4 max-w-6xl mx-auto">
             <Link href="/" className="text-slate-500 hover:text-slate-800 transition-colors font-mono">
               FinmoConf
             </Link>
@@ -120,33 +105,33 @@ export default async function CalendarPage({ searchParams }: PageProps) {
       </header>
 
       <div className="bg-white border-b border-slate-200">
-        <div className="container mx-auto px-6 py-12 max-w-5xl">
-          <div className="flex flex-col sm:flex-row sm:items-end gap-6">
+        <div className="container mx-auto px-6 py-6 max-w-6xl">
+          <div className="flex flex-col sm:flex-row sm:items-end gap-4">
             <div className="flex-1">
-              <p className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 tracking-widest uppercase mb-4">
+              <p className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 tracking-widest uppercase mb-2">
                 <span className="w-2 h-2 rounded-full bg-slate-400 inline-block" />
                 國內法說會時間表
               </p>
-              <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight">
+              <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight leading-tight">
                 {week.isCurrentWeek ? '台股行事曆法說會' : `${week.mondayYmd.slice(0, 4)} 年台股行事曆法說會`}
               </h1>
-              <p className="text-slate-600 text-base mt-3 leading-relaxed max-w-2xl">
-                股市行事曆 · 法人說明會一覽表。台灣時間 {week.rangeLabel}，列出已收錄場次，中英文簡報與影片可直接開啟。
+              <p className="text-slate-600 text-sm mt-2 leading-relaxed max-w-2xl">
+                股市行事曆 · 法人說明會一覽表。台灣時間 {weekRangeZh}，一週五天並排，今天會標出來。
               </p>
             </div>
 
             <div className="shrink-0">
-              <p className="text-3xl font-bold text-slate-900 font-mono tabular-nums">{presentations.length}</p>
-              <p className="text-sm text-slate-500 mt-1">場</p>
+              <p className="text-2xl font-bold text-slate-900 font-mono tabular-nums">{presentations.length}</p>
+              <p className="text-xs text-slate-500 mt-0.5">場</p>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-8 pt-5 border-t border-slate-200 text-sm">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-5 pt-4 border-t border-slate-200 text-sm">
             <Link href={`/calendar?from=${prevFrom}`} className="text-slate-600 hover:text-slate-900" rel="nofollow">
               上一週
             </Link>
             {week.isCurrentWeek ? (
-              <span className="text-slate-900 font-medium">本週 {week.rangeLabel}</span>
+              <span className="text-slate-900 font-medium">本週 {weekRangeZh}</span>
             ) : (
               <Link href="/calendar" className="text-slate-900 font-medium hover:text-slate-950">
                 回到本週
@@ -167,20 +152,16 @@ export default async function CalendarPage({ searchParams }: PageProps) {
         </div>
       </div>
 
-      <main className="flex-1 container mx-auto px-6 py-10 max-w-5xl">
+      <main className="flex-1 container mx-auto px-6 py-6 max-w-6xl">
         {presentations.length === 0 && (
-          <p className="text-slate-600 text-sm mb-8">
+          <p className="text-slate-600 text-sm mb-6">
             這一週還沒有已收錄的法說會簡報。法說旺季過後常會較少，可看上一週或回首頁搜尋公司。
           </p>
         )}
 
-        <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
-          {days.map((day) => (
-            <DayBlock key={day.ymd} day={day} events={grouped.get(day.ymd) ?? []} />
-          ))}
-        </div>
+        <WeekGlance days={days} />
 
-        <section className="mt-14">
+        <section className="mt-12">
           <h2 className="text-lg font-semibold text-slate-800 mb-4">常見問題</h2>
           <div className="space-y-2">
             {CALENDAR_FAQS.map((faq) => (
@@ -211,89 +192,5 @@ export default async function CalendarPage({ searchParams }: PageProps) {
         </div>
       </footer>
     </div>
-  )
-}
-
-function DayBlock({ day, events }: { day: CalendarDay; events: Presentation[] }) {
-  return (
-    <section
-      id={day.isToday ? 'today' : undefined}
-      className={`scroll-mt-20 border-b border-slate-200 last:border-b-0 ${
-        day.isToday ? 'bg-slate-50 border-l-4 border-l-slate-900' : ''
-      }`}
-    >
-      <header className="flex items-baseline justify-between gap-4 px-5 sm:px-6 pt-4 pb-2">
-        <h2 className={`tabular-nums ${day.isToday ? 'text-base font-semibold text-slate-900' : 'text-sm font-semibold text-slate-800'}`}>
-          <span className="font-mono text-slate-500">{day.weekdayZh}</span>
-          <span className="ml-2">{day.monthDay}</span>
-          {day.isToday && (
-            <span className="ml-2 inline-flex items-center h-5 px-1.5 rounded bg-slate-900 text-[10px] font-medium tracking-wide text-white align-middle">
-              今天
-            </span>
-          )}
-        </h2>
-        <p className="font-mono text-xs tabular-nums text-slate-500">{events.length} 場</p>
-      </header>
-
-      {events.length === 0 ? (
-        <p className="px-5 sm:px-6 pb-4 text-sm text-slate-500">尚無已收錄簡報</p>
-      ) : (
-        <ul>
-          {events.map((event) => (
-            <EventRow key={event._id} event={event} />
-          ))}
-        </ul>
-      )}
-    </section>
-  )
-}
-
-function EventRow({ event }: { event: Presentation }) {
-  const files = [
-    hasLink(event.presentationTWUrl)
-      ? { href: event.presentationTWUrl, label: '中文' }
-      : null,
-    hasLink(event.presentationEnUrl)
-      ? { href: event.presentationEnUrl, label: '英文' }
-      : null,
-    hasLink(event.audioLinkUrl)
-      ? { href: event.audioLinkUrl!, label: mediaLabel(event.audioLinkUrl!) }
-      : null,
-  ].filter((item): item is { href: string; label: string } => item !== null)
-
-  return (
-    <li className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 px-5 sm:px-6 py-2.5 border-t border-slate-100">
-      <div className="flex items-baseline gap-2 min-w-0">
-        <Link
-          href={`/presentation/${event._id}`}
-          className="font-semibold text-slate-900 hover:underline underline-offset-2"
-        >
-          {event.companyName}
-        </Link>
-        <Link
-          href={`/company/${event.companyCode}`}
-          className="font-mono text-sm tabular-nums text-slate-600 hover:text-slate-900 hover:underline underline-offset-2"
-        >
-          {event.companyCode}
-        </Link>
-        <span className="text-xs text-slate-500">{TYPE_LABEL[event.typek]}</span>
-      </div>
-
-      {files.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 sm:ml-auto">
-          {files.map((file) => (
-            <a
-              key={file.label}
-              href={file.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={chipClass}
-            >
-              {file.label}
-            </a>
-          ))}
-        </div>
-      )}
-    </li>
   )
 }
