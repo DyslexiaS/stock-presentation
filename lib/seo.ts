@@ -361,17 +361,22 @@ export function generateCalendarMetadata(opts: {
   const names = companyPreview.slice(0, 8).join('、')
   const namesClause = names ? `本週場次含${names}。` : ''
   const title = isCurrentWeek
-    ? `本週法說會時程（${rangeLabel}）｜台股法說會行事曆 | ${seoConfig.siteName}`
-    : `${year}年${rangeLabel} 法說會時程 | ${seoConfig.siteName}`
+    ? `台股行事曆法說會（${rangeLabel}）｜國內法說會時間表 | ${seoConfig.siteName}`
+    : `${year}年${rangeLabel} 台股行事曆法說會 | ${seoConfig.siteName}`
   const description = isCurrentWeek
-    ? `本週台股法說會時程（${rangeLabel}）共 ${count} 場已收錄簡報。${namesClause}依日期查看上市櫃法人說明會 PDF 與公司頁。`
-    : `${year}年${rangeLabel} 台股法說會時程，共 ${count} 場已收錄簡報。${namesClause}`
+    ? `台股行事曆法說會（${rangeLabel}）共 ${count} 場。國內法說會時間表與股市行事曆、法人說明會一覽表，含中英文簡報 PDF。${namesClause}`
+    : `${year}年${rangeLabel} 台股行事曆法說會，共 ${count} 場已收錄簡報。國內法說會時間表。${namesClause}`
   const url = `${seoConfig.baseUrl}/calendar`
 
   return {
     title,
     description,
     keywords: [
+      '台股行事曆法說會',
+      '國內法說會時間表',
+      '股市行事曆',
+      '法人說明會一覽表',
+      '股市行事曆- 法人說明會一覽表',
       '本週法說會',
       '本週法說會時程',
       '法說會時程',
@@ -434,15 +439,15 @@ export function generateCalendarJsonLd(opts: {
         '@type': 'CollectionPage',
         '@id': `${pageUrl}#page`,
         url: pageUrl,
-        name: `本週台股法說會時程（${rangeLabel}）`,
-        description: `本週台股法說會時程共 ${count} 場已收錄簡報，依日期排列。`,
+        name: `台股行事曆法說會（${rangeLabel}）`,
+        description: `國內法說會時間表（${rangeLabel}）共 ${count} 場。股市行事曆與法人說明會一覽表，含中英文簡報。`,
         inLanguage: 'zh-TW',
         isPartOf: { '@id': `${seoConfig.baseUrl}/#website` },
       },
       {
         '@type': 'ItemList',
         '@id': `${pageUrl}#events`,
-        name: `本週法說會（${rangeLabel}）`,
+        name: `國內法說會時間表（${rangeLabel}）`,
         numberOfItems: presentations.length,
         itemListElement: presentations.slice(0, 50).map((presentation, index) => ({
           '@type': 'ListItem',
@@ -464,7 +469,7 @@ export function generateCalendarJsonLd(opts: {
           {
             '@type': 'ListItem',
             position: 2,
-            name: '本週法說會時程',
+            name: '台股行事曆法說會',
             item: pageUrl,
           },
         ],

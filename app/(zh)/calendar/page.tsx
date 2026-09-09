@@ -15,19 +15,19 @@ const TYPE_LABEL: Record<Presentation['typek'], string> = {
 
 const CALENDAR_FAQS = [
   {
-    question: '本週法說會有哪些？',
+    question: '台股行事曆法說會在哪裡看？',
     answer:
-      '本頁依台灣時間週一至週日，列出本週已收錄的上市櫃法說會簡報。點公司名稱可看該場 PDF，也可從公司頁查看歷年法說會。',
+      'FinmoConf 的 /calendar 是台股行事曆法說會與國內法說會時間表。依週一至週日列出已收錄場次，可下載中英文簡報，有影片或錄音也會附上。',
   },
   {
-    question: '法說會時程、法說會行事曆在哪裡看？',
+    question: '股市行事曆和法人說明會一覽表有什麼差別？',
     answer:
-      'FinmoConf 的 /calendar 就是本週台股法說會時程。資料來自已入庫的活動日期，每小時更新一次。',
+      '這裡的股市行事曆就是法人說明會一覽表：同一週的上市櫃法說會，依日期排列，並連到該場中英文 PDF。',
   },
   {
     question: '今日法說會怎麼查？',
     answer:
-      '打開本週時程頁，標示「今天」的那一段就是今日法說會。場次在簡報入庫後才會出現。',
+      '打開本頁後點「跳到今天」，或直接看標示「今天」的那一段。場次在簡報入庫後才會出現。',
   },
   {
     question: '為什麼有些場次還沒出現？',
@@ -38,6 +38,16 @@ const CALENDAR_FAQS = [
 
 type PageProps = {
   searchParams: Promise<{ from?: string }>
+}
+
+function hasLink(url?: string): boolean {
+  return Boolean(url && url.trim())
+}
+
+function mediaLabel(url: string): '影片' | '錄音' {
+  const lower = url.toLowerCase()
+  if (/(youtube|youtu\.be|vimeo|\.mp4|webcast|livest)/.test(lower)) return '影片'
+  return '錄音'
 }
 
 export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
@@ -93,7 +103,7 @@ export default async function CalendarPage({ searchParams }: PageProps) {
               FinmoConf
             </Link>
             <span className="text-slate-300">/</span>
-            <span className="text-slate-800 font-semibold">本週法說會時程</span>
+            <span className="text-slate-800 font-semibold">台股行事曆法說會</span>
             <div className="ml-auto hidden sm:flex items-center gap-5">
               <Link href="/" className="text-slate-400 hover:text-slate-600 transition-colors">
                 搜尋簡報
@@ -112,21 +122,19 @@ export default async function CalendarPage({ searchParams }: PageProps) {
             <div className="flex-1">
               <p className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-400 tracking-widest uppercase mb-4">
                 <span className="w-2 h-2 rounded-full bg-slate-300 inline-block" />
-                法說會行事曆
+                國內法說會時間表
               </p>
               <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight">
-                {week.isCurrentWeek ? '本週法說會時程' : `${week.mondayYmd.slice(0, 4)}年當週時程`}
+                {week.isCurrentWeek ? '台股行事曆法說會' : `${week.mondayYmd.slice(0, 4)}年台股行事曆法說會`}
               </h1>
-              <p className="text-slate-500 text-base mt-3 leading-relaxed max-w-xl">
-                台灣時間 {week.rangeLabel}。列出已收錄簡報的場次，不是尚未公告的預告。
+              <p className="text-slate-500 text-base mt-3 leading-relaxed max-w-2xl">
+                股市行事曆 · 法人說明會一覽表。台灣時間 {week.rangeLabel}，列出已收錄場次，中英文簡報與影片可直接開啟。
               </p>
             </div>
 
-            <div className="flex items-end gap-8 shrink-0">
-              <div>
-                <p className="text-3xl font-bold text-slate-900 font-mono tabular-nums">{presentations.length}</p>
-                <p className="text-sm text-slate-400 mt-1">場</p>
-              </div>
+            <div className="shrink-0">
+              <p className="text-3xl font-bold text-slate-900 font-mono tabular-nums">{presentations.length}</p>
+              <p className="text-sm text-slate-400 mt-1">場</p>
             </div>
           </div>
 
@@ -160,11 +168,38 @@ export default async function CalendarPage({ searchParams }: PageProps) {
           </p>
         )}
 
-        <ol className="bg-white border border-slate-200 rounded-lg divide-y divide-slate-100">
-          {days.map((day) => (
-            <DayRow key={day.ymd} day={day} events={grouped.get(day.ymd) ?? []} />
-          ))}
-        </ol>
+        <div className="bg-white border border-slate-200 rounded-lg overflow-x-auto">
+          <table className="w-full text-sm">
+            <caption className="sr-only">
+              {week.rangeLabel} 台股行事曆法說會，國內法說會時間表與法人說明會一覽表
+            </caption>
+            <thead>
+              <tr className="text-left text-xs text-slate-400 border-b border-slate-100">
+                <th scope="col" className="font-medium px-5 sm:px-6 py-3">
+                  公司
+                </th>
+                <th scope="col" className="font-medium py-3 w-16">
+                  代碼
+                </th>
+                <th scope="col" className="hidden sm:table-cell font-medium py-3 w-12">
+                  市場
+                </th>
+                <th scope="col" className="font-medium py-3 w-[4.75rem]">
+                  中文簡報
+                </th>
+                <th scope="col" className="font-medium py-3 w-[4.75rem]">
+                  英文簡報
+                </th>
+                <th scope="col" className="font-medium py-3 pr-5 sm:pr-6 w-14">
+                  影片
+                </th>
+              </tr>
+            </thead>
+            {days.map((day) => (
+              <DayBody key={day.ymd} day={day} events={grouped.get(day.ymd) ?? []} />
+            ))}
+          </table>
+        </div>
 
         <section className="mt-14">
           <h2 className="text-lg font-semibold text-slate-700 mb-4">常見問題</h2>
@@ -200,49 +235,103 @@ export default async function CalendarPage({ searchParams }: PageProps) {
   )
 }
 
-function DayRow({ day, events }: { day: CalendarDay; events: Presentation[] }) {
+function DayBody({ day, events }: { day: CalendarDay; events: Presentation[] }) {
   return (
-    <li
+    <tbody
       id={day.isToday ? 'today' : undefined}
-      className={`px-5 sm:px-6 py-5 scroll-mt-20 border-l-2 ${
-        day.isToday ? 'bg-slate-50/80 border-l-slate-900' : 'border-l-transparent'
-      }`}
+      className={`scroll-mt-20 border-t border-slate-100 ${day.isToday ? 'bg-slate-50/80' : ''}`}
     >
-      <div className="flex items-baseline justify-between gap-4 mb-3">
-        <h2 className="text-sm font-medium text-slate-800">
+      <tr>
+        <th
+          colSpan={6}
+          scope="colgroup"
+          className={`px-5 sm:px-6 pt-4 pb-2 text-left font-medium ${
+            day.isToday ? 'border-l-2 border-l-slate-900' : 'border-l-2 border-l-transparent'
+          }`}
+        >
           <span className="font-mono text-slate-400 tabular-nums">{day.weekdayZh}</span>
-          <span className="ml-3 tabular-nums">{day.monthDay}</span>
+          <span className="ml-3 tabular-nums text-slate-800">{day.monthDay}</span>
           {day.isToday && (
             <span className="ml-2 text-[11px] font-medium tracking-wide text-slate-500">今天</span>
           )}
-        </h2>
-        <p className="font-mono text-xs tabular-nums text-slate-400">{events.length} 場</p>
-      </div>
-
+          <span className="ml-3 font-mono text-xs tabular-nums text-slate-400 font-normal">
+            {events.length} 場
+          </span>
+        </th>
+      </tr>
       {events.length === 0 ? (
-        <p className="text-sm text-slate-400">尚無已收錄簡報</p>
+        <tr>
+          <td colSpan={6} className="px-5 sm:px-6 pb-4 text-sm text-slate-400">
+            尚無已收錄簡報
+          </td>
+        </tr>
       ) : (
-        <ul>
-          {events.map((event) => (
-            <li key={event._id}>
+        events.map((event) => (
+          <tr key={event._id} className="hover:bg-white/80">
+            <td className="px-5 sm:px-6 py-2 align-baseline">
               <Link
                 href={`/presentation/${event._id}`}
-                className="flex items-baseline gap-3 sm:gap-4 py-2 -mx-2 px-2 rounded-md hover:bg-white hover:shadow-[inset_0_0_0_1px_rgb(226_232_240)] transition-colors"
+                className="font-medium text-slate-800 hover:text-slate-950"
               >
-                <span className="flex-1 min-w-0 text-slate-800 font-medium leading-snug">
-                  {event.companyName}
-                </span>
-                <span className="font-mono text-sm tabular-nums text-slate-500 shrink-0">
-                  {event.companyCode}
-                </span>
-                <span className="hidden sm:inline text-xs text-slate-400 w-10 text-right shrink-0">
-                  {TYPE_LABEL[event.typek]}
-                </span>
+                {event.companyName}
               </Link>
-            </li>
-          ))}
-        </ul>
+            </td>
+            <td className="py-2 align-baseline">
+              <Link
+                href={`/company/${event.companyCode}`}
+                className="font-mono tabular-nums text-slate-500 hover:text-slate-800"
+              >
+                {event.companyCode}
+              </Link>
+            </td>
+            <td className="hidden sm:table-cell py-2 align-baseline text-xs text-slate-400">
+              {TYPE_LABEL[event.typek]}
+            </td>
+            <td className="py-2 align-baseline">
+              {hasLink(event.presentationTWUrl) ? (
+                <a
+                  href={event.presentationTWUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-600 hover:text-slate-900 hover:underline underline-offset-2"
+                >
+                  中文
+                </a>
+              ) : (
+                <span className="text-slate-300">—</span>
+              )}
+            </td>
+            <td className="py-2 align-baseline">
+              {hasLink(event.presentationEnUrl) ? (
+                <a
+                  href={event.presentationEnUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-600 hover:text-slate-900 hover:underline underline-offset-2"
+                >
+                  英文
+                </a>
+              ) : (
+                <span className="text-slate-300">—</span>
+              )}
+            </td>
+            <td className="py-2 pr-5 sm:pr-6 align-baseline">
+              {hasLink(event.audioLinkUrl) ? (
+                <a
+                  href={event.audioLinkUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-600 hover:text-slate-900 hover:underline underline-offset-2"
+                >
+                  {mediaLabel(event.audioLinkUrl!)}
+                </a>
+              ) : (
+                <span className="text-slate-300">—</span>
+              )}
+            </td>
+          </tr>
+        ))
       )}
-    </li>
+    </tbody>
   )
 }
