@@ -1,4 +1,5 @@
 import { WeekGlance } from '@/components/calendar/week-glance'
+import { GooglePreferredSource } from '@/components/google-preferred-source'
 import { addCalendarDays, formatWeekRangeZh, groupByTaipeiDay } from '@/lib/calendar'
 import { loadCalendarWeek } from '@/lib/data/calendar-week'
 import { generateCalendarJsonLd, generateCalendarMetadata } from '@/lib/seo'
@@ -93,13 +94,14 @@ export default async function CalendarPage({ searchParams }: PageProps) {
             </Link>
             <span className="text-slate-300">/</span>
             <span className="text-slate-900 font-semibold">法說會行事曆</span>
-            <div className="ml-auto hidden sm:flex items-center gap-5">
-              <Link href="/" className="text-slate-500 hover:text-slate-800 transition-colors">
+            <div className="ml-auto flex items-center gap-3 sm:gap-5">
+              <Link href="/" className="hidden sm:inline text-slate-500 hover:text-slate-800 transition-colors">
                 搜尋簡報
               </Link>
-              <Link href="/industry" className="text-slate-500 hover:text-slate-800 transition-colors">
+              <Link href="/industry" className="hidden sm:inline text-slate-500 hover:text-slate-800 transition-colors">
                 產業地圖
               </Link>
+              <GooglePreferredSource lang="zh-TW" className="flex shrink-0" />
             </div>
           </nav>
         </div>

@@ -40,6 +40,7 @@ export function EnHeader() {
           <Link href="/" className="rounded border border-slate-600 px-2.5 py-1 text-xs uppercase tracking-wide text-slate-300 hover:border-slate-400 hover:text-white">
             中文原站
           </Link>
+          <GooglePreferredSource lang="en" className="flex shrink-0" />
         </nav>
       </div>
     </header>
@@ -50,9 +51,6 @@ export function EnFooter() {
   return (
     <footer className="mt-16 border-t border-slate-200 bg-white">
       <div className={`py-8 text-sm text-slate-500 ${EN_PAGE_WIDTH}`}>
-        <div className="mb-4">
-          <GooglePreferredSource lang="en" />
-        </div>
         <p>English notes on Taiwan-listed company earnings calls, known locally as investor conferences. Not investment advice.</p>
         <p className="mt-2">
           <Link href="/" className="underline decoration-slate-300 underline-offset-4 hover:text-slate-800">

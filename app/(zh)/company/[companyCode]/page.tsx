@@ -1,4 +1,5 @@
 import { AdBanner } from '@/components/ads/ad-banner'
+import { GooglePreferredSource } from '@/components/google-preferred-source'
 import { PromotionCards } from '@/components/ui/promotion-cards'
 import PresentationModel from '@/lib/models/Presentation'
 import dbConnect from '@/lib/mongodb'
@@ -167,14 +168,16 @@ export default async function CompanyPage({ params }: Props) {
         <header className="bg-card border-b border-gray-200 shadow-sm">
           <div className="container mx-auto px-4 py-6">
             <div className="space-y-4">
-              {/* 麵包屑導航 */}
-              <nav className="text-sm text-muted-foreground">
-                <Link href="/" className="hover:text-foreground">FinmoConf - 台股法說會搜尋</Link>
-                <span className="mx-2">→</span>
-                <span className="text-foreground font-medium">
-                  {companyName}({companyCode}) 法說會簡報
-                </span>
-              </nav>
+              <div className="flex items-start justify-between gap-4">
+                <nav className="text-sm text-muted-foreground min-w-0">
+                  <Link href="/" className="hover:text-foreground">FinmoConf - 台股法說會搜尋</Link>
+                  <span className="mx-2">→</span>
+                  <span className="text-foreground font-medium">
+                    {companyName}({companyCode}) 法說會簡報
+                  </span>
+                </nav>
+                <GooglePreferredSource lang="zh-TW" className="flex shrink-0" />
+              </div>
               
               {/* 公司資訊 */}
               <div className="space-y-2">

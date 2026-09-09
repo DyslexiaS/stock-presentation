@@ -1,6 +1,7 @@
 'use client'
 
 import { AdBanner } from '@/components/ads/ad-banner'
+import { GooglePreferredSource } from '@/components/google-preferred-source'
 import { SearchBar } from '@/components/search/search-bar'
 import { SearchResults } from '@/components/search/search-results'
 import { PromotionCards } from '@/components/ui/promotion-cards'
@@ -119,6 +120,9 @@ export default function HomePageClient({
       {/* ── Hero ── */}
       <section className="bg-white border-b border-slate-200">
         <div className="container mx-auto px-6">
+          <div className="flex justify-end pt-4">
+            <GooglePreferredSource lang="zh-TW" className="flex shrink-0" />
+          </div>
 
           {/* Service nav */}
           <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-6 max-w-3xl mx-auto" aria-label="服務選單">
