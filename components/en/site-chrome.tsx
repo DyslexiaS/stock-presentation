@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { GooglePreferredSource } from '@/components/google-preferred-source'
 
 export const EN_PAGE_WIDTH = 'mx-auto max-w-6xl px-6 md:px-10'
 
@@ -40,7 +39,6 @@ export function EnHeader() {
           <Link href="/" className="rounded border border-slate-600 px-2.5 py-1 text-xs uppercase tracking-wide text-slate-300 hover:border-slate-400 hover:text-white">
             中文原站
           </Link>
-          <GooglePreferredSource lang="en" className="flex shrink-0" />
         </nav>
       </div>
     </header>

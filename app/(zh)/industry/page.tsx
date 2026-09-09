@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { ALL_SUB_INDUSTRIES } from '@/lib/data/industry-map'
-import { GooglePreferredSource } from '@/components/google-preferred-source'
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://finmoconf.diveinvest.net'
 
@@ -83,24 +82,21 @@ export default function IndustryPage() {
               本週時程
             </Link>
 
-            <div className="ml-auto flex items-center gap-2">
-              <nav className="hidden md:flex items-center gap-1" aria-label="產業分類">
-                {Object.entries(grouped).map(([cat]) => {
-                  const cfg = SECTOR[cat] ?? DEFAULT_CFG
-                  return (
-                    <a
-                      key={cat}
-                      href={`#${cfg.index}`}
-                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-sm text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors"
-                    >
-                      <span className={`w-1.5 h-1.5 rounded-full ${cfg.dot} flex-shrink-0`} />
-                      {cat}
-                    </a>
-                  )
-                })}
-              </nav>
-              <GooglePreferredSource lang="zh-TW" className="flex shrink-0" />
-            </div>
+            <nav className="hidden md:flex items-center gap-1 ml-auto" aria-label="產業分類">
+              {Object.entries(grouped).map(([cat]) => {
+                const cfg = SECTOR[cat] ?? DEFAULT_CFG
+                return (
+                  <a
+                    key={cat}
+                    href={`#${cfg.index}`}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-sm text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors"
+                  >
+                    <span className={`w-1.5 h-1.5 rounded-full ${cfg.dot} flex-shrink-0`} />
+                    {cat}
+                  </a>
+                )
+              })}
+            </nav>
           </div>
         </div>
       </header>
