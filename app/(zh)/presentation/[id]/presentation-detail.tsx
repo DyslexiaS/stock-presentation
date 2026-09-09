@@ -15,7 +15,6 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Presentation } from '@/types'
 import { AdBanner } from '@/components/ads/ad-banner'
-import { GooglePreferredSource } from '@/components/google-preferred-source'
 
 interface Props {
   presentation: Presentation
@@ -55,7 +54,7 @@ export default function PresentationDetailPage({ presentation }: Props) {
               <div className="h-6 border-l border-muted" />
 
               {/* SEO-friendly breadcrumb navigation */}
-              <nav className="text-sm text-muted-foreground min-w-0" aria-label="麵包屑導航">
+              <nav className="text-sm text-muted-foreground" aria-label="麵包屑導航">
                 <ol className="flex items-center space-x-2">
                   <li>
                     <Link href="/" className="hover:text-foreground">FinmoConf 首頁</Link>
@@ -75,7 +74,6 @@ export default function PresentationDetailPage({ presentation }: Props) {
                   </li>
                 </ol>
               </nav>
-              <GooglePreferredSource lang="zh-TW" className="flex shrink-0 ml-auto" />
             </div>
           </div>
 

@@ -1,7 +1,6 @@
 'use client'
 
 import { AdBanner } from '@/components/ads/ad-banner'
-import { GooglePreferredSource } from '@/components/google-preferred-source'
 import { SearchBar } from '@/components/search/search-bar'
 import { SearchResults } from '@/components/search/search-results'
 import { PromotionCards } from '@/components/ui/promotion-cards'
@@ -9,6 +8,7 @@ import { Presentation } from '@/types'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { Menu, X } from 'lucide-react'
 
 const FEATURED_INDUSTRIES = [
   { label: 'IC 設計', slug: 'ic-design',               dot: 'bg-blue-400',   text: 'text-blue-700',   bg: 'bg-blue-50 border-blue-200 hover:bg-blue-100' },
@@ -52,9 +52,9 @@ export default function HomePageClient({
   const [searchParams, setSearchParams] = useState<{
     q?: string
     companyCode?: string
-    type?: 'sii' | 'otc' | 'rotc'
   }>(initialQ ? { q: initialQ } : {})
   const [hasSearched, setHasSearched] = useState(!!initialQ)
+  const [navOpen, setNavOpen] = useState(false)
 
   useEffect(() => {
     if (initialQ) {
@@ -66,13 +66,11 @@ export default function HomePageClient({
   const fetchPresentations = async (page: number = 1, params?: {
     q?: string
     companyCode?: string
-    type?: 'sii' | 'otc' | 'rotc'
   }) => {
     setIsLoading(true)
     try {
       const searchQuery = new URLSearchParams()
       if (params?.q) searchQuery.append('q', params.q)
-      if (params?.type) searchQuery.append('type', params.type)
       searchQuery.append('page', page.toString())
       searchQuery.append('limit', '20')
       const response = await fetch(`/api/presentations/search?${searchQuery}`)
@@ -92,11 +90,7 @@ export default function HomePageClient({
     }
   }
 
-  const handleSearch = async (params: {
-    q?: string
-    companyCode?: string
-    type?: 'sii' | 'otc' | 'rotc'
-  }) => {
+  const handleSearch = async (params: { q?: string; companyCode?: string }) => {
     setSearchParams(params)
     setHasSearched(true)
     await fetchPresentations(1, params)
@@ -120,12 +114,25 @@ export default function HomePageClient({
       {/* ── Hero ── */}
       <section className="bg-white border-b border-slate-200">
         <div className="container mx-auto px-6">
-          <div className="flex justify-end pt-4">
-            <GooglePreferredSource lang="zh-TW" className="flex shrink-0" />
+          <div className="flex md:hidden items-center justify-between py-3">
+            <span className="font-mono text-sm font-semibold text-slate-900">FinmoConf</span>
+            <button
+              type="button"
+              onClick={() => setNavOpen((open) => !open)}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 text-slate-700"
+              aria-expanded={navOpen}
+              aria-controls="home-service-nav"
+              aria-label={navOpen ? '關閉選單' : '開啟選單'}
+            >
+              {navOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
           </div>
 
-          {/* Service nav */}
-          <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-6 max-w-3xl mx-auto" aria-label="服務選單">
+          <nav
+            id="home-service-nav"
+            className={`${navOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row md:flex-wrap md:items-center gap-x-6 gap-y-3 pb-3 md:pt-6 md:pb-0 max-w-3xl md:mx-auto`}
+            aria-label="服務選單"
+          >
             <span className="inline-flex items-center gap-2.5" aria-current="page">
               <span className="text-[10px] font-mono font-medium text-slate-400 tabular-nums">01</span>
               <span className="text-sm font-semibold text-slate-900 border-b border-slate-900 pb-px leading-snug">
@@ -135,6 +142,7 @@ export default function HomePageClient({
             <Link
               href="/calendar"
               className="inline-flex items-center gap-2.5 group transition-opacity hover:opacity-70"
+              onClick={() => setNavOpen(false)}
             >
               <span className="text-[10px] font-mono font-medium text-slate-300 tabular-nums">02</span>
               <span className="text-sm text-slate-400 group-hover:text-slate-500 transition-colors leading-snug">
@@ -144,18 +152,17 @@ export default function HomePageClient({
             <Link
               href="/industry"
               className="inline-flex items-center gap-2.5 group transition-opacity hover:opacity-70"
+              onClick={() => setNavOpen(false)}
             >
               <span className="text-[10px] font-mono font-medium text-slate-300 tabular-nums">03</span>
               <span className="text-sm text-slate-400 group-hover:text-slate-500 transition-colors leading-snug">
                 產業地圖
               </span>
-              <span className="text-[9px] font-semibold tracking-widest px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-600 leading-none uppercase">
-                New
-              </span>
             </Link>
             <Link
               href="/en"
               className="inline-flex items-center gap-2.5 group transition-opacity hover:opacity-70"
+              onClick={() => setNavOpen(false)}
             >
               <span className="text-[10px] font-mono font-medium text-slate-300 tabular-nums">04</span>
               <span className="text-sm text-slate-400 group-hover:text-slate-500 transition-colors leading-snug">

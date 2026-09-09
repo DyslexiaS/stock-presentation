@@ -1,5 +1,4 @@
 import { AdBanner } from '@/components/ads/ad-banner'
-import { GooglePreferredSource } from '@/components/google-preferred-source'
 import { PromotionCards } from '@/components/ui/promotion-cards'
 import PresentationModel from '@/lib/models/Presentation'
 import dbConnect from '@/lib/mongodb'
@@ -168,16 +167,13 @@ export default async function CompanyPage({ params }: Props) {
         <header className="bg-card border-b border-gray-200 shadow-sm">
           <div className="container mx-auto px-4 py-6">
             <div className="space-y-4">
-              <div className="flex items-start justify-between gap-4">
-                <nav className="text-sm text-muted-foreground min-w-0">
-                  <Link href="/" className="hover:text-foreground">FinmoConf - 台股法說會搜尋</Link>
-                  <span className="mx-2">→</span>
-                  <span className="text-foreground font-medium">
-                    {companyName}({companyCode}) 法說會簡報
-                  </span>
-                </nav>
-                <GooglePreferredSource lang="zh-TW" className="flex shrink-0" />
-              </div>
+              <nav className="text-sm text-muted-foreground">
+                <Link href="/" className="hover:text-foreground">FinmoConf - 台股法說會搜尋</Link>
+                <span className="mx-2">→</span>
+                <span className="text-foreground font-medium">
+                  {companyName}({companyCode}) 法說會簡報
+                </span>
+              </nav>
               
               {/* 公司資訊 */}
               <div className="space-y-2">
@@ -308,7 +304,7 @@ export default async function CompanyPage({ params }: Props) {
         <a
           href="#top"
           aria-label="返回頂部"
-          className="fixed bottom-6 right-6 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg border border-gray-200 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="fixed bottom-24 right-4 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg border border-gray-200 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           <ArrowUp className="h-5 w-5" />
           <span className="sr-only">返回頂部</span>

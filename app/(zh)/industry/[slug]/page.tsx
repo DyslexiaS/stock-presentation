@@ -6,7 +6,6 @@ import { getCompanyCode } from '@/lib/data/tw-company-codes'
 import { INDUSTRY_FAQS } from '@/lib/data/industry-faqs'
 import PresentationModel from '@/lib/models/Presentation'
 import dbConnect from '@/lib/mongodb'
-import { GooglePreferredSource } from '@/components/google-preferred-source'
 
 export const revalidate = 86400
 
@@ -164,8 +163,8 @@ export default async function IndustrySlugPage({
 
       {/* Header */}
       <header className="bg-white border-b border-slate-200">
-        <div className="container mx-auto px-6 py-4 flex items-center gap-3">
-          <nav aria-label="breadcrumb" className="flex flex-wrap items-center gap-1.5 text-sm min-w-0">
+        <div className="container mx-auto px-6 py-4">
+          <nav aria-label="breadcrumb" className="flex flex-wrap items-center gap-1.5 text-sm">
             <Link href="/" className="text-slate-400 hover:text-slate-700 transition-colors font-medium">
               FinmoConf
             </Link>
@@ -188,7 +187,6 @@ export default async function IndustrySlugPage({
               {industry.name}
             </span>
           </nav>
-          <GooglePreferredSource lang="zh-TW" className="flex shrink-0 ml-auto" />
         </div>
       </header>
 

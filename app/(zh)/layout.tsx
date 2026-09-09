@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { AdSenseScript } from '@/components/ads/adsense-script'
+import { GooglePreferredSource } from '@/components/google-preferred-source'
 import '../globals.css'
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://finmoconf.diveinvest.net'
@@ -140,6 +141,7 @@ export default function RootLayout({
           />
         </noscript>
         {children}
+        <GooglePreferredSource lang="zh-TW" floating />
         <AdSenseScript />
       </body>
     </html>
