@@ -117,7 +117,7 @@ export async function GET() {
     '- Individual presentations: Detailed presentation information',
     '- Company-specific data: All presentations by company',
     '- Recent updates: Latest earnings conferences',
-    `- Weekly calendar page: ${EN_BASE_URL}/calendar — this week's 法說會時程 / 法說會行事曆`,
+    `- Weekly calendar page: ${EN_BASE_URL}/calendar — 法說會行事曆 / 法說會時間表 / 近期法說會一覽表 / 台股行事曆`,
     `- Pages sitemap: ${EN_BASE_URL}/pages-sitemap.xml`,
     '',
     '## Content Updates',

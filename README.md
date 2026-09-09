@@ -92,7 +92,7 @@ interface Presentation {
 | 頁面 | 目標關鍵字範例 | 數量 |
 |---|---|---|
 | `/` | 台股法說會、法說會查詢 | 1 |
-| `/calendar` | 台股行事曆法說會、國內法說會時間表、股市行事曆、法人說明會一覽表 | 1 |
+| `/calendar` | 法說會行事曆、法說會時間表、近期法說會一覽表、台股行事曆 2026、公開資訊觀測站法說會一覽表 | 1 |
 | `/en` | Taiwan semiconductor earnings call | 1 |
 | `/en/companies` | Taiwan earnings call companies | 1 |
 | `/en/calls` | Taiwan semiconductor earnings calls English | 1 |
@@ -139,7 +139,7 @@ interface Presentation {
 - [x] **英文 memo 專區 `/en`** — Markdown SSG，NVIDIA 800V、液冷、SiC/GaN、rack ODM 與 CoWoS 為前五個主題
 - [ ] **AI 批次生成 `presentationContent`** — 將 10,000+ 薄頁面轉為有內容的頁面，最高優先
 - [x] **產業分類頁** `/industry/[sector]` — 承接「半導體業法說會」等高搜尋量關鍵字
-- [x] **本週時程頁** `/calendar` — 依 `eventDate` 查當週場次，承接「本週法說會、法說會時程、法說會行事曆」
+- [x] **本週時程頁** `/calendar` — 依 `eventDate` 查當週場次，承接「法說會行事曆、法說會時間表、近期法說會一覽表、台股行事曆、公開資訊觀測站法說會一覽表」
 - [ ] **季度彙整頁** `/quarter/[year-q]` — 承接「2024 Q3 法說會」類查詢
 - [ ] **公司頁加 AI 簡介段落** — 增加文字密度，強化公司頁排名
 - [ ] **詳情頁同公司相關列表** — 強化內部連結，降低跳出率

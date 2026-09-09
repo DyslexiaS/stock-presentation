@@ -194,7 +194,7 @@ export default async function HomePage() {
                 "name": "哪裡可以看法說會行事曆？",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "本週法說會時程請見 FinmoConf 法說會行事曆 https://finmoconf.diveinvest.net/calendar，依週一至週日列出已收錄的上市櫃場次與簡報。"
+                  "text": "法說會行事曆、法說會時間表與近期法說會一覽表請見 https://finmoconf.diveinvest.net/calendar。台股行事曆依週一至週日列出已收錄場次與簡報。"
                 }
               },
               {
@@ -202,7 +202,7 @@ export default async function HomePage() {
                 "name": "公開資訊觀測站法說會一覽表與 FinmoConf 有何不同？",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "公開資訊觀測站提供官方公告，FinmoConf 在此基礎上進一步整合 PDF 下載、雙語檔案、音訊連結與快搜功能，以更友善的方式協助投資研究。"
+                  "text": "公開資訊觀測站法說會一覽表是官方公告。FinmoConf 的行事曆只列已有簡報的場次，同一頁可下載中英文 PDF、看影片或錄音，並用代碼快搜。"
                 }
               },
               {
