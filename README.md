@@ -92,7 +92,7 @@ interface Presentation {
 | 頁面 | 目標關鍵字範例 | 數量 |
 |---|---|---|
 | `/` | 台股法說會、法說會查詢 | 1 |
-| `/calendar` | 本週法說會、法說會時程、法說會行事曆 | 1 |
+| `/calendar` | 台股行事曆法說會、國內法說會時間表、股市行事曆、法人說明會一覽表 | 1 |
 | `/en` | Taiwan semiconductor earnings call | 1 |
 | `/en/companies` | Taiwan earnings call companies | 1 |
 | `/en/calls` | Taiwan semiconductor earnings calls English | 1 |
