@@ -7,8 +7,6 @@ import { INDUSTRY_FAQS } from '@/lib/data/industry-faqs'
 import PresentationModel from '@/lib/models/Presentation'
 import dbConnect from '@/lib/mongodb'
 import { GooglePreferredSource } from '@/components/google-preferred-source'
-import { ZhFooter } from '@/components/zh/site-chrome'
-import { chinesePageAlternates } from '@/lib/seo'
 
 export const revalidate = 86400
 
@@ -34,7 +32,9 @@ export async function generateMetadata({
     title: `${industry.name} | 台灣產業鏈供應鏈 - FinmoConf`,
     description: `${industry.name}供應鏈結構、代表廠商與下游應用。${industry.representativeCompanies.slice(0, 5).join('、')}等${companyCount}家台灣上市公司法說會資料。`,
     robots: { index: true, follow: true },
-    alternates: chinesePageAlternates(canonicalUrl),
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: `${industry.name} | 台灣產業鏈供應鏈 - FinmoConf`,
       description: `${industry.name}供應鏈結構與代表廠商，包含 ${industry.representativeCompanies.slice(0, 5).join('、')} 等台灣上市公司。`,
@@ -348,7 +348,14 @@ export default async function IndustrySlugPage({
         </section>
       </div>
 
-      <ZhFooter />
+      {/* Footer */}
+      <footer className="bg-white border-t border-slate-200">
+        <div className="container mx-auto px-6 py-6 text-center">
+          <p className="text-sm text-slate-400">
+            © {new Date().getFullYear()} FinmoConf · 台股法說會搜尋平台
+          </p>
+        </div>
+      </footer>
     </div>
   )
 }

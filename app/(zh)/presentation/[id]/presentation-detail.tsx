@@ -16,8 +16,6 @@ import remarkGfm from 'remark-gfm'
 import { Presentation } from '@/types'
 import { AdBanner } from '@/components/ads/ad-banner'
 import { GooglePreferredSource } from '@/components/google-preferred-source'
-import { ZhFooter } from '@/components/zh/site-chrome'
-import { getEnglishCompanyByTicker } from '@/lib/content/en-memos'
 
 interface Props {
   presentation: Presentation
@@ -40,7 +38,6 @@ export default function PresentationDetailPage({ presentation }: Props) {
     month: 'long',
     day: 'numeric'
   })
-  const englishCompany = getEnglishCompanyByTicker(presentation.companyCode)
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -235,18 +232,6 @@ export default function PresentationDetailPage({ presentation }: Props) {
                           查看 {presentation.companyName} 歷年法說會
                         </Link>
                       </Button>
-                      <Button variant="outline" size="sm" asChild>
-                        <Link href="/calendar" className="flex items-center gap-2">
-                          法說會行事曆
-                        </Link>
-                      </Button>
-                      {englishCompany ? (
-                        <Button variant="outline" size="sm" asChild>
-                          <Link href={`/en/${englishCompany.slug}`} className="flex items-center gap-2">
-                            English notes
-                          </Link>
-                        </Button>
-                      ) : null}
                     </div>
                   </div>
                 </CardContent>
@@ -310,7 +295,6 @@ export default function PresentationDetailPage({ presentation }: Props) {
           </div>
         </main>
       </div >
-      <ZhFooter />
     </div >
   )
 }

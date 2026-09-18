@@ -6,7 +6,6 @@ import { generateHomeMetadata } from '@/lib/seo'
 import { Presentation as PresentationType } from '@/types'
 import { Suspense } from 'react'
 import HomePageClient from './homepage-client'
-import { ZhFooter } from '@/components/zh/site-chrome'
 
 // Generate metadata for homepage
 export const metadata = generateHomeMetadata()
@@ -197,6 +196,22 @@ export default async function HomePage({ searchParams }: PageProps) {
               },
               {
                 "@type": "Question",
+                "name": "哪裡可以看法說會行事曆？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "法說會行事曆、法說會時間表與近期法說會一覽表請見 https://finmoconf.diveinvest.net/calendar。台股行事曆依週一至週日列出已收錄場次與簡報。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "公開資訊觀測站法說會一覽表與 FinmoConf 有何不同？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "公開資訊觀測站法說會一覽表是官方公告。FinmoConf 的行事曆只列已有簡報的場次，同一頁可下載中英文 PDF、看影片或錄音，並用代碼快搜。"
+                }
+              },
+              {
+                "@type": "Question",
                 "name": "線上法說會哪裡看？",
                 "acceptedAnswer": {
                   "@type": "Answer",
@@ -208,7 +223,17 @@ export default async function HomePage({ searchParams }: PageProps) {
         }}
       />
 
-      <ZhFooter />
+      {/* Footer - Server-side rendered */}
+      <footer className="bg-white border-t border-slate-200 mt-12">
+        <div className="container mx-auto px-6 py-8 text-center">
+          <p className="text-sm text-slate-400">
+            © {new Date().getFullYear()} FinmoConf · 台股法說會搜尋平台 · 提供最完整的法人說明會資料
+          </p>
+          <p className="text-xs text-slate-300 mt-1">
+            資料來源：公開資訊觀測站 · FinmoAI 系列產品
+          </p>
+        </div>
+      </footer>
     </div>
   )
 }

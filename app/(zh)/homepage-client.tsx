@@ -177,15 +177,7 @@ export default function HomePageClient({
             <p className="text-slate-500 text-base md:text-lg leading-relaxed">
               收錄{' '}
               <span className="text-slate-700 font-semibold">2,000+</span>{' '}
-              家上市櫃公司法人說明會簡報，快速查詢與 PDF 下載一站搞定。本週場次請見{' '}
-              <Link href="/calendar" className="text-slate-700 font-semibold underline underline-offset-2 hover:text-slate-900">
-                法說會行事曆
-              </Link>
-              ；海外投資人可讀{' '}
-              <Link href="/en" className="text-slate-700 font-semibold underline underline-offset-2 hover:text-slate-900">
-                English earnings call notes
-              </Link>
-              。
+              家上市櫃公司法人說明會簡報，快速查詢與 PDF 下載一站搞定
             </p>
 
             {/* Stat pills */}

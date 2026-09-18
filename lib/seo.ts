@@ -41,46 +41,6 @@ const seoConfig: SEOConfig = {
   defaultDescription: '提供台股上市櫃公司最新法說會簡報PDF下載，包含財報分析、投資亮點、未來展望等完整法人說明會資料。'
 }
 
-type PageAlternates = {
-  canonical: string
-  languages: Record<string, string>
-}
-
-/** Chinese-only URL: do not mark every page as x-default (that fights /en). */
-export function chinesePageAlternates(url: string): PageAlternates {
-  return {
-    canonical: url,
-    languages: {
-      'zh-TW': url,
-    },
-  }
-}
-
-/** Site homepages are the only zh↔en pair plus the site-wide x-default. */
-export function homeAlternates(): PageAlternates {
-  return {
-    canonical: seoConfig.baseUrl,
-    languages: {
-      'zh-TW': seoConfig.baseUrl,
-      en: `${seoConfig.baseUrl}/en`,
-      'x-default': seoConfig.baseUrl,
-    },
-  }
-}
-
-export function companyPageAlternates(companyCode: string, enSlug?: string): PageAlternates {
-  const url = `${seoConfig.baseUrl}/company/${companyCode}`
-  if (!enSlug) return chinesePageAlternates(url)
-  return {
-    canonical: url,
-    languages: {
-      'zh-TW': url,
-      en: `${seoConfig.baseUrl}/en/${enSlug}`,
-      'x-default': seoConfig.baseUrl,
-    },
-  }
-}
-
 // 增強版SEO標題生成 - 更符合搜尋習慣
 export function generateSEOTitle(presentation: Presentation): string {
   const date = new Date(presentation.eventDate)
@@ -219,7 +179,13 @@ export function generatePresentationMetadata(presentation: Presentation): Metada
     keywords: keywordString,
     authors: [{ name: presentation.companyName }],
     publisher: seoConfig.siteName,
-    alternates: chinesePageAlternates(url),
+    alternates: {
+      canonical: url,
+      languages: {
+        'zh-TW': url,
+        'x-default': url,
+      },
+    },
     robots: {
       index: true,
       follow: true,
@@ -256,8 +222,7 @@ export function generateCompanyMetadata(
   companyName: string,
   totalPresentations: number,
   typek: string,
-  latestYear?: number,
-  enSlug?: string
+  latestYear?: number
 ): Metadata {
   const year = latestYear ?? new Date().getFullYear()
 
@@ -292,7 +257,13 @@ export function generateCompanyMetadata(
     title,
     description,
     keywords,
-    alternates: companyPageAlternates(companyCode, enSlug),
+    alternates: {
+      canonical: url,
+      languages: {
+        'zh-TW': url,
+        'x-default': url,
+      },
+    },
     robots: {
       index: true,
       follow: true,
@@ -342,7 +313,14 @@ export function generateHomeMetadata(): Metadata {
     title,
     description,
     keywords: trendingKeywords,
-    alternates: homeAlternates(),
+    alternates: {
+      canonical: url,
+      languages: {
+        'zh-TW': url,
+        en: `${url}/en`,
+        'x-default': url,
+      },
+    },
     robots: {
       index: true,
       follow: true,
@@ -384,11 +362,11 @@ export function generateCalendarMetadata(opts: {
   const names = companyPreview.slice(0, 8).join('、')
   const namesClause = names ? `本週場次含${names}。` : ''
   const title = isCurrentWeek
-    ? `法說會行事曆（${rangeLabel}）| ${seoConfig.siteName}`
+    ? `法說會行事曆（${rangeLabel}）｜法說會時間表、近期法說會一覽表 | ${seoConfig.siteName}`
     : `${year} 年${rangeLabel} 法說會行事曆 | ${seoConfig.siteName}`
   const description = isCurrentWeek
-    ? `${year} 年本週（${rangeLabel}）法說會行事曆，共 ${count} 場已收錄簡報。依日期看法說會時間表與近期法說會一覽表，並直接開啟中英文 PDF。${namesClause}`
-    : `${year} 年${rangeLabel} 法說會行事曆，共 ${count} 場已收錄簡報。可依日期看法說會時間表。${namesClause}`
+    ? `台股行事曆 ${year} 近期法說會一覽表（${rangeLabel}）共 ${count} 場。法說會行事曆與法說會時間表，可對照公開資訊觀測站法說會一覽表，並直接開啟中英文簡報。${namesClause}`
+    : `${year} 年${rangeLabel} 法說會行事曆，共 ${count} 場已收錄簡報。法說會時間表與近期法說會一覽表。${namesClause}`
   const url = `${seoConfig.baseUrl}/calendar`
 
   return {
@@ -409,7 +387,13 @@ export function generateCalendarMetadata(opts: {
       '法說會時程',
       '今日法說會',
     ].join(', '),
-    alternates: chinesePageAlternates(url),
+    alternates: {
+      canonical: url,
+      languages: {
+        'zh-TW': url,
+        'x-default': url,
+      },
+    },
     robots: isCurrentWeek
       ? {
           index: true,
@@ -457,7 +441,7 @@ export function generateCalendarJsonLd(opts: {
         '@id': `${pageUrl}#page`,
         url: pageUrl,
         name: `法說會行事曆（${rangeLabel}）`,
-        description: `${year} 年本週（${rangeLabel}）法說會行事曆，共 ${count} 場已收錄簡報。依日期看法說會時間表，含中英文簡報。`,
+        description: `台股行事曆 ${year} 近期法說會一覽表（${rangeLabel}）共 ${count} 場。法說會時間表，可對照公開資訊觀測站法說會一覽表，含中英文簡報。`,
         inLanguage: 'zh-TW',
         isPartOf: { '@id': `${seoConfig.baseUrl}/#website` },
       },
@@ -466,7 +450,7 @@ export function generateCalendarJsonLd(opts: {
         '@id': `${pageUrl}#events`,
         name: `法說會時間表（${rangeLabel}）`,
         numberOfItems: presentations.length,
-        itemListElement: presentations.map((presentation, index) => ({
+        itemListElement: presentations.slice(0, 50).map((presentation, index) => ({
           '@type': 'ListItem',
           position: index + 1,
           url: `${seoConfig.baseUrl}/presentation/${presentation._id}`,

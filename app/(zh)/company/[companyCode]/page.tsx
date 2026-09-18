@@ -5,8 +5,6 @@ import PresentationModel from '@/lib/models/Presentation'
 import dbConnect from '@/lib/mongodb'
 import { ALL_SUB_INDUSTRIES } from '@/lib/data/industry-map'
 import { getCompanyCode } from '@/lib/data/tw-company-codes'
-import { getEnglishCompanyByTicker } from '@/lib/content/en-memos'
-import { ZhFooter } from '@/components/zh/site-chrome'
 import {
   generateCompanyBreadcrumbData,
   generateCompanyStructuredData,
@@ -102,15 +100,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const { companyName, typek, totalPresentations, latestPresentationDate } = companyData
   const latestYear = new Date(latestPresentationDate).getFullYear()
-  const englishCompany = getEnglishCompanyByTicker(companyCode)
-  return generateCompanyMetadata(
-    companyCode,
-    companyName,
-    totalPresentations,
-    typek,
-    latestYear,
-    englishCompany?.slug
-  )
+  return generateCompanyMetadata(companyCode, companyName, totalPresentations, typek, latestYear)
 }
 
 export default async function CompanyPage({ params }: Props) {
@@ -161,7 +151,6 @@ export default async function CompanyPage({ params }: Props) {
         .filter(({ code }) => !!code)
         .slice(0, 5)
     : []
-  const englishCompany = getEnglishCompanyByTicker(companyCode)
 
   return (
     <>
@@ -197,22 +186,6 @@ export default async function CompanyPage({ params }: Props) {
                 </h1>
                 <p className="text-lg text-muted-foreground">
                   {typeLabel}公司法人說明會資料庫 • 收錄從 {new Date(earliestPresentationDate).getFullYear()} 年至 {new Date(latestPresentationDate).getFullYear()} 年，共計 {totalPresentations} 場法說會簡報，包含中英文版本及會議錄音檔案，提供完整的投資研究資訊
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  <Link href="/calendar" className="hover:text-foreground underline underline-offset-2">
-                    法說會行事曆
-                  </Link>
-                  {englishCompany ? (
-                    <>
-                      {' · '}
-                      <Link
-                        href={`/en/${englishCompany.slug}`}
-                        className="hover:text-foreground underline underline-offset-2"
-                      >
-                        English earnings-call notes
-                      </Link>
-                    </>
-                  ) : null}
                 </p>
               </div>
             </div>
@@ -341,7 +314,17 @@ export default async function CompanyPage({ params }: Props) {
           <span className="sr-only">返回頂部</span>
         </a>
 
-        <ZhFooter note={`${companyName}(${companyCode})完整法說會簡報資料`} />
+        {/* Footer */}
+        <footer className="bg-card border-t border-gray-200 mt-16">
+          <div className="container mx-auto px-4 py-8">
+            <div className="text-center text-muted-foreground space-y-2">
+              <p>© 2025 FinmoConf - 台股法說會搜尋平台 - 提供{companyName}({companyCode})完整法說會簡報資料</p>
+              <p className="text-sm">
+                {companyName}法說會、{companyCode}法說會簡報、{companyName}法人說明會PDF下載
+              </p>
+            </div>
+          </div>
+        </footer>
       </div>
     </>
   )
