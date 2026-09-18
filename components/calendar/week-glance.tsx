@@ -1,9 +1,6 @@
-'use client'
-
 import type { CalendarDay } from '@/lib/calendar'
 import type { Presentation } from '@/types'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
 
 const TYPE_LABEL: Record<Presentation['typek'], string> = {
   sii: '上市',
@@ -18,93 +15,59 @@ export type WeekGlanceDay = CalendarDay & {
   events: Presentation[]
 }
 
+function dayAnchor(day: WeekGlanceDay): string {
+  return day.isToday ? '#today' : `#day-${day.ymd}`
+}
+
+function dayDomId(day: WeekGlanceDay): string {
+  return day.isToday ? 'today' : `day-${day.ymd}`
+}
+
 export function WeekGlance({ days }: { days: WeekGlanceDay[] }) {
   const weekdays = days.filter((day) => !day.isWeekend)
   const weekend = days.filter((day) => day.isWeekend && (day.isToday || day.events.length > 0))
-  const mobileDays = [...weekdays, ...weekend]
-  const defaultYmd = days.find((day) => day.isToday)?.ymd ?? weekdays[0]?.ymd ?? ''
-  const [selected, setSelected] = useState(defaultYmd)
-
-  useEffect(() => {
-    const selectToday = () => {
-      const today = days.find((day) => day.isToday)
-      if (today) setSelected(today.ymd)
-    }
-    const onHash = () => {
-      if (window.location.hash === '#today') selectToday()
-    }
-    const onClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement | null
-      if (target?.closest('a[href="#today"]')) selectToday()
-    }
-    window.addEventListener('hashchange', onHash)
-    document.addEventListener('click', onClick)
-    onHash()
-    return () => {
-      window.removeEventListener('hashchange', onHash)
-      document.removeEventListener('click', onClick)
-    }
-  }, [days])
+  const jumpDays = [...weekdays, ...weekend]
 
   return (
-    <div id="today" className="scroll-mt-28 md:scroll-mt-20">
-      <div className="md:hidden">
-        <nav
-          aria-label="本週日期"
-          className="sticky top-[57px] z-10 -mx-6 px-4 py-2 bg-slate-50/95 backdrop-blur-sm border-b border-slate-200"
-        >
-          <div
-            role="tablist"
-            className={`grid gap-1 ${weekend.length > 0 ? 'grid-cols-7' : 'grid-cols-5'}`}
-          >
-            {mobileDays.map((day) => {
-              const isActive = day.ymd === selected
-              return (
-                <button
-                  key={day.ymd}
-                  type="button"
-                  role="tab"
-                  aria-selected={isActive}
-                  aria-current={day.isToday ? 'date' : undefined}
-                  onClick={() => setSelected(day.ymd)}
-                  className={`flex flex-col items-center rounded-md py-1.5 px-0.5 text-center leading-tight ${
-                    isActive
-                      ? 'bg-slate-900 text-white'
-                      : day.isToday
-                        ? 'bg-white border border-slate-900 text-slate-800'
-                        : 'bg-white border border-slate-200 text-slate-700'
-                  }`}
-                >
-                  <span className="text-[11px]">{day.weekdayZh.replace('週', '')}</span>
-                  <span className="font-mono text-xs tabular-nums">{day.monthDay.split('/')[1]}</span>
-                  <span
-                    className={`font-mono text-[10px] tabular-nums ${
-                      isActive ? 'text-slate-300' : 'text-slate-500'
-                    }`}
-                  >
-                    {day.events.length}
-                  </span>
-                </button>
-              )
-            })}
-          </div>
-        </nav>
+    <div>
+      <nav
+        aria-label="本週日期"
+        className="md:hidden sticky top-[57px] z-10 -mx-6 px-4 py-2 bg-slate-50/95 backdrop-blur-sm border-b border-slate-200"
+      >
+        <div className={`grid gap-1 ${weekend.length > 0 ? 'grid-cols-7' : 'grid-cols-5'}`}>
+          {jumpDays.map((day) => (
+            <a
+              key={day.ymd}
+              href={dayAnchor(day)}
+              aria-current={day.isToday ? 'date' : undefined}
+              className={`flex flex-col items-center rounded-md py-1.5 px-0.5 text-center leading-tight ${
+                day.isToday
+                  ? 'bg-slate-900 text-white'
+                  : 'bg-white border border-slate-200 text-slate-700'
+              }`}
+            >
+              <span className="text-[11px]">{day.weekdayZh.replace('週', '')}</span>
+              <span className="font-mono text-xs tabular-nums">{day.monthDay.split('/')[1]}</span>
+              <span
+                className={`font-mono text-[10px] tabular-nums ${
+                  day.isToday ? 'text-slate-300' : 'text-slate-500'
+                }`}
+              >
+                {day.events.length}
+              </span>
+            </a>
+          ))}
+        </div>
+      </nav>
 
-        {mobileDays.map((day) => (
-          <div key={day.ymd} role="tabpanel" hidden={day.ymd !== selected} className="mt-3">
-            <DayColumn day={day} />
-          </div>
-        ))}
-      </div>
-
-      <div className="hidden md:grid md:grid-cols-5 md:items-start gap-2">
+      <div className="mt-3 flex flex-col gap-2 md:mt-0 md:grid md:grid-cols-5 md:items-start">
         {weekdays.map((day) => (
           <DayColumn key={day.ymd} day={day} />
         ))}
       </div>
 
       {weekend.length > 0 && (
-        <div className="hidden md:block mt-2 space-y-2">
+        <div className="mt-2 space-y-2">
           {weekend.map((day) => (
             <DayColumn key={day.ymd} day={day} />
           ))}
@@ -117,7 +80,8 @@ export function WeekGlance({ days }: { days: WeekGlanceDay[] }) {
 function DayColumn({ day }: { day: WeekGlanceDay }) {
   return (
     <section
-      className={`rounded-lg border overflow-hidden ${
+      id={dayDomId(day)}
+      className={`scroll-mt-28 md:scroll-mt-20 rounded-lg border overflow-hidden ${
         day.isToday ? 'border-slate-900 bg-slate-50' : 'border-slate-200 bg-white'
       }`}
     >

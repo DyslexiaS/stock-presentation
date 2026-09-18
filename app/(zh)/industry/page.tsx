@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { ALL_SUB_INDUSTRIES } from '@/lib/data/industry-map'
 import { GooglePreferredSource } from '@/components/google-preferred-source'
+import { ZhFooter } from '@/components/zh/site-chrome'
+import { chinesePageAlternates } from '@/lib/seo'
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://finmoconf.diveinvest.net'
 
@@ -9,9 +11,7 @@ export const metadata: Metadata = {
   title: '台股產業地圖 | FinmoConf - 依產業瀏覽法說會',
   description: '依產業分類瀏覽台灣上市櫃公司法說會簡報。半導體、金融、電子等各產業法人說明會資料一覽，快速掌握產業動態。',
   robots: { index: true, follow: true },
-  alternates: {
-    canonical: `${BASE_URL}/industry`,
-  },
+  alternates: chinesePageAlternates(`${BASE_URL}/industry`),
   openGraph: {
     title: '台股產業地圖 | FinmoConf',
     description: '依產業分類瀏覽台灣上市櫃公司法說會簡報。半導體、金融、電子等各產業法人說明會資料一覽。',
@@ -80,7 +80,7 @@ export default function IndustryPage() {
               href="/calendar"
               className="text-sm text-slate-400 hover:text-slate-600 transition-colors shrink-0"
             >
-              本週時程
+              法說會行事曆
             </Link>
 
             <div className="ml-auto flex items-center gap-2">
@@ -196,14 +196,7 @@ export default function IndustryPage() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-slate-200 mt-8">
-        <div className="container mx-auto px-6 py-6 text-center">
-          <p className="text-xs text-slate-400 font-mono">
-            © {new Date().getFullYear()} FinmoConf · 台股法說會搜尋平台
-          </p>
-        </div>
-      </footer>
+      <ZhFooter />
     </div>
   )
 }
