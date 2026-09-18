@@ -8,6 +8,7 @@ import { PromotionCards } from '@/components/ui/promotion-cards'
 import { Presentation } from '@/types'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 const FEATURED_INDUSTRIES = [
   { label: 'IC 設計', slug: 'ic-design',               dot: 'bg-blue-400',   text: 'text-blue-700',   bg: 'bg-blue-50 border-blue-200 hover:bg-blue-100' },
@@ -33,7 +34,6 @@ interface HomePageClientProps {
   weekCount: number
   monthCount: number
   calendarWeekCount: number
-  initialQuery?: string
 }
 
 export default function HomePageClient({
@@ -42,8 +42,10 @@ export default function HomePageClient({
   weekCount,
   monthCount,
   calendarWeekCount,
-  initialQuery = '',
 }: HomePageClientProps) {
+  const urlSearchParams = useSearchParams()
+  const initialQ = urlSearchParams.get('q') ?? ''
+
   const [presentations, setPresentations] = useState<Presentation[]>(initialPresentations)
   const [isLoading, setIsLoading] = useState(false)
   const [pagination, setPagination] = useState<PaginationData>(initialPagination)
@@ -51,12 +53,12 @@ export default function HomePageClient({
     q?: string
     companyCode?: string
     type?: 'sii' | 'otc' | 'rotc'
-  }>(initialQuery ? { q: initialQuery } : {})
-  const [hasSearched, setHasSearched] = useState(!!initialQuery)
+  }>(initialQ ? { q: initialQ } : {})
+  const [hasSearched, setHasSearched] = useState(!!initialQ)
 
   useEffect(() => {
-    if (initialQuery) {
-      fetchPresentations(1, { q: initialQuery })
+    if (initialQ) {
+      fetchPresentations(1, { q: initialQ })
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -136,7 +138,7 @@ export default function HomePageClient({
             >
               <span className="text-[10px] font-mono font-medium text-slate-300 tabular-nums">02</span>
               <span className="text-sm text-slate-400 group-hover:text-slate-500 transition-colors leading-snug">
-                法說會行事曆
+                本週時程
               </span>
             </Link>
             <Link
@@ -177,15 +179,7 @@ export default function HomePageClient({
             <p className="text-slate-500 text-base md:text-lg leading-relaxed">
               收錄{' '}
               <span className="text-slate-700 font-semibold">2,000+</span>{' '}
-              家上市櫃公司法人說明會簡報，快速查詢與 PDF 下載一站搞定。本週場次請見{' '}
-              <Link href="/calendar" className="text-slate-700 font-semibold underline underline-offset-2 hover:text-slate-900">
-                法說會行事曆
-              </Link>
-              ；海外投資人可讀{' '}
-              <Link href="/en" className="text-slate-700 font-semibold underline underline-offset-2 hover:text-slate-900">
-                English earnings call notes
-              </Link>
-              。
+              家上市櫃公司法人說明會簡報，快速查詢與 PDF 下載一站搞定
             </p>
 
             {/* Stat pills */}
@@ -208,7 +202,7 @@ export default function HomePageClient({
 
           {/* Search Bar */}
           <div className="max-w-3xl mx-auto pt-2">
-            <SearchBar onSearch={handleSearch} isLoading={isLoading} initialQuery={initialQuery} />
+            <SearchBar onSearch={handleSearch} isLoading={isLoading} initialQuery={initialQ} />
           </div>
 
           {/* Featured industry chips */}

@@ -197,17 +197,6 @@ export function getCompanySummaries(): EnCompanySummary[] {
   return summaries
 }
 
-function normalizeTicker(ticker: string): string {
-  return ticker.trim().toUpperCase().replace(/\.(TW|TWO)$/i, '')
-}
-
-/** Match a Chinese company page ticker (2330) to an English /en/[slug] hub. */
-export function getEnglishCompanyByTicker(companyCode: string): EnCompanySummary | null {
-  const code = normalizeTicker(companyCode)
-  if (!code) return null
-  return getCompanySummaries().find((company) => normalizeTicker(company.ticker) === code) ?? null
-}
-
 export function getAllTags(): string[] {
   return Array.from(new Set(loadMemos().flatMap((m) => m.tags))).sort()
 }
