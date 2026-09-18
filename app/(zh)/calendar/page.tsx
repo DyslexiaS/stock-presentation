@@ -1,5 +1,6 @@
 import { WeekGlance } from '@/components/calendar/week-glance'
 import { GooglePreferredSource } from '@/components/google-preferred-source'
+import { ZhFooter } from '@/components/zh/site-chrome'
 import { addCalendarDays, formatWeekRangeZh, groupByTaipeiDay } from '@/lib/calendar'
 import { loadCalendarWeek } from '@/lib/data/calendar-week'
 import { generateCalendarJsonLd, generateCalendarMetadata } from '@/lib/seo'
@@ -101,6 +102,9 @@ export default async function CalendarPage({ searchParams }: PageProps) {
               <Link href="/industry" className="hidden sm:inline text-slate-500 hover:text-slate-800 transition-colors">
                 產業地圖
               </Link>
+              <Link href="/en" className="hidden sm:inline text-slate-500 hover:text-slate-800 transition-colors">
+                English earnings calls
+              </Link>
               <GooglePreferredSource lang="zh-TW" className="flex shrink-0" />
             </div>
           </nav>
@@ -119,7 +123,7 @@ export default async function CalendarPage({ searchParams }: PageProps) {
                 {week.isCurrentWeek ? '法說會行事曆' : `${year} 年法說會行事曆`}
               </h1>
               <p className="text-slate-600 text-sm mt-2 leading-relaxed max-w-2xl">
-                法說會時間表 · 近期法說會一覽表。台灣時間 {weekRangeZh}。公開資訊觀測站法說會一覽表是官方公告；這裡列出已有簡報的場次，可直接開啟。
+                法說會時間表 · 近期法說會一覽表。台灣時間 {weekRangeZh}。這裡列出已有簡報的場次，可直接開啟中英文 PDF。
               </p>
             </div>
 
@@ -187,13 +191,7 @@ export default async function CalendarPage({ searchParams }: PageProps) {
         </section>
       </main>
 
-      <footer className="bg-white border-t border-slate-200 mt-8">
-        <div className="container mx-auto px-6 py-6 text-center">
-          <p className="text-xs text-slate-500 font-mono">
-            © {new Date().getFullYear()} FinmoConf · 台股法說會搜尋平台
-          </p>
-        </div>
-      </footer>
+      <ZhFooter />
     </div>
   )
 }

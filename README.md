@@ -59,7 +59,6 @@ lib/
 ├── seo.ts                            # 中文頁 metadata
 ├── calendar.ts                       # 台灣時間週次（/calendar 用）
 ├── seo-en.ts                         # 英文 memo metadata
-├── seo-en.ts                         # 英文 memo metadata
 ├── content/en-memos.ts               # Markdown loader
 ├── models/Presentation.ts            # Mongoose schema
 └── mongodb.ts                        # DB 連線
@@ -117,14 +116,26 @@ interface Presentation {
 ```
 
 ### 結構化資料（JSON-LD）
-- 首頁：`WebSite` + `Organization` + `Dataset` + `FAQPage`
-- `/calendar`：`CollectionPage` + `ItemList` + `BreadcrumbList` + `FAQPage`
+- 全站 layout：`WebSite` + `Organization`（同一組 `@id`，不再把 Dataset 灌進每個中文頁）
+- 首頁：另加 `Dataset` + `FAQPage`（法說會是什麼 / 查詢 / 簡報下載；**行事曆 FAQ 只放 `/calendar`**，避免關鍵字互相搶頁）
+- `/calendar`：`CollectionPage` + `ItemList`（當週全部場次）+ `BreadcrumbList` + `FAQPage`
 - 法說會頁：`Event` + `Organization` + `BreadcrumbList`
 - 公司頁：`Organization` + `Event[]` + `BreadcrumbList`
 - 英文 `/en`：`CollectionPage` + `ItemList`（公司）
 - 英文公司頁：`CollectionPage` + `ItemList`（季度 notes）
 - 英文主題 hub：`CollectionPage` + `ItemList`（該主題 notes）
-- 英文 memo：`Article` + `BreadcrumbList`（`lang=en`，不與中文 PDF 頁做 hreflang 配對）
+- 英文 memo：`Article` + `BreadcrumbList`（`lang=en`；memo 正文與中文 PDF 頁內容不同，**不做 hreflang 配對**）
+
+### hreflang
+- 站級：`/` ↔ `/en`，`x-default` 指向中文首頁
+- 公司 hub：有英文筆記時 `/company/{code}` ↔ `/en/{slug}`
+- `/calendar`、產業頁、單場 PDF 頁：只標 `zh-TW`，不當自己是 `x-default`（否則會跟英文區搶語言版本）
+
+### 內部連結
+- 中文頁 footer 都連到「法說會行事曆」與 `/en`
+- 首頁導覽錨點用「法說會行事曆」，不用「本週時程」
+- 有英文筆記的公司頁 / 詳情頁連到 `/en/{slug}`
+- `/calendar` 用日期錨點列出整週場次（不再用 `hidden` tab 把非當天內容藏起來），讓 Googlebot 一次看到全部
 
 ### ISR 快取策略
 - 首頁：每 24 小時重新生成

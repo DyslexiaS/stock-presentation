@@ -50,11 +50,13 @@ function toIsoDate(value: string): string {
   return Number.isNaN(parsed.getTime()) ? value : parsed.toISOString()
 }
 
-function englishHreflang(url: string): Metadata['alternates'] {
+function englishHreflang(url: string, zhUrl?: string): Metadata['alternates'] {
   return {
     canonical: url,
     languages: {
       en: url,
+      ...(zhUrl ? { 'zh-TW': zhUrl } : {}),
+      'x-default': EN_BASE_URL,
     },
   }
 }
@@ -128,7 +130,6 @@ export function generateEnLayoutMetadata(): Metadata {
       ],
       shortcut: ['/favicon.ico'],
     },
-    alternates: englishHreflang(url),
     ...englishSocial('Taiwan Semiconductor Earnings Calls | FinmoConf English', description, url),
   }
 }
@@ -165,7 +166,7 @@ export function generateEnHomeMetadata(): Metadata {
       'ASE KYEC CoWoS Taiwan',
       'AI data center power Taiwan',
     ],
-    alternates: englishHreflang(url),
+    alternates: englishHreflang(url, EN_BASE_URL),
     robots: EN_ROBOTS,
     ...englishSocial(title, description, url),
   }
@@ -276,7 +277,7 @@ export function generateEnCompanyMetadata(
       'Taiwan investor conference',
       'NVIDIA 800V HVDC',
     ],
-    alternates: englishHreflang(url),
+    alternates: englishHreflang(url, `${EN_BASE_URL}/company/${ticker.replace(/\.(TW|TWO)$/i, '')}`),
     robots: EN_ROBOTS,
     ...englishSocial(title, description, url),
   }
