@@ -91,12 +91,15 @@ export default async function IndustrySlugPage({
     '@type': 'ItemList',
     name: `${industry.name} 代表性公司`,
     description: `${industry.name}的供應鏈結構與代表廠商`,
-    itemListElement: industry.representativeCompanies.map((name, idx) => ({
-      '@type': 'ListItem',
-      position: idx + 1,
-      name,
-      url: `https://finmoconf.com/?q=${encodeURIComponent(name)}`,
-    })),
+    itemListElement: industry.representativeCompanies.map((name, idx) => {
+      const code = getCompanyCode(name)
+      return {
+        '@type': 'ListItem',
+        position: idx + 1,
+        name,
+        url: code ? `${BASE_URL}/company/${code}` : `${BASE_URL}/?q=${encodeURIComponent(name)}`,
+      }
+    }),
   }
 
   // JSON-LD: BreadcrumbList

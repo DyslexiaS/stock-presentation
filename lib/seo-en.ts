@@ -165,7 +165,14 @@ export function generateEnHomeMetadata(): Metadata {
       'ASE KYEC CoWoS Taiwan',
       'AI data center power Taiwan',
     ],
-    alternates: englishHreflang(url),
+    alternates: {
+      canonical: url,
+      languages: {
+        en: url,
+        'zh-TW': EN_BASE_URL,
+        'x-default': EN_BASE_URL,
+      },
+    },
     robots: EN_ROBOTS,
     ...englishSocial(title, description, url),
   }

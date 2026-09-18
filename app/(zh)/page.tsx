@@ -11,6 +11,10 @@ import HomePageClient from './homepage-client'
 export const metadata = generateHomeMetadata()
 export const revalidate = 86400
 
+type PageProps = {
+  searchParams: Promise<{ q?: string }>
+}
+
 // Fetch initial presentations data on server
 async function getInitialPresentations(): Promise<{
   presentations: PresentationType[]
@@ -83,8 +87,8 @@ async function getInitialPresentations(): Promise<{
 }
 
 // Server-side rendered homepage
-export default async function HomePage() {
-  // Fetch initial data on the server
+export default async function HomePage({ searchParams }: PageProps) {
+  const { q } = await searchParams
   const { presentations, pagination, weekCount, monthCount, calendarWeekCount } = await getInitialPresentations()
 
   return (
@@ -102,6 +106,7 @@ export default async function HomePage() {
           weekCount={weekCount}
           monthCount={monthCount}
           calendarWeekCount={calendarWeekCount}
+          initialQuery={q ?? ''}
         />
       </Suspense>
 

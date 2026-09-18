@@ -317,6 +317,7 @@ export function generateHomeMetadata(): Metadata {
       canonical: url,
       languages: {
         'zh-TW': url,
+        en: `${url}/en`,
         'x-default': url,
       },
     },

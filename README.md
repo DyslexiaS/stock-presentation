@@ -126,6 +126,12 @@ interface Presentation {
 - 英文主題 hub：`CollectionPage` + `ItemList`（該主題 notes）
 - 英文 memo：`Article` + `BreadcrumbList`（`lang=en`，不與中文 PDF 頁做 hreflang 配對）
 
+### 簡化 SEO 原則
+- `/calendar` 保持獨立 canonical、伺服器渲染內容與原本手機 tab，不為搜尋引擎複製另一套 UI
+- 首頁直接輸出可爬取的「法說會行事曆」與英文區連結，不依賴 `useSearchParams` 完成初始渲染
+- 只有互為站級語言入口的 `/` 與 `/en` 配對 hreflang；內容不等價的公司／memo 頁不強行配對
+- 不使用隱藏關鍵字文字；關鍵字應出現在使用者看得到的標題、說明與連結
+
 ### ISR 快取策略
 - 首頁：每 24 小時重新生成
 - 本週時程 `/calendar`：每 1 小時重新生成
