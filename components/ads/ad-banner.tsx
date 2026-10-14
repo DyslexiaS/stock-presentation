@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 interface AdsByGoogleItem {
   [key: string]: unknown
@@ -27,20 +27,24 @@ export function AdBanner({
   className = '',
   style = {} 
 }: AdBannerProps) {
+  const adRef = useRef<HTMLModElement>(null)
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID
   const isProduction = process.env.NODE_ENV === 'production'
   const forceTestAds = process.env.NEXT_PUBLIC_ADSENSE_TEST_MODE === 'true'
   
   useEffect(() => {
-    if (typeof window !== 'undefined' && adsenseId && (isProduction || forceTestAds)) {
-      try {
-        // 初始化 adsbygoogle 數組
-        window.adsbygoogle = window.adsbygoogle || []
-        // 推送廣告配置
-        window.adsbygoogle.push({})
-      } catch (error) {
-        console.error('AdSense error:', error)
-      }
+    const el = adRef.current
+    if (!el || !adsenseId || (!isProduction && !forceTestAds)) return
+    // One request per ad slot. A second push on the same <ins> is an invalid ad request.
+    if (el.dataset.adInitialized === 'true' || el.getAttribute('data-adsbygoogle-status')) return
+
+    try {
+      el.dataset.adInitialized = 'true'
+      window.adsbygoogle = window.adsbygoogle || []
+      window.adsbygoogle.push({})
+    } catch (error) {
+      el.dataset.adInitialized = 'false'
+      console.error('AdSense error:', error)
     }
   }, [adsenseId, isProduction, forceTestAds])
 
@@ -99,22 +103,26 @@ export function AdBanner({
     )
   }
 
-  // 生產環境或測試模式下顯示真實廣告
+  // 生產環境或測試模式下顯示真實廣告。
+  // 高度限制與 overflow 會裁切廣告，點擊區可能蓋到旁邊的按鈕，所以不要套到廣告容器上。
+  const boxStyle = { ...style }
+  delete boxStyle.maxHeight
+  delete boxStyle.height
+  delete boxStyle.overflow
   const adContainerStyle = {
     width: '100%',
     maxWidth: '100%',
-    minHeight: style.minHeight || '100px',
-    ...style
+    minHeight: boxStyle.minHeight || '100px',
+    ...boxStyle
   }
 
   return (
     <div className={className} style={adContainerStyle}>
+      <p className="mb-2 text-xs text-slate-400">廣告</p>
       <ins
+        ref={adRef}
         className="adsbygoogle"
-        style={{ 
-          display: 'block', 
-          ...style 
-        }}
+        style={{ display: 'block' }}
         data-ad-client={adsenseId}
         data-ad-slot={slot}
         data-ad-format={format}

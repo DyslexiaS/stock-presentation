@@ -259,13 +259,13 @@ export default function HomePageClient({
 
           {/* Sidebar */}
           <aside className="lg:col-span-1">
-            <div className="sticky top-4 space-y-6">
+            <div className="sticky top-4 space-y-10">
               <PromotionCards />
               <AdBanner
                 slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT || "9966506770"}
                 format="auto"
                 className="w-full"
-                style={{ minHeight: '250px', maxHeight: '250px' }}
+                style={{ minHeight: '250px' }}
               />
             </div>
           </aside>

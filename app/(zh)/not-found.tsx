@@ -1,21 +1,8 @@
 import Link from 'next/link'
-import { AdBanner } from '@/components/ads/ad-banner'
 
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
-      {/* Header Ad */}
-      <div className="bg-white border-b border-slate-200 py-4">
-        <div className="container mx-auto px-4">
-          <AdBanner
-            slot={process.env.NEXT_PUBLIC_ADSENSE_HEADER_SLOT || "6322775233"}
-            format="auto"
-            className="w-full max-w-4xl mx-auto"
-            style={{ minHeight: '90px' }}
-          />
-        </div>
-      </div>
-
       {/* Main Content */}
       <div className="flex-1 flex items-center justify-center">
         <div className="text-center px-4">
@@ -42,18 +29,6 @@ export default function NotFound() {
               </ul>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Content Ad */}
-      <div className="py-8">
-        <div className="container mx-auto px-4">
-          <AdBanner
-            slot={process.env.NEXT_PUBLIC_ADSENSE_CONTENT_SLOT || "1138747228"}
-            format="auto"
-            className="w-full max-w-4xl mx-auto"
-            style={{ minHeight: '90px' }}
-          />
         </div>
       </div>
 

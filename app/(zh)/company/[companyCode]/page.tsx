@@ -254,7 +254,7 @@ export default async function CompanyPage({ params }: Props) {
               
               {/* 側邊廣告 */}
               <div className="lg:col-span-1">
-                <div className="sticky top-4 space-y-6">
+                <div className="sticky top-4 space-y-10">
                   {/* Promotion Cards */}
                   <PromotionCards />
 
@@ -262,7 +262,7 @@ export default async function CompanyPage({ params }: Props) {
                     slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT || "9966506770"}
                     format="auto"
                     className="w-full"
-                    style={{ minHeight: '250px', maxHeight: '250px' }}
+                    style={{ minHeight: '250px' }}
                   />
                 </div>
               </div>
@@ -305,7 +305,7 @@ export default async function CompanyPage({ params }: Props) {
         <a
           href="#top"
           aria-label="返回頂部"
-          className="fixed bottom-6 right-6 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg border border-gray-200 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="fixed bottom-6 left-6 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg border border-gray-200 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           <ArrowUp className="h-5 w-5" />
           <span className="sr-only">返回頂部</span>

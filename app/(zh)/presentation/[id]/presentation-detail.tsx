@@ -278,7 +278,7 @@ export default function PresentationDetailPage({ presentation }: Props) {
 
             {/* Sidebar with Promotion Cards and Ad - Client-side with Suspense */}
             <div className="lg:col-span-1">
-              <div className="sticky top-4 space-y-6">
+              <div className="sticky top-4 space-y-10">
                 {/* Promotion Cards */}
                 <PromotionCards />
 
@@ -286,7 +286,7 @@ export default function PresentationDetailPage({ presentation }: Props) {
                   slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT || "9966506770"}
                   format="auto"
                   className="w-full"
-                  style={{ minHeight: '250px', maxHeight: '250px' }}
+                  style={{ minHeight: '250px' }}
                 />
               </div>
             </div>

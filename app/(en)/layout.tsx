@@ -1,5 +1,4 @@
 import { IBM_Plex_Sans, Source_Serif_4 } from 'next/font/google'
-import { AdSenseScript } from '@/components/ads/adsense-script'
 import '../globals.css'
 
 const plex = IBM_Plex_Sans({
@@ -19,7 +18,6 @@ export default function EnglishRootLayout({ children }: { children: React.ReactN
     <html lang="en" className={`${plex.variable} ${serif.variable} antialiased`}>
       <body className="min-h-screen bg-[#f4f1ea] font-[family-name:var(--font-en-sans)]">
         {children}
-        <AdSenseScript />
       </body>
     </html>
   )
