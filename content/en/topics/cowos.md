@@ -1,5 +1,6 @@
 ---
 title: "CoWoS — TSMC Advanced Packaging"
+updatedAt: "2026-08-26"
 description: "What TSMC actually specifies for CoWoS — Chip-on-Wafer-on-Substrate, CoWoS-S / L / R, reticle size — and which Taiwan-listed foundry, OSAT, test and equipment names sit around that package. English earnings-call notes for TSMC, ASE, KYEC and Grand Process."
 ---
 

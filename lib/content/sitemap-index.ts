@@ -1,16 +1,12 @@
-import { collectEnSitemapUrls, toSitemapDate } from '@/lib/content/en-sitemap'
-
 const CHUNK_SIZE = 10000
 
 export function buildSitemapIndexXml(baseUrl: string, totalPresentations: number | null): string {
-  const enLatest = toSitemapDate(collectEnSitemapUrls().latest)
   const now = new Date().toISOString()
   const totalPages = totalPresentations == null ? 0 : Math.ceil(totalPresentations / CHUNK_SIZE)
 
   const sitemaps = [
     `  <sitemap>
     <loc>${baseUrl}/en-sitemap.xml</loc>
-    <lastmod>${enLatest}</lastmod>
   </sitemap>`,
     `  <sitemap>
     <loc>${baseUrl}/pages-sitemap.xml</loc>

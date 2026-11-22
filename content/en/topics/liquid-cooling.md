@@ -1,5 +1,6 @@
 ---
 title: "Liquid Cooling — Taiwan Supply Chain"
+updatedAt: "2026-08-26"
 description: "What NVIDIA actually specifies for AI-rack liquid cooling — NVL72, the 45°C loop, CDUs — and which Taiwan-listed suppliers sit on the cold plate, manifold, quick disconnect, CDU and fan. English earnings-call notes for Auras, AVC, Jentech, Fositek, Nidec Chaun-Choung and Sunon."
 ---
 

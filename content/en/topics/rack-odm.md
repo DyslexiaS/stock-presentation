@@ -1,5 +1,6 @@
 ---
 title: "AI Rack ODM — Taiwan Assemblers"
+updatedAt: "2026-08-26"
 description: "What NVIDIA actually specified for the AI cabinet — NVL72, MGX, Kyber — and which Taiwan-listed ODMs assemble that rack. English earnings-call notes for Hon Hai / Foxconn, Quanta and Wiwynn."
 ---
 

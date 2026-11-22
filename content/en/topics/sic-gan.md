@@ -1,5 +1,6 @@
 ---
 title: "SiC / GaN — Taiwan Power Semiconductors"
+updatedAt: "2026-08-26"
 description: "What NVIDIA actually said about silicon carbide and gallium nitride in the 800 VDC architecture — device maturity, the EV 800 V precedent — and which Taiwan-listed substrate, epi, foundry, module and OSAT names sit one layer below the official silicon list. English earnings-call notes for GlobalWafers, Episil, Episil-Precision, Actron and GEM."
 ---
 

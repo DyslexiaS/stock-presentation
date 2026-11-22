@@ -1,13 +1,29 @@
 ---
-title: "NVIDIA 800 VDC — Taiwan Supply Chain"
-description: "What NVIDIA's 800 VDC whitepaper actually specifies for AI data centers, and which Taiwan-listed suppliers sit in each slot — English earnings calls for Delta, Lite-On, BizLink, Lead Wealth, Hon Hai, GlobalWafers, Auras, AVC and the rest of the power, cooling, compound and rack stack."
+title: "NVIDIA 800V HVDC Suppliers in Taiwan"
+description: "See which Taiwan suppliers NVIDIA named for 800V HVDC, what Delta, Lite-On and BizLink do, and which other companies disclosed projects in earnings calls."
+updatedAt: "2026-11-22"
 ---
 
-NVIDIA is rebuilding data-center power around **800 VDC**. This hub does two things: it reads NVIDIA's own specification, then maps the Taiwan-listed companies that have to build against it. The water loop, the wide-bandgap switches, the companies that assemble the cabinet and the CoWoS package under the GPU are now topics of their own — [liquid cooling](/en/topics/liquid-cooling), [SiC / GaN](/en/topics/sic-gan), [rack ODM](/en/topics/rack-odm) and [CoWoS](/en/topics/cowos). Every company below has an English memo page with briefings of its earnings calls.
+## Taiwan suppliers at a glance
+
+[NVIDIA's published 800 VDC ecosystem list](https://developer.nvidia.com/blog/building-the-800-vdc-ecosystem-for-efficient-scalable-ai-factories/) names Delta, Lite-On, BizLink and Lead Wealth for power-system components, and Richtek for silicon. Other Taiwan suppliers have described related products or projects in their own earnings calls.
+
+| Company | Role in the 800V HVDC supply chain | Source |
+|---|---|---|
+| [Delta Electronics (2308.TW)](/en/delta) | Rack power, power shelves and DC/DC conversion | NVIDIA ecosystem list |
+| [Lite-On (2301.TW)](/en/liteon) | 800V HVDC power racks | NVIDIA ecosystem list |
+| [BizLink (3665.TW)](/en/bizlink) | Connectors and cable assemblies | NVIDIA ecosystem list |
+| [Lead Wealth (6290.TW)](/en/lead-wealth) | High-current power cords | NVIDIA ecosystem list |
+| Richtek | Power-management silicon | NVIDIA ecosystem list |
+| Chang Wah Technology (6548.TW) | 800V HVDC leadframes | [Q2 2026 earnings call](/en/chang-wah/2026-q2) |
+| Systems Electronics (5309.TW) | 25 kW HVDC battery backup unit in development | [FY 2025 earnings call](/en/systems/2025-q4) |
+| Sunonwealth (2421.TW) | 800V electronically commutated fan for data centers | [Q1 2026 earnings call](/en/sunon/2026-q1) |
+
+For adjacent parts of the AI infrastructure supply chain, see [liquid cooling](/en/topics/liquid-cooling), [SiC / GaN](/en/topics/sic-gan), [rack ODM](/en/topics/rack-odm) and [CoWoS](/en/topics/cowos).
 
 ## Part 1 — What NVIDIA actually specified
 
-Source: NVIDIA's whitepaper *800 VDC Architecture for Next-Generation AI Infrastructure* (Jared Huntington and Mike Tu), the 800 VDC product page, and the OCP work NVIDIA published with Google and Microsoft.
+The architecture below draws on the whitepapers linked from [NVIDIA's 800 VDC architecture page](https://www.nvidia.com/en-us/data-center/technologies/800-vdc-architecture/) and the [Open Compute Project work by NVIDIA, Google and Microsoft](https://www.opencompute.org/news/powering-the-next-era-of-ai-how-google-microsoft-and-nvidia-are-standardizing-and-accelerating-the-industry-transition-to-lvdc).
 
 ### The problem being solved
 
@@ -51,14 +67,7 @@ Specifics worth holding onto:
 
 Full production lines up with **Kyber** in **2027** — the rack that holds **576 Rubin Ultra GPUs** at 1 MW+.
 
-### Who NVIDIA named
-
-NVIDIA's published ecosystem list has three tiers. Five Taiwan-linked names appear on it:
-
-| Tier | Taiwan names |
-|---|---|
-| Power system components | **Delta (2308)**, **LITEON (2301)**, **BizLink (3665)**, **Lead Wealth (6290)** |
-| Silicon | **Richtek** — a MediaTek subsidiary, no separate listing, so no earnings page here |
+### Other NVIDIA ecosystem members
 
 The rest of the list is non-Taiwan: ADI, Infineon, onsemi, TI, Navitas, Innoscience, MPS, Power Integrations, Renesas, ROHM, ST, AOS, EPC on silicon; Flex and Megmeet on components; ABB, Eaton, GE Vernova, Heron Power, Hitachi Energy, Mitsubishi Electric, Schneider, Siemens, Vertiv on data-center power systems.
 
@@ -75,6 +84,8 @@ Read the tier label before the thesis. Being on NVIDIA's list is a different fac
 **[BizLink (3665)](/en/bizlink)** — connectors and cable assemblies, the slot NVIDIA fills with touch-safe interlocked connectors and liquid-cooled cables. Coverage here is historical; see the memo for the data caveat.
 
 **[Lead Wealth (6290)](/en/lead-wealth)** — Hi-Amp AC power cords, 30–100 A, into racks and PDUs. On NVIDIA's list; the December 2025 call confirmed 800 V HVDC projects without customers or dates.
+
+Richtek, a MediaTek subsidiary, appears in NVIDIA's silicon category.
 
 ### Named by brokers as a Kyber build partner
 

@@ -14,6 +14,7 @@ export interface EnMemo {
   companyName: string
   quarter: string
   eventDate: string
+  updatedAt?: string
   reportingPeriod: string
   tags: string[]
   draft: boolean
@@ -24,6 +25,7 @@ export interface EnTopic {
   slug: string
   title: string
   description: string
+  updatedAt?: string
   content: string
 }
 
@@ -32,6 +34,7 @@ export interface EnCompanyProfile {
   slug: string
   tier: string
   role: string
+  updatedAt?: string
   content: string
 }
 
@@ -55,6 +58,14 @@ function shouldCache() {
   return process.env.NODE_ENV === 'production'
 }
 
+function readUpdatedAt(value: unknown): string | undefined {
+  if (typeof value !== 'string' && !(value instanceof Date)) return undefined
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return undefined
+  const day = date.toISOString().slice(0, 10)
+  return value instanceof Date || value === day ? day : undefined
+}
+
 function parseMemoFile(filePath: string, companySlug: string, quarter: string): EnMemo | null {
   const raw = fs.readFileSync(filePath, 'utf8')
   const { data, content } = matter(raw)
@@ -69,6 +80,7 @@ function parseMemoFile(filePath: string, companySlug: string, quarter: string): 
     companyName: String(data.companyName ?? ''),
     quarter: String(data.quarter ?? quarter),
     eventDate: String(data.eventDate ?? ''),
+    updatedAt: readUpdatedAt(data.updatedAt),
     reportingPeriod: String(data.reportingPeriod ?? ''),
     tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
     draft: false,
@@ -121,6 +133,7 @@ function loadTopics(): EnTopic[] {
       slug,
       title: String(data.title ?? slug),
       description: String(data.description ?? ''),
+      updatedAt: readUpdatedAt(data.updatedAt),
       content: content.trim(),
     })
   }
@@ -143,6 +156,7 @@ function loadProfiles(): Map<string, EnCompanyProfile> {
         slug,
         tier: String(data.tier ?? ''),
         role: String(data.role ?? ''),
+        updatedAt: readUpdatedAt(data.updatedAt),
         content: content.trim(),
       })
     }
@@ -221,7 +235,7 @@ function sortTopics(topics: EnTopic[]): EnTopic[] {
 export function getAllTopics(): EnTopic[] {
   const fromFiles = loadTopics()
   const fileSlugs = new Set(fromFiles.map((t) => t.slug))
-  const extra = getAllTags()
+  const extra: EnTopic[] = getAllTags()
     .filter((tag) => !fileSlugs.has(tag))
     .map((slug) => ({
       slug,

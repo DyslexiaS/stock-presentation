@@ -162,6 +162,8 @@ interface Presentation {
 
 英文閱讀頁：麵包屑第一段是 **FinmoConf**（不是 English）；股票代號顯示成 `(2330.TW)`；文章標題旁有分享（複製連結 / 系統分享 / X / LinkedIn）；大標之間用灰線加左側黃色短槓區隔；正文欄寬 `max-w-6xl`。主題 hub 裡的 mermaid flowchart 會在伺服器畫成輕量方塊圖，不載入 mermaid 函式庫。中英文頁 **header 右上** 有 Google 官方 **Preferred Sources** 按鈕（`publisher.js`），讓讀者把本站設成偏好來源。英文首頁 Topics 是報紙目錄式 bento（五個 hub 時 800V 佔兩欄，下面三欄填滿，避免 CoWoS 旁邊空一格）；Companies 是代號在前的密索引（桌面四欄，數字是英文筆記篇數）；最新法說會只列最近 10 篇；完整名錄在 `/en/companies`，全部筆記在 `/en/calls`。
 
+英文主題、公司簡介與 memo 的 frontmatter 可加上 `updatedAt: "YYYY-MM-DD"`，記錄頁面內容發佈或最近一次實質修改的日期。`/en-sitemap.xml` 用這個日期輸出 `lastmod`，未填的頁面會省略 `lastmod`。`eventDate` 仍記錄法說會舉行日期。
+
 新增一篇：
 
 1. 在 `content/en/memos/<company-slug>/<quarter>.md` 寫 Markdown（frontmatter：`title`, `description`, `companySlug`, `ticker`, `companyName`, `quarter`, `eventDate`, `reportingPeriod`, `tags`）
